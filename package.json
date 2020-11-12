@@ -21,6 +21,7 @@
     "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
-    "numbers": "^0.7.0"
+    "numbers": "^0.7.0",
+    "string-table": "^0.1.5"
   }
 }

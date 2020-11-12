@@ -28,5 +28,9 @@
   "1.0.5": [
     "11/12/2020:\n",
     "Changed !stats format to use less space. Adjusted formatting."
+  ],
+  "1.0.6": [
+    "11/12/2020:\n",
+    "Changed !stats format to use table format."
   ]
 }

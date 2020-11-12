@@ -1,4 +1,5 @@
 const numbers = require("numbers");
+const stringTable = require("string-table");
 
 const getRandomValue = (mean, stdev, method) => {
   return method(1, mean, stdev);
@@ -44,17 +45,22 @@ const getLength = () => {
 };
 
 const getStats = (msg) => {
-  const responses = [
-    "your stats are: ",
-    `${getLooks()}/10 looks. `,
-    `${getIQ()} IQ. `,
-    `${getMMR()} MMR. `,
-    `$${getSalary()
-      .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} salary. `,
-    `${getLength()} inches. `,
+  const stats = [
+    {
+      Looks: `${getLooks()}/10`,
+      IQ: getIQ(),
+      MMR: getMMR(),
+      Salary: `$${getSalary()
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+      Length: `${getLength()} in`,
+    },
   ];
-  return msg.reply(responses.join(""));
+  const responses = [
+    "your stats are:",
+    `\`\`\`${stringTable.create(stats)}\`\`\``,
+  ];
+  return msg.reply(responses.join("\n"));
 };
 
 module.exports = {
