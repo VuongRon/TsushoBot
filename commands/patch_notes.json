@@ -24,5 +24,9 @@
   "1.0.4": [
     "11/11/2020:\n",
     "Modified commands/index.js to search directory for relevant command files automatically."
+  ],
+  "1.0.5": [
+    "11/12/2020:\n",
+    "Changed !stats format to use less space. Adjusted formatting."
   ]
 }

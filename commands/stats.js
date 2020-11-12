@@ -45,17 +45,16 @@ const getLength = () => {
 
 const getStats = (msg) => {
   const responses = [
-    " your stats are:",
-    "",
-    `${getLooks()}/10 looks.`,
-    `${getIQ()} IQ.`,
-    `${getMMR()} MMR.`,
+    "your stats are: ",
+    `${getLooks()}/10 looks. `,
+    `${getIQ()} IQ. `,
+    `${getMMR()} MMR. `,
     `$${getSalary()
       .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} salary.`,
-    `${getLength()} inches.`,
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} salary. `,
+    `${getLength()} inches. `,
   ];
-  return msg.reply(responses.join("\n"));
+  return msg.reply(responses.join(""));
 };
 
 module.exports = {

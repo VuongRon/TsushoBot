@@ -3,7 +3,7 @@ const patchNotes = require("./patch_notes.json");
 
 const readPatchNotes = (version) => {
   let responses = [];
-  responses.push(` Patch notes for v${version}:`);
+  responses.push(`Patch notes for v${version}:`);
   responses.push("");
   for (index in patchNotes[version]) {
     responses.push(patchNotes[version][index]);
