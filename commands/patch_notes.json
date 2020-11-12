@@ -32,5 +32,9 @@
   "1.0.6": [
     "11/12/2020:\n",
     "Changed !stats format to use table format."
+  ],
+  "1.0.7": [
+    "11/12/2020:\n",
+    "Reworked and made the !stats command more pretty."
   ]
 }
