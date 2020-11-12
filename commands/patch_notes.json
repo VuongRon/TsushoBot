@@ -20,5 +20,9 @@
     "11/11/2020:\n",
     "Added !patchnotes [version] command.",
     "Modified !stats salary to stdev = 1 and mean = 1, value multiplied by 50000."
+  ],
+  "1.0.4": [
+    "11/11/2020:\n",
+    "Modified commands/index.js to search directory for relevant command files automatically."
   ]
 }
