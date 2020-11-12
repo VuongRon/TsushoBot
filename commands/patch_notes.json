@@ -1,0 +1,24 @@
+{
+  "1.0.0": [
+    "11/11/2020:\n",
+    "Initial Bot Release."
+  ],
+  "1.0.1": [
+    "11/11/2020:\n",
+    "Initialized some test commands.\nCleaned up directories and file structure."
+  ],
+  "1.0.2": [
+    "11/11/2020:\n",
+    "Added !stats command.",
+    "Looks is normally distributed with stdev = 5/3 and mean = 5.",
+    "IQ is normally distributed with stdev = 100/3 and mean = 100.",
+    "MMR is normally distributed with stdev = 5000/3 and mean = 5000.",
+    "Salary is log-normally distributed with stdev = 2 and mean = 5, value multiplied by 10000.\n",
+    "Added !version command."
+  ],
+  "1.0.3": [
+    "11/11/2020:\n",
+    "Added !patchnotes [version] command.",
+    "Modified !stats salary to stdev = 1 and mean = 1, value multiplied by 50000."
+  ]
+}

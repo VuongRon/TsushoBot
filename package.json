@@ -1,0 +1,24 @@
+{
+  "name": "tsushobot",
+  "version": "1.0.0",
+  "description": "Tsusho Discord bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VuongRon/TsushoBot.git"
+  },
+  "author": "Tsusho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VuongRon/TsushoBot/issues"
+  },
+  "homepage": "https://github.com/VuongRon/TsushoBot#readme",
+  "dependencies": {
+    "discord.js": "^12.4.1",
+    "dotenv": "^8.2.0",
+    "numbers": "^0.7.0"
+  }
+}
