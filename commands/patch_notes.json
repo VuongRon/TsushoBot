@@ -43,6 +43,7 @@
   ],
   "1.0.9": [
     "11/13/2020:\n",
-    "Added !help command. Updated each command's description to better express what they do."
+    "Added !help command. Updated each command's description to better express what they do.\n",
+    "Added weight and height to !stats"
   ]
 }
