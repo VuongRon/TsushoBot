@@ -58,7 +58,7 @@ const embedMessage = (msg, args) => {
 }
 
 module.exports = {
-  name: "!cheems",
+  name: "!cheems487484854874",
   description: "cheemsburgber",
   execute(msg, args) {
     embedMessage(msg, args);
