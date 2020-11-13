@@ -1,3 +1,4 @@
+const { random } = require("numbers");
 const numbers = require("numbers");
 
 const getRandomValue = (mean, stdev, method) => {
@@ -44,10 +45,19 @@ const getSalary = () => {
 };
 
 const getLength = () => {
-  return Math.floor(
-    parseInt(getRandomValue(6, 6 / 3, numbers.random.distribution.normal), 10)
-  );
+  const randomInches = Math.floor(parseInt(getRandomValue(6, 6 / 3, numbers.random.distribution.normal), 10));
+  return `${randomInches} in (${Math.floor(randomInches * 2.54)} cm)`;
 };
+
+const getHeight = () => {
+  const randomInches = Math.floor(parseInt(getRandomValue(67, 67 / 5, numbers.random.distribution.normal), 10));
+  return `${Math.floor(randomInches / 12)}'${Math.floor(randomInches % 12)}" (${Math.floor(randomInches * 2.54)} cm)`;
+}
+
+const getWeight = () => {
+  const randomPounds = Math.floor(parseInt(getRandomValue(175, 175 / 3, numbers.random.distribution.normal), 10));
+  return `${randomPounds} lb (${Math.floor(randomPounds / 2.205)} kg)`;
+}
 
 const embedMessage = (msg, args) => {
   const stats = {
@@ -81,10 +91,20 @@ const embedMessage = (msg, args) => {
         "inline": true
       },
       {
-        "name": ":straight_ruler: Length",
-        "value": `${getLength()} in`,
+        "name": ":pinching_hand: Length",
+        "value": `${getLength()}`,
         "inline": true
-      }
+      },
+      {
+        "name": ":straight_ruler: Height",
+        "value": `${getHeight()}`,
+        "inline": true
+      },
+      {
+        "name": ":scales: Weight",
+        "value": `${getWeight()}`,
+        "inline": true
+      },
     ]
   };
   return msg.channel.send({ embed: stats });
