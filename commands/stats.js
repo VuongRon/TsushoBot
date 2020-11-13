@@ -92,7 +92,7 @@ const embedMessage = (msg, args) => {
 
 module.exports = {
   name: "!stats",
-  description: "Your stats.",
+  description: "Shows your randomized stats. Each stat is normally distributed.",
   execute(msg, args) {
     embedMessage(msg, args);
   },

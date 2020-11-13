@@ -45,7 +45,7 @@ const count = (msg) => {
 };
 module.exports = {
   name: "!count",
-  description: "Counting",
+  description: "Incrementally increases your saved counter, with a chance to hit a critical increment.",
   execute(msg, args) {
     count(msg);
   },
