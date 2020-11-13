@@ -36,5 +36,9 @@
   "1.0.7": [
     "11/12/2020:\n",
     "Reworked and made the !stats command more pretty."
+  ],
+  "1.0.8": [
+    "11/12/2020:\n",
+    "Added !count command. Count up by one, 10% chance of counting by 5. Total is saved."
   ]
 }
