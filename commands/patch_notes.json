@@ -39,6 +39,6 @@
   ],
   "1.0.8": [
     "11/12/2020:\n",
-    "Added !count command. Count up by one, 10% chance of counting by 5. Total is saved."
+    "Added !count command. This is the first command to test persisted data files. Local JSON files are written and updated, with filename based on the ID of the message author. The directory where these files are stored will be customizable in future. For now it is in the root users/ directory, which has been added to .gitignore this patch.\n\n!count adds 1 to your running count total. There is a 10% chance to land a critical count which increments your user total by 5 instead.\n\nRemoved string-table package dependency now that embedded messages are being used for !stats."
   ]
 }
