@@ -1,4 +1,3 @@
-const { random } = require("numbers");
 const numbers = require("numbers");
 
 const getRandomValue = (mean, stdev, method) => {
