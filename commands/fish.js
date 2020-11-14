@@ -42,7 +42,7 @@ function getFish(roll){
 }
 
 const embedMessage = (msg, args) => {
-  let roll = generateRoll();
+  let fish = getFish(generateRoll());
   const stats = {
     "title": `${args ? checkArgsLength(args) : ''}`,
     "color": 5214975,
@@ -52,8 +52,8 @@ const embedMessage = (msg, args) => {
     },
     "fields": [
       {
-        "name": `${getFish(roll)[0]}`,
-        "value": `${getFish(roll)[1]}`,
+        "name": `${fish[0]}`,
+        "value": `${fish[1]}`,
         "inline": true
       }
     ]
