@@ -1,4 +1,5 @@
 const numbers = require("numbers");
+const talkedRecently = new Set();
 
 const getRandomValue = (mean, stdev, method) => {
   return method(1, mean, stdev);
@@ -58,9 +59,23 @@ const embedMessage = (msg, args) => {
 }
 
 module.exports = {
-  name: "!cheems487484854874",
+  name: "!cheems",
   description: "cheemsburgber",
   execute(msg, args) {
-    embedMessage(msg, args);
+
+    if (talkedRecently.has(msg.author.id)) {
+          
+    } else {
+
+           // the user can type the command ... your command code goes here :)
+           embedMessage(msg, args);
+        // Adds the user to the set so that they can't talk for a minute
+        talkedRecently.add(msg.author.id);
+        setTimeout(() => {
+          // Removes the user from the set after a minute
+          talkedRecently.delete(msg.author.id);
+        }, 20000);
+    }
+
   },
 };
