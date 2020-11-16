@@ -1,4 +1,5 @@
 const fs = require("fs");
+const embedService = require("../services/embedService");
 const userFileLocation = "users";
 
 const randomCount = () => {
@@ -12,16 +13,9 @@ const randomCount = () => {
 
 const embed = (msg, count, userCount) => {
   const critical = count === 5;
-  return {
-    color: 16750462,
-    author: {
-      name: `${msg.author.username}`,
-      icon_url: `${msg.author.avatarURL()}`,
-    },
-    description: `${
-      critical ? "**Critical Count!** " : ""
-    }You counted by ${count}.\n\n Your total is now **${userCount}**.`,
-  };
+  const criticalMessage = critical ? "**Critical Count!** " : "";
+  const message = `${criticalMessage}You counted by ${count}.\n\n Your total is now **${userCount}**.`;
+  return embedService.embedMessage(msg, message);
 };
 
 const count = (msg) => {
@@ -41,7 +35,7 @@ const count = (msg) => {
     }
   }
   fs.writeFileSync(filePath, JSON.stringify(user));
-  return msg.channel.send({ embed: embed(msg, count, user.count) });
+  return embed(msg, count, user.count);
 };
 module.exports = {
   name: "!count",

@@ -1,4 +1,5 @@
 const numbers = require("numbers");
+const embedService = require("../services/embedService");
 
 const getRandomValue = (mean, stdev, method) => {
   return method(1, mean, stdev);
@@ -72,54 +73,46 @@ const getWeight = () => {
 };
 
 const embedMessage = (msg, args) => {
-  const stats = {
-    title: `${args ? checkArgsLength(args) : ""}`,
-    color: 16750462,
-    author: {
-      name: `${msg.author.username}`,
-      icon_url: `${msg.author.avatarURL()}`,
+  const title = `${args ? checkArgsLength(args) : ""}`;
+  const fields = [
+    {
+      name: ":eyes: Looks",
+      value: `${getLooks()}/10`,
     },
-    fields: [
-      {
-        name: ":eyes: Looks",
-        value: `${getLooks()}/10`,
-        inline: true,
-      },
-      {
-        name: ":brain: IQ",
-        value: `${getIQ()}`,
-        inline: true,
-      },
-      {
-        name: ":video_game: MMR",
-        value: `${getMMR()}`,
-        inline: true,
-      },
-      {
-        name: ":moneybag: Salary",
-        value: `$${getSalary()
-          .toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
-        inline: true,
-      },
-      {
-        name: ":pinching_hand: Length",
-        value: `${getLength()}`,
-        inline: true,
-      },
-      {
-        name: ":straight_ruler: Height",
-        value: `${getHeight()}`,
-        inline: true,
-      },
-      {
-        name: ":scales: Weight",
-        value: `${getWeight()}`,
-        inline: true,
-      },
-    ],
-  };
-  return msg.channel.send({ embed: stats });
+    {
+      name: ":brain: IQ",
+      value: `${getIQ()}`,
+    },
+    {
+      name: ":video_game: MMR",
+      value: `${getMMR()}`,
+    },
+    {
+      name: ":moneybag: Salary",
+      value: `$${getSalary()
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+    },
+    {
+      name: ":pinching_hand: Length",
+      value: `${getLength()}`,
+    },
+    {
+      name: ":straight_ruler: Height",
+      value: `${getHeight()}`,
+    },
+    {
+      name: ":scales: Weight",
+      value: `${getWeight()}`,
+    },
+  ];
+  fields.forEach((field, i) => {
+    fields[i].inline = true;
+  });
+  return embedService.embed(msg, {
+    title,
+    fields,
+  });
 };
 
 module.exports = {

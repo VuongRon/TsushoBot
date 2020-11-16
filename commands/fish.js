@@ -1,4 +1,5 @@
 const numbers = require("numbers");
+const embedService = require("../services/embedService");
 const talkedRecently = new Set();
 
 const getRandomValue = (mean, stdev, method) => {
@@ -42,23 +43,24 @@ function getFish(roll) {
 }
 
 const embedMessage = (msg, args) => {
-  let fish = getFish(generateRoll());
-  const stats = {
-    title: `${args ? checkArgsLength(args) : ""}`,
-    color: 5214975,
-    author: {
-      name: `${msg.author.username} is fishing...`,
-      icon_url: `${msg.author.avatarURL()}`,
-    },
-    fields: [
-      {
-        name: `${fish[0]}`,
-        value: `${fish[1]}`,
-        inline: true,
-      },
-    ],
+  const fish = getFish(generateRoll());
+  const author = {
+    name: `${msg.author.username} is fishing...`,
+    icon_url: `${msg.author.avatarURL()}`,
   };
-  return msg.channel.send({ embed: stats });
+  const title = `${args ? checkArgsLength(args) : ""}`;
+  const fields = [
+    {
+      name: `${fish[0]}`,
+      value: `${fish[1]}`,
+      inline: true,
+    },
+  ];
+  return embedService.embed(msg, {
+    author,
+    title,
+    fields,
+  });
 };
 
 module.exports = {
