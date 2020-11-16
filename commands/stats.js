@@ -78,7 +78,7 @@ const embedMessage = (msg, args) => {
         "inline": true
       },
       {
-        "name": ":vs: MMR",
+        "name": ":video_game: MMR",
         "value": `${getMMR()}`,
         "inline": true
       },
