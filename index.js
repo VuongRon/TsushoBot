@@ -4,7 +4,7 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const botCommands = require("./commands");
 const helpCommand = require("./commands/help.js");
-
+const db = require("./models").sequelize;
 
 Object.keys(botCommands).map((key) => {
   client.commands.set(botCommands[key].name, botCommands[key]);

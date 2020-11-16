@@ -21,6 +21,9 @@
     "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
-    "numbers": "^0.7.0"
+    "numbers": "^0.7.0",
+    "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0",
+    "sqlite3": "^5.0.0"
   }
 }
