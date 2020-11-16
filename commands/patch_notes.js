@@ -1,4 +1,5 @@
 require("dotenv").config();
+const embedService = require("../services/embedService");
 const patchNotes = require("./patch_notes.json");
 
 const readPatchNotes = (version) => {
@@ -14,13 +15,14 @@ const readPatchNotes = (version) => {
 const getPatchNotes = (msg, args) => {
   const version =
     args && args[0] && patchNotes[args[0]] ? args[0] : process.env.VERSION;
-  msg.reply(readPatchNotes(version));
+  return embedService.embedMessage(msg, args, readPatchNotes(version));
 };
 
 module.exports = {
   name: "!patchnotes",
-  description: "Shows the patch notes. Accepts a version as an argument to show a specific release.",
-  execute(msg, args) {
-    getPatchNotes(msg, args);
+  description:
+    "Shows the patch notes. Accepts a version as an argument to show a specific release.",
+  execute(msg, args, options = {}) {
+    return getPatchNotes(msg, args);
   },
 };
