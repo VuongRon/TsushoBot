@@ -10,7 +10,7 @@ const getHelp = (msg, commands) => {
         value: command.description,
       });
   });
-  return embedService.embed(msg, {
+  return embedService.embed(msg, args, {
     fields,
   });
 };

@@ -15,7 +15,7 @@ const embed = (msg, count, userCount) => {
   const critical = count === 5;
   const criticalMessage = critical ? "**Critical Count!** " : "";
   const message = `${criticalMessage}You counted by ${count}.\n\n Your total is now **${userCount}**.`;
-  return embedService.embedMessage(msg, message);
+  return embedService.embedMessage(msg, args, message);
 };
 
 const count = (msg) => {

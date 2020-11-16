@@ -1,79 +1,41 @@
-const numbers = require("numbers");
 const embedService = require("../services/embedService");
-
-const getRandomValue = (mean, stdev, method) => {
-  return method(1, mean, stdev);
-};
-
-const checkArgsLength = (args) => {
-  args = args.join(" ");
-  let maxLength = 100;
-  return args.length > maxLength
-    ? args.substring(0, maxLength - 3) + "..."
-    : args;
-};
+const rngService = require("../services/rngService");
 
 const getIQ = () => {
-  return Math.floor(
-    parseInt(
-      getRandomValue(100, 100 / 3, numbers.random.distribution.normal),
-      10
-    )
-  );
+  return rngService.normalDistribution(100, 100 / 3);
 };
 
 const getLooks = () => {
-  return Math.floor(
-    parseInt(getRandomValue(5, 5 / 3, numbers.random.distribution.normal), 10)
-  );
+  return rngService.normalDistribution(5, 5 / 3);
 };
 
 const getMMR = () => {
-  return Math.floor(
-    parseInt(
-      getRandomValue(5000, 5000 / 3, numbers.random.distribution.normal),
-      10
-    )
-  );
+  return rngService.normalDistribution(5000, 5000 / 3);
 };
 
 const getSalary = () => {
-  return Math.floor(
-    parseInt(
-      getRandomValue(1, 1, numbers.random.distribution.logNormal) * 50000,
-      10
-    )
-  );
+  return rngService.logNormalDistribution(1, 1, 50000);
 };
 
 const getLength = () => {
-  const randomInches = Math.floor(
-    parseInt(getRandomValue(6, 6 / 3, numbers.random.distribution.normal), 10)
-  );
+  const randomInches = rngService.normalDistribution(6, 6 / 3);
   return `${randomInches} in (${Math.floor(randomInches * 2.54)} cm)`;
 };
 
 const getHeight = () => {
-  const randomInches = Math.floor(
-    parseInt(getRandomValue(67, 67 / 5, numbers.random.distribution.normal), 10)
-  );
+  const randomInches = rngService.normalDistribution(67, 67 / 3);
   return `${Math.floor(randomInches / 12)}'${Math.floor(
     randomInches % 12
   )}" (${Math.floor(randomInches * 2.54)} cm)`;
 };
 
 const getWeight = () => {
-  const randomPounds = Math.floor(
-    parseInt(
-      getRandomValue(175, 175 / 3, numbers.random.distribution.normal),
-      10
-    )
-  );
+  const randomPounds = rngService.normalDistribution(175, 175 / 3);
   return `${randomPounds} lb (${Math.floor(randomPounds / 2.205)} kg)`;
 };
 
 const embedMessage = (msg, args) => {
-  const title = `${args ? checkArgsLength(args) : ""}`;
+  const argsTitle = true;
   const fields = [
     {
       name: ":eyes: Looks",
@@ -109,8 +71,8 @@ const embedMessage = (msg, args) => {
   fields.forEach((field, i) => {
     fields[i].inline = true;
   });
-  return embedService.embed(msg, {
-    title,
+  return embedService.embed(msg, args, {
+    argsTitle,
     fields,
   });
 };

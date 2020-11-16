@@ -15,7 +15,7 @@ const readPatchNotes = (version) => {
 const getPatchNotes = (msg, args) => {
   const version =
     args && args[0] && patchNotes[args[0]] ? args[0] : process.env.VERSION;
-  return embedService.embedMessage(msg, readPatchNotes(version));
+  return embedService.embedMessage(msg, args, readPatchNotes(version));
 };
 
 module.exports = {

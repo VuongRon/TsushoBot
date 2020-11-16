@@ -1,23 +1,9 @@
-const numbers = require("numbers");
 const embedService = require("../services/embedService");
+const rngService = require("../services/rngService");
 const talkedRecently = new Set();
 
-const getRandomValue = (mean, stdev, method) => {
-  return method(1, mean, stdev);
-};
-
-const checkArgsLength = (args) => {
-  args = args.join(" ");
-  let maxLength = 100;
-  return args.length > maxLength
-    ? args.substring(0, maxLength - 3) + "..."
-    : args;
-};
-
 const generateRoll = () => {
-  return Math.floor(
-    parseInt(getRandomValue(50, 25, numbers.random.distribution.normal), 10)
-  );
+  return rngService.normalDistribution(50, 25);
 };
 
 function getFish(roll) {
@@ -48,7 +34,7 @@ const embedMessage = (msg, args) => {
     name: `${msg.author.username} is fishing...`,
     icon_url: `${msg.author.avatarURL()}`,
   };
-  const title = `${args ? checkArgsLength(args) : ""}`;
+  const argsTitle = true;
   const fields = [
     {
       name: `${fish[0]}`,
@@ -56,9 +42,9 @@ const embedMessage = (msg, args) => {
       inline: true,
     },
   ];
-  return embedService.embed(msg, {
+  return embedService.embed(msg, args, {
     author,
-    title,
+    argsTitle,
     fields,
   });
 };
