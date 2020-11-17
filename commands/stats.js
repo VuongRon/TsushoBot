@@ -24,9 +24,7 @@ const getLength = () => {
 
 const getHeight = () => {
   const randomInches = rngService.normalDistribution(67, 67 / 3);
-  return `${Math.floor(randomInches / 12)}'${Math.floor(
-    randomInches % 12
-  )}" (${Math.floor(randomInches * 2.54)} cm)`;
+  return `${Math.floor(randomInches / 12)}'${Math.floor(randomInches % 12)}" (${Math.floor(randomInches * 2.54)} cm)`;
 };
 
 const getWeight = () => {
@@ -79,8 +77,7 @@ const embedMessage = (msg, args) => {
 
 module.exports = {
   name: "!stats",
-  description:
-    "Shows your randomized stats. Each stat is normally distributed.",
+  description: "Shows your randomized stats. Each stat is normally distributed.",
   execute(msg, args, options = {}) {
     embedMessage(msg, args);
   },
