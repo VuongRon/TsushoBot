@@ -1,6 +1,6 @@
 const embedService = require("../services/embedService");
 
-const getHelp = (msg, commands) => {
+const getHelp = (msg, args, commands) => {
   const fields = [];
 
   commands.forEach((command) => {
@@ -19,6 +19,6 @@ module.exports = {
   name: "!help",
   description: "The command to show all other commands.",
   execute(msg, args, options = {}) {
-    if (options.commands) getHelp(msg, options.commands);
+    if (options.commands) getHelp(msg, args, options.commands);
   },
 };
