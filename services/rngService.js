@@ -50,4 +50,5 @@ const logNormalDistribution = (
 module.exports = {
   normalDistribution,
   logNormalDistribution,
+  getRandomInt,
 };
