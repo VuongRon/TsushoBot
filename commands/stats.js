@@ -1,5 +1,6 @@
 const embedService = require("../services/embedService");
 const rngService = require("../services/rngService");
+const MultivariateNormal = require("multivariate-normal").default;
 
 const getIQ = () => {
   return rngService.normalDistribution(100, 100 / 3);
@@ -22,18 +23,32 @@ const getLength = () => {
   return `${randomInches} in (${Math.round(randomInches * 2.54)} cm)`;
 };
 
-const getHeight = () => {
-  const randomInches = rngService.normalDistribution(67, 67 / 3, 1, true);
-  return `${Math.floor(randomInches / 12)}'${Math.floor(randomInches % 12)}" (${Math.floor(randomInches * 2.54)} cm)`;
+const generateSample = () => {
+  const meanVector = [170, 70];
+
+  const covarianceMatrix = [
+    [450, 370],
+    [370, 350],
+  ];
+
+  const distribution = MultivariateNormal(meanVector, covarianceMatrix);
+  return distribution.sample();
 };
 
-const getWeight = () => {
-  const randomPounds = rngService.normalDistribution(175, 175 / 5, 1, true);
-  return `${randomPounds} lb (${Math.round(randomPounds / 2.205)} kg)`;
+const getHeight = (sample) => {
+  const height = Math.round(sample[0]);
+  const inches = Math.round(height / 2.54);
+  return `${Math.floor(inches / 12)}'${inches % 12}" (${height} cm)`;
+};
+
+const getWeight = (sample) => {
+  const weight = Math.round(sample[1]);
+  return `${Math.round(weight * 2.205)} lb (${weight} kg)`;
 };
 
 const embedMessage = (msg, args) => {
   const argsTitle = true;
+  const sample = generateSample();
   const fields = [
     {
       name: ":eyes: Looks",
@@ -59,11 +74,11 @@ const embedMessage = (msg, args) => {
     },
     {
       name: ":straight_ruler: Height",
-      value: `${getHeight()}`,
+      value: `${getHeight(sample)}`,
     },
     {
       name: ":scales: Weight",
-      value: `${getWeight()}`,
+      value: `${getWeight(sample)}`,
     },
   ];
   fields.forEach((field, i) => {
