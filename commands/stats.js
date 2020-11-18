@@ -10,7 +10,7 @@ const getLooks = () => {
 };
 
 const getMMR = () => {
-  return rngService.normalDistribution(5000, 5000 / 3);
+  return rngService.normalDistribution(5000, 5000 / 3, 1, true);
 };
 
 const getSalary = () => {
@@ -18,18 +18,18 @@ const getSalary = () => {
 };
 
 const getLength = () => {
-  const randomInches = rngService.normalDistribution(6, 6 / 3);
-  return `${randomInches} in (${Math.floor(randomInches * 2.54)} cm)`;
+  const randomInches = rngService.normalDistribution(6, 6 / 3, 1, true);
+  return `${randomInches} in (${Math.round(randomInches * 2.54)} cm)`;
 };
 
 const getHeight = () => {
-  const randomInches = rngService.normalDistribution(67, 67 / 3);
+  const randomInches = rngService.normalDistribution(67, 67 / 3, 1, true);
   return `${Math.floor(randomInches / 12)}'${Math.floor(randomInches % 12)}" (${Math.floor(randomInches * 2.54)} cm)`;
 };
 
 const getWeight = () => {
-  const randomPounds = rngService.normalDistribution(175, 175 / 3);
-  return `${randomPounds} lb (${Math.floor(randomPounds / 2.205)} kg)`;
+  const randomPounds = rngService.normalDistribution(175, 175 / 5, 1, true);
+  return `${randomPounds} lb (${Math.round(randomPounds / 2.205)} kg)`;
 };
 
 const embedMessage = (msg, args) => {
