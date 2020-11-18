@@ -4,6 +4,13 @@ const getRandomValue = (mean, stdev, method) => {
   return method(1, mean, stdev);
 };
 
+const getRandomInt = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  // Both the maximum and minimum are inclusive
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
 const checkIfNegative = (value) => {
   return value <= 0 ? 0 : value;
 };
@@ -21,7 +28,7 @@ const normalDistribution = (
       10
     )
   );
-  return (checkNegative ? checkIfNegative(value) : value);
+  return checkNegative ? checkIfNegative(value) : value;
 };
 
 const logNormalDistribution = (
@@ -37,7 +44,7 @@ const logNormalDistribution = (
       10
     )
   );
-  return (checkNegative ? checkIfNegative(value) : value);
+  return checkNegative ? checkIfNegative(value) : value;
 };
 
 module.exports = {
