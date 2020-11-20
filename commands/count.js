@@ -30,7 +30,8 @@ const count = async (msg, args) => {
   const count = randomCount();
   user.count += count;
   await user.save().catch((err) => {
-    console.err(err);
+    console.error(err);
+    return;
   });
   return embed(msg, args, count, user.count);
 };
