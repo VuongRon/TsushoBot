@@ -10,15 +10,10 @@ const mergeUsers = async () => {
     const filePath = `${userFileLocation}/${user}`;
     const data = fs.readFileSync(filePath);
     const count = JSON.parse(data);
-    const userInstance = await userModel
+    await userModel
       .create({
         discordId: user.split(".")[0],
-        count: Object.values(count),
-      })
-      .then(() => {
-        console.log(
-          `inserted - id: ${userInstance.discordId}, count: ${userInstance.count}`
-        );
+        count: count.count,
       })
       .catch((err) => {
         console.error(err);
