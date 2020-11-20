@@ -1,6 +1,6 @@
-const fs = require("fs");
 const embedService = require("../services/embedService");
-const userFileLocation = "users";
+const db = require("../models").sequelize;
+const userModel = db.models.User;
 
 const randomCount = () => {
   const num = Math.floor(Math.random() * 10) + 1;
@@ -18,25 +18,23 @@ const embed = (msg, args, count, userCount) => {
   return embedService.embedMessage(msg, args, message);
 };
 
-const count = (msg, args) => {
+const count = async (msg, args) => {
   const authorId = msg.author.id;
-  const filePath = `${userFileLocation}/${authorId}.json`;
+  const [user] = await userModel
+    .findOrCreate({
+      where: { discordId: authorId },
+    })
+    .catch((err) => {
+      console.error(err);
+    });
   const count = randomCount();
-  let user = {
-    count: count,
-  };
-  if (fs.existsSync(filePath)) {
-    const rawdata = fs.readFileSync(filePath);
-    user = JSON.parse(rawdata);
-    if (user.count) {
-      user.count += count;
-    } else {
-      user.count = count;
-    }
-  }
-  fs.writeFileSync(filePath, JSON.stringify(user));
+  user.count += count;
+  await user.save().catch((err) => {
+    console.err(err);
+  });
   return embed(msg, args, count, user.count);
 };
+
 module.exports = {
   name: "!count",
   description:
