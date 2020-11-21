@@ -13,43 +13,43 @@ const embed = (msg, args, user) => {
   const fields = [
     {
       name: ":motorized_wheelchair:",
-      value: `${user.motorized_wheelchair}`,
+      value: `**${user.motorized_wheelchair}**`,
     },
     {
       name: ":manual_wheelchair:",
-      value: `${user.manual_wheelchair}`,
+      value: `**${user.manual_wheelchair}**`,
     },
     {
       name: ":heart:",
-      value: `${user.heart}`,
+      value: `**${user.heart}**`,
     },
     {
       name: ":wrench:",
-      value: `${user.wrench}`,
+      value: `**${user.wrench}**`,
     },
     {
       name: ":boot:",
-      value: `${user.boot}`,
+      value: `**${user.boot}**`,
     },
     {
       name: ":fish:",
-      value: `${user.fish}`,
+      value: `**${user.fish}**`,
     },
     {
       name: ":tropical_fish:",
-      value: `${user.tropical_fish}`,
+      value: `**${user.tropical_fish}**`,
     },
     {
       name: ":blowfish:",
-      value: `${user.blowfish}`,
+      value: `**${user.blowfish}**`,
     },
     {
       name: ":yen:",
-      value: `${user.yen}`,
+      value: `**${user.yen}**`,
     },
     {
       name: "\u200b",
-      value: `Your current inventory is worth ${user.getValueOfInv()} :yen:`,
+      value: `Your current inventory is worth **${user.getValueOfInv()}** :yen:`,
     },
   ];
   fields.forEach((field, i) => {

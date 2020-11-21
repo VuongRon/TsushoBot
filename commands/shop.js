@@ -12,15 +12,15 @@ const embed = (msg, args, user) => {
   const fields = [
     {
       name: "1. Nanotube fishing line",
-      value: (!user.line?`1500 :yen: \n+5 Base roll`:`:white_check_mark: You own this item`),
+      value: (!user.line?`**1500** :yen: \n+5 Base roll`:`:white_check_mark: You own this item`),
     },
     {
       name: "2. Lucky bait",
-      value: (!user.bait?`500 :yen: \nSlightly luckier rolls`:`:white_check_mark: You own this item`),
+      value: (!user.bait?`**500** :yen: \nSlightly luckier rolls`:`:white_check_mark: You own this item`),
     },
     {
       name: "3. Reinforced boat",
-      value: (!user.boat?`10000 :yen: \nYour boat cant break`:`:white_check_mark: You own this item`),
+      value: (!user.boat?`**10000** :yen: \nYour boat cant break`:`:white_check_mark: You own this item`),
     },
     {
       name: "\u200b",

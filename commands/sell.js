@@ -7,7 +7,7 @@ const embed = (msg, args, valueOfInf) => {
   const argsTitle = true;
   const fields = [
     {
-      name: `You sold all your fish for ${valueOfInf} :yen:`,
+      name: `You sold all your fish for **${valueOfInf}** :yen:`,
       value: "Dont go spend it all in one place!",
     },
   ];

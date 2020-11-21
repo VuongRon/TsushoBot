@@ -42,7 +42,7 @@ const embed = (msg, args, fish, userFish) => {
     ];
   }else{
     if(fish.value!==undefined){
-      valuem = `*${fish.cmt}*\n\u200b\nYou now have ${userFish} :${fish.value}:`;
+      valuem = `*${fish.cmt}*\n\u200b\nYou now have **${userFish}** :${fish.value}:`;
     }else{
       valuem = `*${fish.cmt}*`;
     }
