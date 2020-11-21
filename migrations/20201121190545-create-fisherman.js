@@ -1,21 +1,17 @@
-"use strict";
+'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Users", {
+    await queryInterface.createTable('Fishermans', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       discordId: {
         allowNull: false,
         unique: true,
-        type: Sequelize.STRING,
-      },
-      count: {
-        defaultValue: 0,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING
       },//fish stuff
       fish: {
         defaultValue: 0,
@@ -64,18 +60,18 @@ module.exports = {
       boat: {
         defaultValue: false,
         type: Sequelize.BOOLEAN,
-      },//end of fish stuff
+      },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-      },
+        type: Sequelize.DATE
+      }
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Users");
-  },
+    await queryInterface.dropTable('Fishermans');
+  }
 };
