@@ -1,6 +1,6 @@
 const embedService = require("../services/embedService");
 const db = require("../models").sequelize;
-const userModel = db.models.User;
+
 const fishermanModel = db.models.Fisherman;
 
 

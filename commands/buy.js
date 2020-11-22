@@ -1,6 +1,7 @@
 const embedService = require("../services/embedService");
+const fishService = require("../services/fishService");
 const db = require("../models").sequelize;
-const userModel = db.models.User;
+
 const fishermanModel = db.models.Fisherman;
 
 const embed = (msg, args, user, item, transaction) => {
@@ -9,40 +10,28 @@ const embed = (msg, args, user, item, transaction) => {
     icon_url: `${msg.author.avatarURL()}`,
   };
   const argsTitle = false;
-  var fields;
-  if(transaction){
-    switch(item) {
-      case 1:
+  let fields;
+  if(transaction==undefined){
+    fields = [
+      {
+        name: "The transaction failed",
+        value: `You either dont have enough money or specified the wrong item.`,
+      },
+    ];
+  }else if(transaction){
         fields = [
           {
-            name: "You bought a Nanotube fishing line",
-            value: `Good luck breaking that one`,
-          },];
-          break;
-      case 2:
+            name: `You bought a ${item.name}`,
+            value: `${item.flvr1}`,
+          },
+        ];
+    }else{
         fields = [
           {
-            name: "You bought a Lucky bait",
-            value: `Luck of the sea`,
+            name: `You already own a ${item.name}`,
+            value: `${item.flvr2}`,
           },];
-          break;
-      case 3:
-        fields = [
-          {
-            name: "You bought a Reinforced boat",
-            value: `Surely the sharks cant get you now`,
-          },];
-        break;
-
-    }
-}else{
-  fields = [
-    {
-      name: "The transaction failed",
-      value: `You either dont have enough money or specified the wrong item.`,
-    },
-  ];
-}
+  }
   fields.forEach((field, i) => {
     fields[i].inline = true;
   });
@@ -62,24 +51,22 @@ const buying = async (msg, args) => {
     .catch((err) => {
       console.error(err);
     });
-  var item;
+  let id;
   if(Number.isInteger(parseInt(args)) && args.length==1){
-    item=parseInt(args);
+    id=parseInt(args);
   }
-  var transaction=false;
-  if(Number.isInteger(item) && item>0 && item<4){
-    console.log(transaction);
-    transaction=user.addItem(item);
-    console.log(transaction);
+  let transaction=undefined;
+  if(Number.isInteger(id) && id>0 && id<4){
+    transaction=user.addItem(id);
   }
-
+  let item1 = new fishService.Item(id);
   await user.save().catch((err) => {
     console.error(err);
     return;
   });
 
 
-  return embed(msg, args, user, item, transaction);
+  return embed(msg, args, user, item1, transaction);
 };
 
 module.exports = {

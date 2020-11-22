@@ -1,6 +1,6 @@
 const embedService = require("../services/embedService");
 const db = require("../models").sequelize;
-const userModel = db.models.User;
+
 const fishermanModel = db.models.Fisherman;
 
 const embed = (msg, args, valueOfInf) => {
@@ -29,8 +29,7 @@ const selling = async (msg, args) => {
     .catch((err) => {
       console.error(err);
     });
-    var valueOfInf = user.getValueOfInv()
-    user.sellInventory();
+    let valueOfInf = user.sellInventory();
   await user.save().catch((err) => {
     console.error(err);
     return;

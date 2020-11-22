@@ -1,8 +1,9 @@
 const embedService = require("../services/embedService");
 const rngService = require("../services/rngService");
+const fishService = require("../services/fishService");
 const talkedRecently = new Set();
 const db = require("../models").sequelize;
-const userModel = db.models.User;
+
 const fishermanModel = db.models.Fisherman;
 
 const generateRoll = (std) => {
@@ -20,7 +21,7 @@ function getFish(user) {
   if(roll==113){
     return false;
   }
-  return new Fish(roll);
+  return new fishService.Fish(roll);
 }
 
 const embed = (msg, args, fish, userFish) => {
@@ -64,7 +65,6 @@ const embed = (msg, args, fish, userFish) => {
 
 const fishing = async (msg, args) => {
   const authorId = msg.author.id;
-  console.log(db.models);
   const [user] = await fishermanModel
     .findOrCreate({
       where: { discordId: authorId },
@@ -101,56 +101,3 @@ module.exports = {
     }
   },
 };
-
-class Fish{
-msg;
-cmt;
-value;
-price;
-  constructor(roll) {
-    if (roll < -5) {
-      this.msg="You caught a :motorized_wheelchair:!";
-      this.cmt="2fast2furious";
-      this.value="motorized_wheelchair";
-      this.price=100;
-    } else if (roll < 0) {
-      this.msg="You caught a :manual_wheelchair:!";
-      this.cmt=":fire:";
-      this.value="manual_wheelchair";
-      this.price=50;
-    } else if (roll < 10) {
-      this.msg="You caught my :heart:!";
-      this.cmt=":flushed:";
-      this.value="heart";
-      this.price=25;
-    } else if (roll < 25) {
-      this.msg="You caught nothing!";
-      this.cmt="Unlucky";
-    } else if (roll >= 100) {
-      this.msg="You caught a :blowfish:!";
-      this.cmt="INSANE!";
-      this.value="blowfish";
-      this.price=50;
-    } else if (roll >= 90) {
-      this.msg="You caught a :tropical_fish:!";
-      this.cmt="Pog!";
-      this.value="tropical_fish";
-      this.price=25;
-    } else if (roll >= 75) {
-      this.msg="You caught a :fish:!";
-      this.cmt="nice";
-      this.value="fish";
-      this.price=10;
-    } else if (roll >= 50) {
-      this.msg="You caught a :boot:!";
-      this.cmt="It's brand new";
-      this.value="boot";
-      this.price=1;
-    } else if (roll >= 25) {
-      this.msg="You caught a :wrench:!";
-      this.cmt="Maybe someone else can use it";
-      this.value="wrench";
-      this.price=1;
-    }
-  }
-}

@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const fishService = require("../services/fishService");
 module.exports = (sequelize, DataTypes) => {
   class Fisherman extends Model {
     /**
@@ -10,23 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
      getValueOfInv(){
-      var value=this.fish*10+
-                 this.motorized_wheelchair*100+
-                 this.manual_wheelchair*50+
-                 this.heart*25+
-                 this.blowfish*50+
-                 this.tropical_fish*25+
-                 this.boot*1+
-                 this.wrench*1;
-       var bonus = (value>1000? 1.2 : 1);
+       let value=fishService.getValueOfInv(this);
+       let bonus = (value>1000? 1.2 : 1);
        return value*bonus;
     }
+
     sellInventory(){
-      this.yen+=this.getValueOfInv();
+      let temp = this.getValueOfInv();
+      this.yen+= temp;
       this.removeAllFish();
+      return temp;
     }
+
     removeAllFish(){
-      console.log("removing all fish");
       this.fish=0;
       this.motorized_wheelchair=0;
       this.manual_wheelchair=0;
@@ -36,31 +33,22 @@ module.exports = (sequelize, DataTypes) => {
       this.boot=0;
       this.wrench=0;
     }
-    addItem(item){
-      if(item==1){
-        if(this.yen>=1500){
-          this.line=true;
-          this.yen-=1500;
-          return true;
-        }
-      }else if(item==2){
-        if(this.yen>=500){
-          this.bait=true;
-          this.yen-=500;
-          return true;
-        }
-      }else if(item==3){
-        if(this.yen>=10000){
-          this.boat=true;
-          this.yen-=10000;
-          return true;
-        }
+
+    addItem(id){
+      let item1 = new fishService.Item(id);
+      if(eval("this."+item1.userp))return false;
+      if(this.yen>=item1.price){
+        eval("this."+item1.userp+"=true");
+        this.yen-=item1.price;
+        return true;
       }
     }
+
     static associate(models) {
       // define association here
     }
   };
+
   Fisherman.init({
     discordId: {
       type: DataTypes.STRING,
