@@ -4,12 +4,12 @@ const getRandomValue = (mean, stdev, method) => {
   return method(1, mean, stdev);
 };
 
-const getRandomInt = (min, max, maxInclusive = false) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
+const getRandomInt = (min, max, maxInclusive = true) => {
+  const minimum = Math.ceil(min);
+  const maximum = Math.floor(max);
   return maxInclusive
-    ? Math.floor(Math.random() * (max - min + 1) + min)
-    : Math.floor(Math.random() * (max - min) + min);
+    ? Math.floor(Math.random() * (maximum - minimum + 1) + minimum)
+    : Math.floor(Math.random() * (maximum - minimum) + minimum);
 };
 
 /**
@@ -25,7 +25,7 @@ const getWeightedRandom = (arr) => {
     total += object.weight;
   });
 
-  const threshold = getRandomInt(0, total);
+  const threshold = getRandomInt(0, total, false);
 
   total = 0;
   for (const object of arr) {
