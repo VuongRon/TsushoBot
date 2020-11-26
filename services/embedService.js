@@ -6,9 +6,9 @@ const argsTitle = (args) => {
     : argsArray;
 };
 
-const embedTemplate = (msg) => {
+const embedTemplate = (msg, color = 16750462) => {
   return {
-    color: 16750462,
+    color,
     author: {
       name: `${msg.author.username}`,
       icon_url: `${msg.author.avatarURL()}`,
@@ -23,7 +23,10 @@ const embedMessage = (msg, args, message) => {
 };
 
 const embed = (msg, args, options = {}) => {
-  let embed = Object.assign(embedTemplate(msg), options);
+  let embed;
+  options.color
+    ? (embed = Object.assign(embedTemplate(msg, options.color), options))
+    : (embed = Object.assign(embedTemplate(msg), options));
   if (options.argsTitle)
     embed = Object.assign(embed, { title: argsTitle(args) });
   return msg.channel.send({ embed });
