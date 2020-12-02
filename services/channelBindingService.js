@@ -86,31 +86,34 @@ class ChannelBinding {
   }
 
   /**
-   * If this command exists in the channel bindings, check if the message channel ID 
-   * matches the specification
+   * Check if the channel ID of the incoming message exists in the extracted bindings
+   * Returns true if there are no bindings or if there was no mismatch
    *
    * @return  {bool}
    */
   belongsToThisChannel = () => {
-    // Get binding of the executed command
-    let binding = config.channelBindings[this.commandName];
-
-    // Ignore if the specified command does not exist in the channel bindings
-    // This means the command was not instructed to use the channel binding
-    if (typeof binding === "undefined") {
+    /**
+     * Ignore if the specified command does not have any channel bindings specified.
+     * This means the command was not instructed to use the channel binding, thus accepted
+     * 
+     * We have to return true if there were no bindings found in the environment, because we
+     * we should interrupt the execution __only__ if the binding was found and channel IDs mismatch.
+     * It is ideal to only specify bindings in the environment if the command has to belong to specific channels
+     */
+    if (this.channelBindings.length == 0) {
       return true;
     }
 
-    // We have to check if this command has been bound to many channels
-    if (binding.includes(",") === true) {
-      let channelIDs = binding.split(",");
-
-      return channelIDs.includes(this.channelId);
+    // Having the bindings specified, we have to check if this command exists in the bindings
+    // (belongs to the "whitelist")
+    if (this.channelBindings.includes(this.channelId) === false) {
+      return false;
     }
 
-    // Compare against a single channel id if the binding was not an array
-    return (this.channelId == binding);
+    // Accept otherwise
+    return true;
   }
+
 }
 
 module.exports = {
