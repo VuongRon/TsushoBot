@@ -31,6 +31,58 @@ class ChannelBinding {
      * @var {string}
      */
     this.commandName = command.slice(1).toUpperCase();
+
+    /**
+     * String partial to match during the binding lookup.
+     * Environment bindings should follow this convention
+     *
+     * @var {string}
+     */
+    this.envCommandPart = "CHANNEL_BINDING_";
+
+    /**
+     * Array of .env channel bindings (channel id/ids) populated during the construction
+     *
+     * @var {array}
+     */
+    this.channelBindings = this.getBinding();
+  }
+
+  /**
+   * Extracts the channel binding from .env for the specific command
+   *
+   * @return  {array}
+   */
+  getBinding = () => {
+    let options = Object.keys(process.env);
+    let bindings = [];
+    let optionComparison = this.envCommandPart + this.commandName;
+
+    // Extract the option matching the channel binding string partial
+    options.forEach((option) => {
+      // Ignore the mismatch
+      if (option != optionComparison) {
+        return;
+      }
+
+      // Get the .env channel binding value
+      let binding = process.env[option];
+
+      // Check if this command can be bound to many channels
+      if (binding.includes(",") === true) {
+        let channelIDs = binding.split(",");
+
+        // Multi-channel binding, add all channel IDs
+        channelIDs.forEach((id) => {
+          bindings.push(id);
+        });
+      } else {
+        // Single-channel binding
+        bindings.push(binding);
+      }
+    });
+
+    return bindings;
   }
 
   /**
