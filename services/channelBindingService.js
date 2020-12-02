@@ -24,11 +24,13 @@ class ChannelBinding {
     this.channelId = msg.channel.id;
 
     /**
-     * Main command name executed by the user
+     * Main command name executed by the user.
+     * Command name comes with the exclamation mark - we have to remove it.
+     * We only need this name to match the .env channel binding.
      *
      * @var {string}
      */
-    this.commandName = command;
+    this.commandName = command.slice(1).toUpperCase();
   }
 
   /**
