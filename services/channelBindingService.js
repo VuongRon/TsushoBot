@@ -3,6 +3,13 @@
    * 
    * Require as require("./path").ChannelBinding;
    *
+   * This service requires the channel bindings to be defined 
+   * in the .env as following:
+   * CHANNEL_BINDING_COMMAND_NAME = discord_channel_id
+   * 
+   * Separate the channel ids by commas if that command belongs in multiple channels:
+   * CHANNEL_BINDING_COINFLIP = 12345,67890
+   * 
    * @param   {objectg}   msg      Discord Message Object
    * @param   {string}    command  Command name
    */
