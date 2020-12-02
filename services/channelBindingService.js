@@ -1,5 +1,3 @@
-const config = require("../config/channelBindings");
-
 /**
    * Channel binding Template.
    * 
