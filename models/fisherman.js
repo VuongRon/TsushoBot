@@ -43,16 +43,38 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static associate(models) {
-      // define association here
+      Fisherman.belongsTo(models.User, {
+        foreignKey: "id",
+      });
+
+      Fisherman.findOrCreateByDiscordId = async (id) => {
+        const [user] = await models.User.findOrCreate({
+          where: {
+            discordId: id,
+          },
+        }).catch((err) => {
+          console.error(err);
+        });
+        const [fisherman] = await Fisherman.findOrCreate({
+          where: { userId: user.id },
+        }).catch((err) => {
+          console.error(err);
+        });
+        return fisherman;
+      };
     }
   }
 
   Fisherman.init(
     {
-      discordId: {
-        type: DataTypes.STRING,
+      userId: {
         allowNull: false,
         unique: true,
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        },
       },
       fish: {
         type: DataTypes.INTEGER,
@@ -106,7 +128,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Fisherman",
+      tableName: "Fishermen",
     }
   );
+
   return Fisherman;
 };
