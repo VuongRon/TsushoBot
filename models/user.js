@@ -11,6 +11,17 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Media);
     }
+
+    static async findOrCreateByDiscordId(id) {
+      const [user] = await User.findOrCreate({
+        where: {
+          discordId: id,
+        },
+      }).catch((err) => {
+        console.error(err);
+      });
+      return user;
+    }
   }
   User.init(
     {
