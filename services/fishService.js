@@ -61,11 +61,11 @@ class Item {
   userp;
   constructor(id) {
     if (id == 1) {
-      this.id = 1500;
-      this.price = 5;
+      this.id = 1;
+      this.price = 1500;
       this.name = "Nanotube fishing line";
       this.flvr1 = "Good luck breaking that one";
-      this.flvr2 = "You wouldnt want to buy this twice";
+      this.flvr2 = "You wouldn't want to buy this twice";
       this.flvrshop = "+5 Base roll";
       this.userp = "line";
     } else if (id == 2) {
