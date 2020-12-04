@@ -22,6 +22,11 @@ module.exports = (sequelize, DataTypes) => {
       requestedByUserId: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
+        references: {
+          model: "Users",
+          key: "discordId",
+        },
       },
       approved: {
         type: DataTypes.BOOLEAN,
@@ -35,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Media",
+      tableName: "Mediae",
     }
   );
   return Media;

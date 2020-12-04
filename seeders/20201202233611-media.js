@@ -6,6 +6,7 @@ module.exports = {
       {
         mediaContent: "https://test.com/",
         requestedByUserId: "1234567890",
+        commandName: "alk",
         createdAt: new Date(),
         updatedAt: new Date(),
       },

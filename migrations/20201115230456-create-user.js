@@ -17,6 +17,10 @@ module.exports = {
         defaultValue: 0,
         type: Sequelize.INTEGER,
       },
+      whitelisted: {
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

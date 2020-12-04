@@ -14,13 +14,13 @@ module.exports = {
         type: Sequelize.STRING,
       },
       requestedByUserId: {
+        allowNull: false,
+        unique: true,
         type: Sequelize.STRING,
         references: {
           model: "Users",
           key: "discordId",
         },
-        onDelete: "SET NULL",
-        onUpdate: "CASCADE",
       },
       approved: {
         defaultValue: false,
