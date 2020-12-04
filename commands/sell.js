@@ -29,7 +29,7 @@ const selling = async (msg, args) => {
     .catch((err) => {
       console.error(err);
     });
-    let valueOfInf = user.sellInventory();
+  let valueOfInf = user.sellInventory();
   await user.save().catch((err) => {
     console.error(err);
     return;
@@ -39,8 +39,7 @@ const selling = async (msg, args) => {
 
 module.exports = {
   name: "!sell",
-  description:
-    "Sells your fish inventory for :yen:",
+  description: "Sells your fish inventory for :yen:",
   execute(msg, args, options = {}) {
     selling(msg, args);
   },
