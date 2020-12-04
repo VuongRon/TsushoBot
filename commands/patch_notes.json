@@ -50,5 +50,15 @@
     "11/13/2020:\n",
     "Added !cheems command.\n",
     "Added !fish command."
+  ],
+  "1.1.0": [
+    "11/26/2020:\n",
+    "Added related distribution to weight and height in !stats.\n",
+    "Added SQLite3 Support.\n",
+    "Updated !stats to use new emoji.\n",
+    "Updated !count to use SQLite3 backend, deprecating local JSON files.\n",
+    "Added !8ball.\n",
+    "Added !coinflip.\n",
+    "Standardized embedded message look."
   ]
 }
