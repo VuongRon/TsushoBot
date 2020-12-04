@@ -3,7 +3,6 @@ const db = require("../models").sequelize;
 
 const fishermanModel = db.models.Fisherman;
 
-
 const embed = (msg, args, user) => {
   const argsTitle = true;
   const author = {
@@ -63,25 +62,17 @@ const embed = (msg, args, user) => {
 };
 
 const inventory = async (msg, args) => {
-  const authorId = msg.author.id;
-  const [user] = await fishermanModel
-    .findOrCreate({
-      where: { discordId: authorId },
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-  await user.save().catch((err) => {
+  const fisherman = await fishermanModel.findOrCreateByDiscordId(msg.author.id);
+  await fisherman.save().catch((err) => {
     console.error(err);
     return;
   });
-  return embed(msg, args, user);
+  return embed(msg, args, fisherman);
 };
 
 module.exports = {
   name: "!inventory",
-  description:
-    "Shows your fish inventory.",
+  description: "Shows your fish inventory.",
   execute(msg, args, options = {}) {
     inventory(msg, args);
   },

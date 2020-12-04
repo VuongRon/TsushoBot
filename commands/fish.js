@@ -64,23 +64,16 @@ const embed = (msg, args, fish, userFish) => {
 };
 
 const fishing = async (msg, args) => {
-  const authorId = msg.author.id;
-  const [user] = await fishermanModel
-    .findOrCreate({
-      where: { discordId: authorId },
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-  var fish = getFish(user);
+  const fisherman = await fishermanModel.findOrCreateByDiscordId(msg.author.id);
+  var fish = getFish(fisherman);
   var userFish;
   if (!fish) {
-    user.removeAllFish();
+    fisherman.removeAllFish();
   } else if (fish.value !== undefined) {
-    eval("user." + fish.value + "++");
-    userFish = eval("user." + fish.value);
+    eval("fisherman." + fish.value + "++");
+    userFish = eval("fisherman." + fish.value);
   }
-  await user.save().catch((err) => {
+  await fisherman.save().catch((err) => {
     console.error(err);
     return;
   });
