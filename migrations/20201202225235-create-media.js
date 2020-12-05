@@ -11,11 +11,10 @@ module.exports = {
       mediaContent: {
         allowNull: false,
         unique: true,
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1000),
       },
       requestedByUserId: {
         allowNull: false,
-        unique: true,
         type: Sequelize.STRING,
         references: {
           model: "Users",
