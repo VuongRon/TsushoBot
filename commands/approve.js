@@ -41,9 +41,15 @@ const getApproval = async (msg, args, resource) => {
         .then(() => {
           message.delete();
           approve(msg, args);
-        });
+        })
+        .catch((err) => console.error(err));
     })
-    .catch((err) => console.error(err));
+    .catch(async (err) => {
+      console.error(err);
+      await resource.destroy().catch((error) => console.error(error));
+      const embedMessage = `Resource ID ${resource.id} has been removed from the database due to being invalid.`;
+      return embedService.embedMessage(msg, args, embedMessage);
+    });
 };
 
 const removeApproval = async (msg, args, resource) => {
