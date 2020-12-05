@@ -3,6 +3,15 @@ const db = require("../models").sequelize;
 const userModel = db.models.User;
 const axios = require("axios").default;
 
+const getUser = async (user, config) => {
+  return axios
+    .get(`https://discord.com/api/users/${user.discordId}`, config)
+    .then((response) => response.data)
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
 const setWhitelist = async (msg, args) => {
   if (
     msg.channel.type === "text" &&
@@ -11,7 +20,7 @@ const setWhitelist = async (msg, args) => {
     if (msg.mentions.users.size) {
       const mentionedUser = msg.mentions.users.first();
       const user = await userModel.findOrCreateByDiscordId(mentionedUser.id);
-      user.whitelisted ? (user.whitelisted = false) : (user.whitelisted = true);
+      user.whitelisted = !user.whitelisted;
       await user.save().catch((err) => {
         console.error(err);
         return;
@@ -39,27 +48,19 @@ const setWhitelist = async (msg, args) => {
       };
 
       let userUsernames = [];
-
       for (const user of whitelistedUsers) {
-        await axios
-          .get(`https://discord.com/api/users/${user.discordId}`, config)
-          .then((response) => {
-            userUsernames.push({
-              username: response.data.username,
-              discriminator: response.data.discriminator,
-            });
-          })
-          .catch((err) => {
-            console.error(err);
+        await getUser(user, config).then((response) => {
+          userUsernames.push({
+            username: response.username,
+            discriminator: response.discriminator,
           });
+        });
       }
 
       let message = "Whitelisted users:\n";
-
       userUsernames.forEach((user) => {
         message += `${user.username}#${user.discriminator}\n`;
       });
-
       const embed = {
         color: 16750462,
         author: {
@@ -68,7 +69,6 @@ const setWhitelist = async (msg, args) => {
         },
         description: message,
       };
-
       return msg.author.send({ embed });
     }
   }
