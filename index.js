@@ -4,6 +4,7 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const botCommands = require("./commands");
 const channelBindingService = require("./services/channelBindingService").ChannelBinding;
+const constants = require("./config/constants").constants;
 
 Object.keys(botCommands).map((key) => {
   client.commands.set(botCommands[key].name, botCommands[key]);
@@ -38,6 +39,7 @@ client.on("message", (msg) => {
   try {
     console.log(`called command: ${client.commands.get(command).name}`);
     if (command === "!help") options.commands = client.commands;
+    options.constants = constants;
     client.commands.get(command).execute(msg, args, options);
   } catch (error) {
     console.error(error);
