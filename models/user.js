@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasMany(models.Media);
+      User.hasMany(models.Media, {
+        foreignKey: "requestedByUserId",
+      });
     }
 
     static async findOrCreateByDiscordId(id) {

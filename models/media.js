@@ -9,20 +9,30 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Media.belongsTo(models.User);
+      Media.belongsTo(models.User, {
+        foreignKey: "requestedByUserId",
+      });
+    }
+
+    static async findOneByMediaContent(resource) {
+      const foundModel = await Media.findOne({
+        where: {
+          mediaContent: resource,
+        },
+      }).catch((err) => console.error(err));
+      return foundModel;
     }
   }
   Media.init(
     {
       mediaContent: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(1000),
         allowNull: false,
         unique: true,
       },
       requestedByUserId: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
         references: {
           model: "Users",
           key: "discordId",
