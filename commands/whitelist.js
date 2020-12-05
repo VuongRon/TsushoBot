@@ -49,12 +49,14 @@ const setWhitelist = async (msg, args) => {
 
       let userUsernames = [];
       for (const user of whitelistedUsers) {
-        await getUser(user, config).then((response) => {
-          userUsernames.push({
-            username: response.username,
-            discriminator: response.discriminator,
-          });
-        });
+        await getUser(user, config)
+          .then((response) => {
+            userUsernames.push({
+              username: response.username,
+              discriminator: response.discriminator,
+            });
+          })
+          .catch((err) => console.error(err));
       }
 
       let message = "Whitelisted users:\n";
