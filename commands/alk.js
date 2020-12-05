@@ -34,24 +34,28 @@ const checkResource = async (resource) => {
 const addResource = async (msg, args) => {
   const user = await userModel.findOrCreateByDiscordId(msg.author.id);
   const passedResource = args[1];
-  const resourceExists = await mediaModel.findOneByMediaContent(passedResource);
-  const resourceValid = await checkResource(passedResource);
-  if (user.whitelisted && resourceValid && !resourceExists) {
-    await mediaModel
-      .create({
-        mediaContent: passedResource,
-        requestedByUserId: user.discordId,
-        commandName: "alk",
-      })
-      .catch((err) => {
-        console.error(err);
-        return;
-      });
-    const message = "Successfully added the resource for approval.";
-    return embedService.embedMessage(msg, args, message);
-  } else {
-    const message = "The resource cannot be added.";
-    return embedService.embedMessage(msg, args, message);
+  if (user.whitelisted) {
+    const resourceExists = await mediaModel.findOneByMediaContent(
+      passedResource
+    );
+    const resourceValid = await checkResource(passedResource);
+    if (resourceValid && !resourceExists) {
+      await mediaModel
+        .create({
+          mediaContent: passedResource,
+          requestedByUserId: user.discordId,
+          commandName: "alk",
+        })
+        .catch((err) => {
+          console.error(err);
+          return;
+        });
+      const message = "Successfully added the resource for approval.";
+      return embedService.embedMessage(msg, args, message);
+    } else {
+      const message = "The resource cannot be added.";
+      return embedService.embedMessage(msg, args, message);
+    }
   }
 };
 
