@@ -42,7 +42,11 @@ const getApproval = async (msg, args, resource) => {
           message.delete();
           approve(msg, args);
         })
-        .catch((err) => console.error(err));
+        .catch(() => {
+          message.delete();
+          const embedMessage = "The approval reaction listener has timed out!";
+          return embedService.embedMessage(msg, args, embedMessage);
+        });
     })
     .catch(async (err) => {
       console.error(err);
