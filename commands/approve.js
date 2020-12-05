@@ -40,7 +40,7 @@ const getApproval = async (msg, args, resource) => {
         })
         .then(() => {
           message.delete();
-          getItem(msg, args);
+          approve(msg, args);
         });
     })
     .catch((err) => console.error(err));
@@ -61,7 +61,7 @@ const removeApproval = async (msg, args, resource) => {
   }
 };
 
-const getItem = async (msg, args) => {
+const approve = async (msg, args) => {
   if (
     msg.channel.type === "text" &&
     msg.member.roles.cache.some((role) => role.name === "Moderator") &&
@@ -99,6 +99,6 @@ module.exports = {
   name: "!approve",
   description: "Approve enqueued media resources.",
   execute(msg, args, options = {}) {
-    getItem(msg, args);
+    approve(msg, args);
   },
 };
