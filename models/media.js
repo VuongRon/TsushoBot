@@ -15,12 +15,31 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static async findOneByMediaContent(resource) {
-      const foundModel = await Media.findOne({
+      const model = await Media.findOne({
         where: {
           mediaContent: resource,
         },
       }).catch((err) => console.error(err));
-      return foundModel;
+      return model;
+    }
+
+    static async findFirstUnapprovedByCommandName(command) {
+      const model = await Media.findOne({
+        where: {
+          commandName: command,
+          approved: false,
+        },
+      }).catch((err) => console.error(err));
+      return model;
+    }
+
+    static async findOneById(id) {
+      const model = await Media.findOne({
+        where: {
+          id: id,
+        },
+      }).catch((err) => console.error(err));
+      return model;
     }
   }
   Media.init(
