@@ -41,6 +41,18 @@ module.exports = (sequelize, DataTypes) => {
       }).catch((err) => console.error(err));
       return model;
     }
+
+    static async selectRandomFromCommand(command) {
+      const [model] = await Media.findAll({
+        where: {
+          commandName: command,
+          approved: true,
+        },
+        order: sequelize.random(),
+        limit: 1,
+      }).catch((err) => console.error(err));
+      return model;
+    }
   }
   Media.init(
     {

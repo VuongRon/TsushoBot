@@ -1,9 +1,9 @@
 const embedService = require("../services/embedService");
 const db = require("../models").sequelize;
 const mediaModel = db.models.Media;
-const commandNames = ["alk"];
+require("../services/channelBindingService").ChannelBinding;
 
-const getApproval = async (msg, args, resource) => {
+const getApproval = async (msg, args, options, resource) => {
   const reactionFilter = (reaction, user) => {
     return (
       ["✅", "❌"].includes(reaction.emoji.name) && user.id === msg.author.id
@@ -40,7 +40,7 @@ const getApproval = async (msg, args, resource) => {
         })
         .then(() => {
           message.delete();
-          approve(msg, args);
+          approve(msg, args, options);
         })
         .catch(() => {
           message.delete();
@@ -71,12 +71,13 @@ const removeApproval = async (msg, args, resource) => {
   }
 };
 
-const approve = async (msg, args) => {
+const approve = async (msg, args, options) => {
   if (
     msg.channel.type === "text" &&
     msg.member.roles.cache.some((role) => role.name === "Moderator") &&
     args
   ) {
+    const commandNames = options.commandNames;
     if (commandNames.includes(args[0])) {
       const passedCommand = args[0];
       const resource = await mediaModel
@@ -86,7 +87,7 @@ const approve = async (msg, args) => {
           return;
         });
       if (resource) {
-        await getApproval(msg, args, resource);
+        await getApproval(msg, args, options, resource);
       } else {
         const message =
           "There are no more enqueued resources for this command type.";
@@ -109,6 +110,6 @@ module.exports = {
   name: "!approve",
   description: "Approve enqueued media resources.",
   execute(msg, args, options = {}) {
-    approve(msg, args);
+    approve(msg, args, options.constants.media);
   },
 };
