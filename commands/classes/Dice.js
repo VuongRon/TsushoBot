@@ -3,7 +3,8 @@ const _ = require("lodash");
 
 /**
  * Super-simplified Dice 1000 game (extended to 10000)
- *
+ * A DB-less mini-game.
+ * 
  * @var {object}
  */
 class Dice {
