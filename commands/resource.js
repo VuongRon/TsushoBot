@@ -4,6 +4,7 @@ const userModel = db.models.User;
 const mediaModel = db.models.Media;
 const mime = require("mime-types");
 const axios = require("axios").default;
+require("../services/channelBindingService").ChannelBinding;
 
 const URLExists = async (url) => {
   try {
