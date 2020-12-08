@@ -9,6 +9,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Media, {
+        foreignKey: "requestedByUserId",
+      });
+    }
+
+    static async findOrCreateByDiscordId(id) {
+      const [user] = await User.findOrCreate({
+        where: {
+          discordId: id,
+        },
+      }).catch((err) => {
+        console.error(err);
+      });
+      return user;
     }
   }
   User.init(
@@ -21,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
       count: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
+      },
+      whitelisted: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
     },
     {

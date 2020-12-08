@@ -3,7 +3,6 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const botCommands = require("./commands");
-const db = require("./models").sequelize;
 const channelBindingService = require("./services/channelBindingService").ChannelBinding;
 const constants = require("./config/constants").constants;
 
