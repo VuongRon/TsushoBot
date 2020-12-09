@@ -145,11 +145,22 @@ class Dice {
      * @return  {bool}
      */
     isStraight: (message, points, color) => {
-      // Break and abort if the next number is not greater than 1
-      // This means the same number or greater than 2 will not form a Straight
       for (const [index, number] of this.diceRolls.entries()) {
         let nextNumber = this.diceRolls[index + 1];
-        if ( (nextNumber - number) !== 1 ) {
+        
+        /**
+         * If we reach the point where we fall out of bounds, it means we have
+         * met the conditions of this rule, because the difference between the
+         * last and (last - 1) element was 1, which resulted in consecutive 
+         * +1 sequence of the rolled numbers
+         */
+        if (isNaN(nextNumber) === true) {
+          break;
+        }
+
+        // Break and abort if the next number is not greater than 1
+        // This means the same number or greater than 2 will not form a Straight sequence
+        if ((nextNumber - number) !== 1 ) {
           return false;
         }
       }
