@@ -17,7 +17,6 @@ class Dice {
   static points = 0;
 
   /**
-   * If this flag is set to true, the points will be reset
    * If this flag is set to true, the game ends and the bot outputs the leaderboard
    *
    * @var {bool}
@@ -25,9 +24,105 @@ class Dice {
   static gameFinished = false;
 
   /**
+   * A list of contributors in the current round of the game
+   *
+   * @var {object}
+   */
+  static contributors = {};
+
+  /**
+   * By default, the game is set as started. Once finished, the game will enqueue the next round.
+   * When false, this flag prevents the command execution
+   *
+   * @var {bool}
+   */
+  static hasStartedYet = true;
+
+  /**
+   * Time before the next round can be started - set by the constructor
+   *
+   * @var {integer}
+   */
+  static gameQueueTime = 0;
+
+  /**
+   * Enqueues the new game. After the certain delay has passed, 
+   * the command will be available for execution
+   *
+   * @return  {void}
+   */
+  static enqueueNewGame = () => {
+    setTimeout(() => {
+        Dice.hasStartedYet = true;
+      }, Dice.queueTime * 1000
+    );
+  }
+
+  /**
+   * Resets the points/contributors and enqueues a new game
+   *
+   * @return  {void}
+   */
+  static restartGame = () => {
+    Dice.points = 0;
+    Dice.gameFinished = false;
+    Dice.hasStartedYet = false;
+    Dice.contributors = {};
+
+    // Enqueue a new game
+    Dice.enqueueNewGame();
+  }
+
+  /**
+   * Modifies the Contributors object adding a new round contributor if non-existent
+   *
+   * @param   {string}    contributor  Message owner (nickname)
+   * @param   {integer}   points       Amount of points of the current roll
+   *
+   * @return  {void}
+   */
+  static addContribution = (contributor, points) => {
+    if (typeof Dice.contributors[contributor] === "undefined") {
+      Dice.contributors[contributor] = points;
+    } else {
+      Dice.contributors[contributor] += points;
+    }
+  }
+
+  /**
+   * Constructs an Embed Message Header, printing the game contributors
+   *
+   * @return  {string}  Winners string message
+   */
+  static getContributors = () => {
+    let contributors = "";
+
+    // Sort the game contributors by points, descending
+    const playersSorted = new Map(
+      Object.entries(Dice.contributors)
+        .sort(
+          (a, b) => {
+            return b[1] - a[1];
+          }
+        )
+    );
+
+    // Create the leaderboard string
+    for (const [player, points] of playersSorted) {
+      contributors += `${player}: ${points}\n`;
+    }
+
+    // Print the player with the most points
+    let header = `Game over! Next round will be started in ${Dice.queueTime} seconds.\n\n`;
+    let message = `Leaderboard:\n\n`
+
+    return header + message + contributors+`\n`;
+  }
+
+  /**
    * @param   {object}  constants  Dice Constants (options.constants.dice)
    */
-  constructor(constants) {
+  constructor(constants, msg) {
     /**
      * Contains points rewarded for certain rolls
      *
@@ -48,6 +143,21 @@ class Dice {
      * @var {object}
      */
     this.colors = constants.colors;
+
+    /**
+     * Total amount of required points to finish the game
+     *
+     * @var {integer}
+     */
+    this.pointsRequired = constants.pointsRequired;
+
+    /**
+     * Defines the time before the next round can be started
+     * Once the game is finished, players have to wait before the next round.
+     *
+     * @var {integer}
+     */
+    this.gameQueueTime = this.setQueueTime(constants.timeBeforeNextRound);
 
     /**
      * Stores the result of a dice roll
@@ -80,6 +190,17 @@ class Dice {
      * @var {integer}
      */
     this.rollColor = constants.colors.nothing;
+
+    /**
+     * Currently processed Discord message
+     *
+     * @var {object}
+     */
+    this.msg = msg;
+  }
+
+  setQueueTime = (time) => {
+    Dice.queueTime = time;
   }
 
   /**
@@ -88,12 +209,6 @@ class Dice {
    * @return  {object}
    */
   roll = () => {
-    // Reset the points if the game has been finished
-    if (Dice.gameFinished === true) {
-      Dice.points = 0;
-      Dice.gameFinished = false;
-    }
-
     // __We only need the index number__
     for (const [index] of this.diceRolls.entries()) {
       // "Roll" the dice
@@ -103,7 +218,7 @@ class Dice {
 
     // Sort the outcomes, ascending
     this.diceRolls.sort();
-    
+
     // We have to walk through the rules from the most to least rewarding
     // and the first applied rule has to break further checks
     for (const rule in this.rules) {
@@ -120,6 +235,31 @@ class Dice {
         break;
       }
     }
+
+    /**
+     * To avoid modifying the output, we will work on cached variable,
+     * otherwise the Embedded message will show incorrect points reward for the roll
+     */
+    let currentRollPoints = this.amountOfPointsThisRound;
+
+    // Increase the global points
+    Dice.points += currentRollPoints;
+
+    // Flag the game as Finished if we have hit the total amount of points required
+    if (Dice.points >= this.pointsRequired) {
+      Dice.gameFinished = true;
+
+      // In case the points overflow after the game is finished, add only the missing amount of points
+      // to prevent the user contributing the full amount if for example 10 points were missing
+      let pointsDifference = Dice.points - this.pointsRequired;
+      if (pointsDifference > 0) {
+        currentRollPoints -= pointsDifference;
+      }
+    }
+
+    // Add the current user to the contributions table, but don't add the full amount
+    // Reduced by the points difference if the game has ended
+    Dice.addContribution(this.msg.author.username, currentRollPoints);
 
     return {
       message: `${this.rollMessage}`,
