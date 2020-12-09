@@ -29,6 +29,7 @@ const embedMessage = (msg, args, options) => {
                   `Total points: ${DiceGame.points}\n\n` + 
                   `Your numbers: ${dice.diceRolls}\n` +
                   `Rolled ${result.message}: +${result.points} points`,
+    color: result.color,
   });
 };
 

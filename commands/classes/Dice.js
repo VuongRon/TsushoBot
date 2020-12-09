@@ -42,6 +42,13 @@ class Dice {
     this.messages = constants.messages;
 
     /**
+     * Colors constants for message Embed accent
+     *
+     * @var {object}
+     */
+    this.colors = constants.colors;
+
+    /**
      * Stores the result of a dice roll
      * 
      * @var {array}
@@ -63,6 +70,15 @@ class Dice {
      * @var {string}
      */
     this.rollMessage = "";
+
+    /**
+     * Defines the Embed color for the player's roll outcome.
+     * The Embed message will have a White accent by default, 
+     * changin each time the player rolls a special combination - more than just Ones of Fives
+     *
+     * @var {integer}
+     */
+    this.rollColor = constants.colors.nothing;
   }
 
   /**
@@ -83,10 +99,10 @@ class Dice {
       let number = rngService.getRandomInt(1, 6);
       this.diceRolls[index] = number;
     }
-    
+
     // Sort the outcomes, ascending
     this.diceRolls.sort();
-
+    
     // We have to walk through the rules from the most to least rewarding
     // and the first applied rule has to break further checks
     for (const rule in this.rules) {
@@ -107,6 +123,7 @@ class Dice {
     return {
       message: `${this.rollMessage}`,
       points : this.amountOfPointsThisRound,
+      color  : this.rollColor,
     }
   }
 
@@ -122,10 +139,11 @@ class Dice {
      * 
      * @param   {string}    message   Message of the special roll (Low Straight / High Straight)
      * @param   {integer}   points    Amount of points awarded for this special roll
+     * @param   {integer}   color     Color value for the special roll (Embed message accent)
      * 
      * @return  {bool}
      */
-    isStraight: (message, points) => {
+    isStraight: (message, points, color) => {
       // Break and abort if the next number is not greater than 1
       // This means the same number or greater than 2 will not form a Straight
       for (const [index, number] of this.diceRolls.entries()) {
@@ -136,6 +154,7 @@ class Dice {
       }
 
       this.rollMessage             = message;
+      this.rollColor               = color;
       this.amountOfPointsThisRound = points;
 
       // If all rolls formed a High Straight, inform that we have met
@@ -147,19 +166,21 @@ class Dice {
      * Checks if there is a required amount of occurrences of at least one element
      * of the given array of elements
      *
-     * @param   {integer}   occurrencesRequired  Required amount of occurrences of at least one element
-     * @param   {string}    message              Message of the special roll (Low Straight / High Straight)
-     * @param   {integer}   points               Amount of points awarded for this special roll
+     * @param   {integer}   occurrencesRequired   Required amount of occurrences of at least one element
+     * @param   {string}    message               Message of the special roll (Low Straight / High Straight)
+     * @param   {integer}   points                Amount of points awarded for this special roll
+     * @param   {integer}   color                 Color value for the special roll (Embed message accent)
      *
      * @return  {bool}
      */
-    countOccurrences: (occurrencesRequired, message, points) => {
+    countOccurrences: (occurrencesRequired, message, points, color) => {
       // There can only be one `Three of a Kind` / `Four` or a Flush, so we can break after the first occurrence
       let numberCounts = _.countBy(this.diceRolls);
 
       for (const count in numberCounts) {
         if (numberCounts[count] === occurrencesRequired) {
           this.rollMessage = message;
+          this.rollColor = color
           this.amountOfPointsThisRound = points;
 
           return true;
@@ -178,7 +199,8 @@ class Dice {
       return this.rules.countOccurrences(
         5,
         this.messages.flush,
-        this.pointsTable.flush
+        this.pointsTable.flush,
+        this.colors.flush
       );
     },
 
@@ -196,7 +218,8 @@ class Dice {
 
       return this.rules.isStraight(
         this.messages.straight_high,
-        this.pointsTable.straight_high
+        this.pointsTable.straight_high,
+        this.colors.straight_high
       );
     },
 
@@ -214,7 +237,8 @@ class Dice {
 
       return this.rules.isStraight(
         this.messages.straight_low,
-        this.pointsTable.straight_low
+        this.pointsTable.straight_low,
+        this.colors.straight_low
       );
     },
 
@@ -239,7 +263,9 @@ class Dice {
       // the first and second element has repetitions of 3 and 2.
       if (repetitions[0] == 3 && repetitions[1] == 2) {
         this.rollMessage = this.messages.full_house;
+        this.rollColor = this.colors.full_house;
         this.amountOfPointsThisRound = this.pointsTable.full_house;
+
         return true;
       }
 
@@ -255,7 +281,8 @@ class Dice {
       return this.rules.countOccurrences(
         4,
         this.messages.four_of_a_kind,
-        this.pointsTable.four_of_a_kind
+        this.pointsTable.four_of_a_kind,
+        this.colors.four_of_a_kind
       );
     },
 
@@ -271,7 +298,8 @@ class Dice {
       return this.rules.countOccurrences(
         3,
         this.messages.three_of_a_kind,
-        this.pointsTable.three_of_a_kind
+        this.pointsTable.three_of_a_kind,
+        this.colors.three_of_a_kind
       );
     },
 
@@ -299,6 +327,7 @@ class Dice {
 
       // If we ever get to this point, we have to display a generic roll message
       this.rollMessage = this.messages.nothing;
+      this.rollColor = this.colors.nothing;
 
       return foundNumbers;
     }
