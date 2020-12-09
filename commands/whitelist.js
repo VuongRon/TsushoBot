@@ -1,7 +1,10 @@
+require("dotenv").config();
 const embedService = require("../services/embedService");
 const db = require("../models").sequelize;
 const userModel = db.models.User;
 const axios = require("axios").default;
+
+const approverRole = process.env.hasOwnProperty("APPROVER_ROLE") ? process.env.APPROVER_ROLE : "Moderator";
 
 const getUser = async (user, config) => {
   return axios
@@ -13,10 +16,7 @@ const getUser = async (user, config) => {
 };
 
 const setWhitelist = async (msg, args) => {
-  if (
-    msg.channel.type === "text" &&
-    msg.member.roles.cache.some((role) => role.name === "Moderator")
-  ) {
+  if (msg.channel.type === "text" && msg.member.roles.cache.some((role) => role.name === approverRole)) {
     if (msg.mentions.users.size) {
       const mentionedUser = msg.mentions.users.first();
       const user = await userModel.findOrCreateByDiscordId(mentionedUser.id);
