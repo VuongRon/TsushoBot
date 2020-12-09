@@ -18,5 +18,14 @@
     "straight_low": "a Low Straight",
     "straight_high": "a High Straight",
     "flush": "a Flush"
+  },
+  "colors": {
+    "nothing": 16777214,
+    "three_of_a_kind": 2201331,
+    "four_of_a_kind": 13491257,
+    "full_house": 16750592,
+    "straight_low": 16733986,
+    "straight_high": 16727296,
+    "flush": 12531212
   }
 }
