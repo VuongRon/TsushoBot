@@ -83,7 +83,7 @@ class Dice {
       let number = rngService.getRandomInt(1, 6);
       this.diceRolls[index] = number;
     }
-
+    
     // Sort the outcomes, ascending
     this.diceRolls.sort();
 
@@ -219,12 +219,29 @@ class Dice {
     },
 
     /**
-     * Full House
+     * Checks if the rolls contain Full House - a combination of 3 + 2 of the same rolls
      *
      * @return  {bool}
      */
     isFullHouse: () => {
-      // TODO
+      let numberCounts = _.countBy(this.diceRolls);
+
+      // Build an array of sorted object properties values
+      // We have to sort the repetitions descending to perform the simplest check for this rule:
+      //  - First element: 3 repetitions, / Second element: 2 repetitions
+      let repetitions = Object.values(numberCounts).sort(
+        (a, b) => {
+          return b-a;
+        }
+      );
+      
+      // Once we get the sorted elements, we only have to check if
+      // the first and second element has repetitions of 3 and 2.
+      if (repetitions[0] == 3 && repetitions[1] == 2) {
+        this.rollMessage = this.messages.full_house;
+        this.amountOfPointsThisRound = this.pointsTable.full_house;
+        return true;
+      }
 
       return false;
     },
