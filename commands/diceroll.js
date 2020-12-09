@@ -10,7 +10,7 @@ const embedMessage = (msg, args, options) => {
   let dice = new DiceGame(diceConstants);
 
   // Perform a new roll
-  dice.roll();
+  let result = dice.roll();
 
   // Increase the global points
   DiceGame.points += dice.amountOfPointsThisRound;
@@ -27,8 +27,8 @@ const embedMessage = (msg, args, options) => {
   return embedService.embed(msg, args, {
     description:  `${messageHeader}` +
                   `Total points: ${DiceGame.points}\n\n` + 
-                  `Rolled numbers; ${dice.diceRolls}\n` +
-                  `${dice.rollMessage}: +${dice.amountOfPointsThisRound} points`,
+                  `Your numbers: ${dice.diceRolls}\n` +
+                  `Rolled ${result.message}: +${result.points} points`,
   });
 };
 

@@ -68,7 +68,7 @@ class Dice {
   /**
    * Rolls the dice five times and stores the roll values
    *
-   * @return  {void}
+   * @return  {object}
    */
   roll = () => {
     // Reset the points if the game has been finished
@@ -105,7 +105,7 @@ class Dice {
     }
 
     return {
-      message: `"Rolled ${this.rollMessage}`,
+      message: `${this.rollMessage}`,
       points : this.amountOfPointsThisRound,
     }
   }
