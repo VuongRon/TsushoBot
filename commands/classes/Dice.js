@@ -169,6 +169,11 @@ class Dice {
       return false;
     },
 
+    /**
+     * Checks if there is a combination of 5 same numbers in the rolls
+     *
+     * @return  {bool}
+     */
     isFlush: () => {
       return this.rules.countOccurrences(
         5,
