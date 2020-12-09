@@ -3,30 +3,32 @@ const DiceGame = require("./classes/Dice").Dice;
 
 const embedMessage = (msg, args, options) => {
   let diceConstants = options.constants.diceroll;
+  let dice = new DiceGame(diceConstants, msg);
 
-  // By default, the game should have 10000 points required to finish the current round
-  // Configure as you like in /constants/diceroll.json
-  let totalPointsRequired = options.constants.diceroll.pointsRequired;
-  let dice = new DiceGame(diceConstants);
+  // We do not want the game to continue before the "cooldown"
+  if (DiceGame.hasStartedYet === false) {
+    return embedService.embed(msg, args, {
+      description:  `The game has not started yet!`,
+      color: options.constants.colors.black,
+    });
+  }
 
   // Perform a new roll
   let result = dice.roll();
 
-  // Increase the global points
-  DiceGame.points += dice.amountOfPointsThisRound;
-
-  // Once we hit the requirement, the game restarts
+  // Once we hit the points requirement, the game restarts
+  // We will print the game contributors, sorted by their accumulated points in the current round
   let messageHeader = "";
-  if (DiceGame.points >= totalPointsRequired) {
-    // Indicate that we have finished the game and print the winner
-    DiceGame.gameFinished = true;
+  let totalPoints = DiceGame.points;
 
-    messageHeader = `${msg.author.username} has won the game!\n\n`;
+  if (DiceGame.gameFinished === true) {
+    messageHeader = DiceGame.getContributors();
+    DiceGame.restartGame();
   }
 
   return embedService.embed(msg, args, {
     description:  `${messageHeader}` +
-                  `Total points: ${DiceGame.points}\n\n` + 
+                  `Total points: ${totalPoints}\n\n` + 
                   `Your numbers: ${dice.diceRolls}\n` +
                   `Rolled ${result.message}: +${result.points} points`,
     color: result.color,
