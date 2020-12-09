@@ -74,7 +74,8 @@ class Dice {
   }
 
   /**
-   * Modifies the Contributors object adding a new round contributor if non-existent
+   * Updates the contributors object by increasing their current points / adds
+   * a new contributor if it's his first roll in this round.
    *
    * @param   {string}    contributor  Message owner (nickname)
    * @param   {integer}   points       Amount of points of the current roll
