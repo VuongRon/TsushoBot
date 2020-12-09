@@ -18,6 +18,7 @@ class Dice {
 
   /**
    * If this flag is set to true, the points will be reset
+   * If this flag is set to true, the game ends and the bot outputs the leaderboard
    *
    * @var {bool}
    */
