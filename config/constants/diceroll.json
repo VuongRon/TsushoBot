@@ -1,4 +1,5 @@
 {
+  "timeBeforeNextRound": 10,
   "pointsRequired": 10000,
   "points": {
     "one": 10,
@@ -7,7 +8,7 @@
     "four_of_a_kind": 80,
     "full_house": 125,
     "straight_low": 175,
-    "straight_high": 200,
+    "straight_high": 225,
     "flush": 300
   },
   "messages": {
@@ -26,6 +27,6 @@
     "full_house": 16750592,
     "straight_low": 16733986,
     "straight_high": 16727296,
-    "flush": 12531212
+    "flush": 14696699
   }
 }
