@@ -1,13 +1,14 @@
+require("dotenv").config();
 const embedService = require("../services/embedService");
 const db = require("../models").sequelize;
 const mediaModel = db.models.Media;
 require("../services/channelBindingService").ChannelBinding;
 
+const approverRole = process.env.hasOwnProperty("APPROVER_ROLE") ? process.env.APPROVER_ROLE : "Moderator";
+
 const getApproval = async (msg, args, options, resource) => {
   const reactionFilter = (reaction, user) => {
-    return (
-      ["✅", "❌"].includes(reaction.emoji.name) && user.id === msg.author.id
-    );
+    return ["✅", "❌"].includes(reaction.emoji.name) && user.id === msg.author.id;
   };
   msg.channel
     .send(resource.mediaContent)
@@ -72,25 +73,18 @@ const removeApproval = async (msg, args, resource) => {
 };
 
 const approve = async (msg, args, options) => {
-  if (
-    msg.channel.type === "text" &&
-    msg.member.roles.cache.some((role) => role.name === "Moderator") &&
-    args
-  ) {
+  if (msg.channel.type === "text" && msg.member.roles.cache.some((role) => role.name === approverRole) && args) {
     const commandNames = options.commandNames;
     if (commandNames.includes(args[0])) {
       const passedCommand = args[0];
-      const resource = await mediaModel
-        .findFirstUnapprovedByCommandName(passedCommand)
-        .catch((err) => {
-          console.error(err);
-          return;
-        });
+      const resource = await mediaModel.findFirstUnapprovedByCommandName(passedCommand).catch((err) => {
+        console.error(err);
+        return;
+      });
       if (resource) {
         await getApproval(msg, args, options, resource);
       } else {
-        const message =
-          "There are no more enqueued resources for this command type.";
+        const message = "There are no more enqueued resources for this command type.";
         return embedService.embedMessage(msg, args, message);
       }
     } else if (args[0] === "remove" && args[1]) {
