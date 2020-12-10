@@ -46,6 +46,19 @@ class Dice {
   static gameQueueTime = 0;
 
   /**
+   * Emoji reserved for the first three winners.
+   * First element has to be empty so we don't have to modify the loop index
+   *
+   * @var {array}
+   */
+  static medals = [
+    ,
+    ":first_place:",
+    ":second_place:",
+    ":third_place:"
+  ];
+
+  /**
    * Enqueues the new game. After the certain delay has passed, 
    * the command will be available for execution
    *
@@ -109,8 +122,18 @@ class Dice {
     );
 
     // Create the leaderboard string
+    let placing = 1;
     for (const [player, points] of playersSorted) {
-      contributors += `${player}: ${points}\n`;
+      let medal = Dice.medals[placing];
+      
+      // A medal will be prepended only for the first places
+      contributors += 
+        (
+          (typeof medal !== "undefined")
+            ? medal
+            : `${placing}.`
+        ) + ` ${player}: ${points}\n`;
+      placing++;
     }
 
     // Print the player with the most points
