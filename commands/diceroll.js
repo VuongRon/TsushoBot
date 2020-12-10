@@ -28,9 +28,9 @@ const embedMessage = (msg, args, options) => {
 
   return embedService.embed(msg, args, {
     description:  `${messageHeader}` +
-                  `Total points: ${totalPoints}\n\n` + 
+                  `Total points: ${totalPoints} / ${dice.pointsRequired}\n\n` + 
                   `Your numbers: ${dice.diceRolls}\n` +
-                  `Rolled ${result.message}: +${result.points} points`,
+                  `Rolled **${result.message}**: +${result.points} points`,
     color: result.color,
   });
 };
