@@ -16,11 +16,6 @@ class Dice {
    */
   static points = 0;
 
-  /**
-   * If this flag is set to true, the game ends and the bot outputs the leaderboard
-   *
-   * @var {bool}
-   */
   static gameFinished = false;
 
   /**
