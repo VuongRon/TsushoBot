@@ -2,7 +2,7 @@ const embedService = require("../services/embedService");
 const DiceGame = require("./classes/Dice").Dice;
 
 const embedMessage = (msg, args, options) => {
-  let diceConstants = options.constants.diceroll;
+  let diceConstants = options.constants.dice;
   let dice = new DiceGame(diceConstants, msg);
 
   // We do not want the game to continue before the "cooldown"
@@ -36,7 +36,7 @@ const embedMessage = (msg, args, options) => {
 };
 
 module.exports = {
-  name: "!diceroll",
+  name: "!dice",
   description: "Dice 10000 played differently.",
   execute(msg, args, options = {}) {
     embedMessage(msg, args, options);
