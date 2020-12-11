@@ -126,7 +126,7 @@ class Dice {
     for (const [player, points] of playersSorted) {
       let medal = Dice.medals[placing];
       
-      // A medal will be prepended only for the first places
+      // A medal will be prepended only for the first three places
       contributors += 
         (
           (typeof medal !== "undefined")
