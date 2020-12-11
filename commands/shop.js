@@ -10,14 +10,16 @@ const embed = (msg, args, user) => {
     icon_url: `${msg.author.avatarURL()}`,
   };
   const argsTitle = true;
-  let allItems=fishService.getAllItems();
+  let allItems = fishService.getAllItems();
   let fields = [];
-  allItems.forEach(item =>
+  allItems.forEach((item) =>
     fields.push({
       name: `${item.id}. ${item.name}`,
-      value: (eval("!user."+item.userp)?`**${item.price}** :yen: \n${item.flvrshop}`:`:white_check_mark: You own this item`),
-    }));
-
+      value: eval("!user." + item.userp)
+        ? `**${item.price}** :yen: \n${item.flvrshop}`
+        : `:white_check_mark: You own this item`,
+    })
+  );
 
   fields.forEach((field, i) => {
     fields[i].inline = true;
@@ -30,25 +32,17 @@ const embed = (msg, args, user) => {
 };
 
 const shop = async (msg, args) => {
-  const authorId = msg.author.id;
-  const [user] = await fishermanModel
-    .findOrCreate({
-      where: { discordId: authorId },
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-  await user.save().catch((err) => {
+  const fisherman = await fishermanModel.findOrCreateByDiscordId(msg.author.id);
+  await fisherman.save().catch((err) => {
     console.error(err);
     return;
   });
-  return embed(msg, args, user);
+  return embed(msg, args, fisherman);
 };
 
 module.exports = {
   name: "!shop",
-  description:
-    "Spend your :yen: here",
+  description: "Spend your :yen: here",
   execute(msg, args, options = {}) {
     shop(msg, args);
   },

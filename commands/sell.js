@@ -21,16 +21,9 @@ const embed = (msg, args, valueOfInf) => {
 };
 
 const selling = async (msg, args) => {
-  const authorId = msg.author.id;
-  const [user] = await fishermanModel
-    .findOrCreate({
-      where: { discordId: authorId },
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-    let valueOfInf = user.sellInventory();
-  await user.save().catch((err) => {
+  const fisherman = await fishermanModel.findOrCreateByDiscordId(msg.author.id);
+  let valueOfInf = fisherman.sellInventory();
+  await fisherman.save().catch((err) => {
     console.error(err);
     return;
   });
@@ -39,8 +32,7 @@ const selling = async (msg, args) => {
 
 module.exports = {
   name: "!sell",
-  description:
-    "Sells your fish inventory for :yen:",
+  description: "Sells your fish inventory for :yen:",
   execute(msg, args, options = {}) {
     selling(msg, args);
   },
