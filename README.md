@@ -1,5 +1,15 @@
 # TsushoBot
 A Discord.js based Discord chat bot. 🤖
+
+## Contents
+
+* [Setting up a Test Environment](###-Setting-up-a-Test-Environment)
+* [Adding a new command](###-Adding-a-new-command)
+* [Available Features](###-Available-Features)
+* [Available commands](###-Available-commands)
+
+---
+
 ### Setting up a Test Environment
 1. Create a Discord server which will serve as your test server
     * Click Add a Server at the very bottom of your Discord server list panel  
