@@ -67,6 +67,7 @@ const embedMessage = (msg, args, options) => {
   // @see: https://leovoel.github.io/embed-visualizer/
   // You can change the color accent by passing:
   //  color: your_color_value_decimal
+  // @see: https://convertingcolors.com/
   return embedService.embed(msg, args, {
     description:  "Embed description contents",
   });
