@@ -169,3 +169,25 @@ normalDistribution(mean, stdev)
 ```js
 logNormalDistribution(mean, stdev)
 ```
+
+---
+
+## Channel Binding
+
+Channel Binding Service helps avoiding the clutter in general channels. You don't have to create and assign special roles for each command. By default, each new command will be available in every channel. Presence in the `.env` will automatically handle the binding for the specified command
+
+```
+Providing an invalid channel ID will prevent the execution of configured command
+```
+
+To bind a command to one/multiple channels, simply create a new `.env` key, and append your command name to the key, then right-click the channel name -> Copy ID:
+
+![image](https://user-images.githubusercontent.com/7021295/101995725-983c0f80-3ccc-11eb-88c2-87c1247427bc.png)
+
+```
+CHANNEL_BINDING_8BALL = 1234567890
+
+# Multi-binding
+CHANNEL_BINDING_8BALL = 01234,56789
+```
+
