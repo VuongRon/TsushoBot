@@ -92,3 +92,21 @@ module.exports = {
 * [Channel Binding](##-Channel-Binding)
 * [Global Constants](##-Global-Constants)
 
+---
+
+### Available commands
+
+* !8ball - Answers questions.
+* !alk - Posts a random Alkaizer (approved link resource from the database).
+* !cheems - Cheemsburger.
+* !coinflip - Decide your fate by flipping a coin.
+* !count - Incrementally increases your saved counter, with a chance to hit a critical increment.
+* !dice - Dice 1000(0) game. Roll 5 dice, collect points. Player contributing the most points wins.
+* !fish - Fisherman simulator.
+* !help - The command to show all other commands.
+* !patch_notes - Shows the patch notes. Accepts a version as an argument to show a specific release.
+* !resource - Add a resource for approval.
+* !stats - Shows your randomized stats. Each stat is normally distributed.
+* !version - Shows the current TsushoBot version.
+* !whitelist - Adds or removes the `whitelisted` flag from a user. Only executable by moderators in a server's text channel.
+
