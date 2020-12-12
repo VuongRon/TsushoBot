@@ -83,3 +83,12 @@ module.exports = {
 };
 
 ```
+
+---
+
+### Available Features
+
+* [RNG Service](##-RNG-Service)
+* [Channel Binding](##-Channel-Binding)
+* [Global Constants](##-Global-Constants)
+
