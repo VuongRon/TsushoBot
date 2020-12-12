@@ -110,3 +110,62 @@ module.exports = {
 * !version - Shows the current TsushoBot version.
 * !whitelist - Adds or removes the `whitelisted` flag from a user. Only executable by moderators in a server's text channel.
 
+---
+
+## RNG Service
+
+A collection of various randomizer functions:
+
+```js
+/**
+ * Return a random integer between <min> and <max>
+ * Right-inclusive by default
+ */
+getRandomInt(min, max, maxInclusive = true) ...
+
+const number = getRandomInt(0, 100);
+```
+
+```js
+/**
+ * Returns a random object from a weighted list
+ *
+ * Requires each object in the array to have a `.weight` property
+ * @param   {array}     arr   Array of objects, e.g. [{ value: '1', weight: 10 }, { value: '2', weight: 2 }, ...]
+ * 
+ * @return  {abject}    A random `object` from the passed array
+ */
+getWeightedRandom(array) ...
+
+// Objects with the biggest weight have the most chances to be picked
+// Object's structure does not matter as long as it's an (object) type containing __weight__ property
+const objects = [
+    { name: "Apple",    weight: 1000    },
+    { name: "Banana",   weight: 200     },
+    { name: "Pizza",    weight: 50      },
+];
+
+const result = getWeightedRandom(objects);
+
+/**
+ * Result of 10 calls:
+ * { name: 'Banana',    weight: 200     }
+ * { name: 'Apple',     weight: 1000    }
+ * { name: 'Apple',     weight: 1000    }
+ * { name: 'Apple',     weight: 1000    }
+ * { name: 'Apple',     weight: 1000    }
+ * { name: 'Banana',    weight: 200     }
+ * { name: 'Apple',     weight: 1000    }
+ * { name: 'Pizza',     weight: 50      }
+ * { name: 'Apple',     weight: 1000    }
+ * { name: 'Apple',     weight: 1000    }
+ */
+```
+
+```js
+normalDistribution(mean, stdev)
+```
+
+```js
+logNormalDistribution(mean, stdev)
+```
