@@ -191,3 +191,56 @@ CHANNEL_BINDING_8BALL = 1234567890
 CHANNEL_BINDING_8BALL = 01234,56789
 ```
 
+---
+
+## Global Constants
+
+Create a configuration file for hardcoded values for your commands in one place. 
+
+The files reside under the following directory:
+
+```
+config
+  |- constants
+  |   |- command_name.json
+  |   |- [...]
+```
+
+Constants are served automatically by the `index` as a part of the `options`. 
+
+Your command can utilize the entire `options` object or, if you are implementing a simple command, you can pass the constants directly to the `embedMessage`
+
+```js
+module.exports = {
+  name: "!command_name",
+  description: "Command description",
+  execute(msg, args, options = {}) {
+    embedMessage(msg, args, options);
+  },
+};
+```
+
+```js
+embedMessage(msg, args, options.constants);
+// or
+embedMessage(msg, args, options.constants.your_command);
+```
+
+Example file structure:
+
+```json
+{
+  "white": 16777214,
+  "black": 0
+}
+```
+
+Constants usage:
+
+```js
+// Assuming we had options passed, we can access the constants in our embed function
+const embedMessage = (msg, args, options) => {
+  const colors = options.constants.colors;
+  [...]
+}
+```
