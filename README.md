@@ -5,8 +5,8 @@ A Discord.js based Discord chat bot. 🤖
 
 * [Setting up a Test Environment](###-Setting-up-a-Test-Environment)
 * [Adding a new command](###-Adding-a-new-command)
-* [Available Features](###-Available-Features)
 * [Available commands](###-Available-commands)
+* [Available Features](###-Available-Features)
 
 ---
 
@@ -86,14 +86,6 @@ module.exports = {
 
 ---
 
-### Available Features
-
-* [RNG Service](##-RNG-Service)
-* [Channel Binding](##-Channel-Binding)
-* [Global Constants](##-Global-Constants)
-
----
-
 ### Available commands
 
 * !8ball - Answers questions.
@@ -109,6 +101,14 @@ module.exports = {
 * !stats - Shows your randomized stats. Each stat is normally distributed.
 * !version - Shows the current TsushoBot version.
 * !whitelist - Adds or removes the `whitelisted` flag from a user. Only executable by moderators in a server's text channel.
+
+---
+
+### Available Features
+
+* [RNG Service](##-RNG-Service)
+* [Channel Binding](##-Channel-Binding)
+* [Global Constants](##-Global-Constants)
 
 ---
 
