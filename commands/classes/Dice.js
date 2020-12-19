@@ -245,20 +245,7 @@ class Dice {
 
     // We have to walk through the rules from the most to least rewarding
     // and the first applied rule has to break further checks
-    for (const rule in this.rules) {
-      // We have to ignore the extracted methods as they are not used in the game rules validation
-      if (rule === "isStraight" || rule === "countOccurrences") {
-        continue;
-      }
-
-      // If this current rule has met its condition, we have to abort the
-      // further execution and return the embed message
-      let ruleApplied = this.rules[rule]();
-
-      if (ruleApplied === true) {
-        break;
-      }
-    }
+    this.detectAppliedRule();
 
     /**
      * To avoid modifying the output, we will work on cached variable,
@@ -289,6 +276,28 @@ class Dice {
       message: `${this.rollMessage}`,
       points : this.amountOfPointsThisRound,
       color  : this.rollColor,
+    }
+  }
+
+  /**
+   * Finds what type of combination exists in the current dice rolls
+   *
+   * @return  {void}
+   */
+  detectAppliedRule = () => {
+    for (const rule in this.rules) {
+      // We have to ignore the extracted methods as they are not used in the game rules validation
+      if (rule === "isStraight" || rule === "countOccurrences") {
+        continue;
+      }
+
+      // If this current rule has met its condition, we have to abort the
+      // further execution and return the embed message
+      let ruleApplied = this.rules[rule]();
+
+      if (ruleApplied === true) {
+        break;
+      }
     }
   }
 
