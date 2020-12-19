@@ -1,3 +1,4 @@
 {
-  "commandNames": ["alk"]
+  "commandNames": ["alk"],
+  "reactionFilterEmojis": { "approve": "✅", "reject": "❌" }
 }
