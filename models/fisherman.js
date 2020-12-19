@@ -16,8 +16,10 @@ module.exports = (sequelize, DataTypes) => {
 
     sellInventory() {
       let temp = this.getValueOfInv();
-      this.yen += temp;
+      console.log(this.User.balance);
+      this.User.balance += temp;
       this.removeAllFish();
+      this.User.save();
       return temp;
     }
 
@@ -35,9 +37,10 @@ module.exports = (sequelize, DataTypes) => {
     addItem(id) {
       let item1 = new fishService.Item(id);
       if (eval("this." + item1.userp)) return false;
-      if (this.yen >= item1.price) {
+      if (this.User.balance >= item1.price) {
         eval("this." + item1.userp + "=true");
-        this.yen -= item1.price;
+        this.User.balance -= item1.price;
+        this.User.save();
         return true;
       }
     }
@@ -57,6 +60,7 @@ module.exports = (sequelize, DataTypes) => {
         });
         const [fisherman] = await Fisherman.findOrCreate({
           where: { userId: user.id },
+          include: [{ model: models.User }],
         }).catch((err) => {
           console.error(err);
         });
@@ -105,10 +109,6 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 0,
       },
       wrench: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
-      },
-      yen: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
