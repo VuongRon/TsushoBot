@@ -1,47 +1,61 @@
 const embedService = require("../services/embedService");
 const rngService = require("../services/rngService");
+const fishService = require("../services/fishService");
 const talkedRecently = new Set();
+const db = require("../models").sequelize;
 
-const generateRoll = () => {
-  return rngService.normalDistribution(50, 25);
+const fishermanModel = db.models.Fisherman;
+
+const generateRoll = (std) => {
+  return rngService.normalDistribution(50, std);
 };
 
-function getFish(roll) {
-  if (roll < -5) {
-    return ["You caught a :motorized_wheelchair:!", "2fast2furious"];
-  } else if (roll < 0) {
-    return ["You caught a :manual_wheelchair:!", ":fire:"];
-  } else if (roll < 10) {
-    return ["You caught my :heart:!", ":flushed:"];
-  } else if (roll < 25) {
-    return ["You caught nothing!", "Unlucky"];
-  } else if (roll >= 100) {
-    return ["You caught a :blowfish:!", "INSANE!"];
-  } else if (roll >= 90) {
-    return ["You caught a :tropical_fish:!", "Pog!"];
-  } else if (roll >= 75) {
-    return ["You caught a :fish:!", "nice"];
-  } else if (roll >= 50) {
-    return ["You caught a :boot:!", "It's brand new"];
-  } else if (roll >= 25) {
-    return ["You caught a :wrench:!", "Maybe someone else can use it"];
+function getFish(user) {
+  var roll = generateRoll(25);
+  if (user.bait) {
+    roll = generateRoll(30);
   }
+  if (user.line) {
+    roll = roll > 50 ? roll + 5 : roll - 5;
+  }
+  if (roll == 113) {
+    return false;
+  }
+  return new fishService.Fish(roll);
 }
 
-const embedMessage = (msg, args) => {
-  const fish = getFish(generateRoll());
+const embed = (msg, args, fish, userFish) => {
   const author = {
     name: `${msg.author.username} is fishing...`,
     icon_url: `${msg.author.avatarURL()}`,
   };
   const argsTitle = true;
-  const fields = [
-    {
-      name: `${fish[0]}`,
-      value: `${fish[1]}`,
-      inline: true,
-    },
-  ];
+  var valuem;
+  var fields;
+  if (!fish) {
+    fields = [
+      {
+        name: `:shark: Uh Oh :shark:`,
+
+        value: `A shark attacked your boat, you lost all your fish`,
+        inline: true,
+      },
+    ];
+  } else {
+    if (fish.value !== undefined) {
+      valuem = `*${fish.cmt}*\n\u200b\nYou now have **${userFish}** :${fish.value}:`;
+    } else {
+      valuem = `*${fish.cmt}*`;
+    }
+    fields = [
+      {
+        name: `${fish.msg}`,
+
+        value: `${valuem}`,
+        inline: true,
+      },
+    ];
+  }
   return embedService.embed(msg, args, {
     author,
     argsTitle,
@@ -49,12 +63,29 @@ const embedMessage = (msg, args) => {
   });
 };
 
+const fishing = async (msg, args) => {
+  const fisherman = await fishermanModel.findOrCreateByDiscordId(msg.author.id);
+  var fish = getFish(fisherman);
+  var userFish;
+  if (!fish) {
+    fisherman.removeAllFish();
+  } else if (fish.value !== undefined) {
+    eval("fisherman." + fish.value + "++");
+    userFish = eval("fisherman." + fish.value);
+  }
+  await fisherman.save().catch((err) => {
+    console.error(err);
+    return;
+  });
+  return embed(msg, args, fish, userFish);
+};
+
 module.exports = {
   name: "!fish",
-  description: "Yeah, I fish.",
+  description: "Fishing yeah",
   execute(msg, args, options = {}) {
     if (!talkedRecently.has(msg.author.id)) {
-      embedMessage(msg, args);
+      fishing(msg, args);
       talkedRecently.add(msg.author.id);
       setTimeout(() => {
         talkedRecently.delete(msg.author.id);
