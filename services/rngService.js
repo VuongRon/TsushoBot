@@ -38,36 +38,41 @@ const checkIfNegative = (value) => {
   return value <= 0 ? 0 : value;
 };
 
-const normalDistribution = (
-  mean,
-  stdev,
-  modifier = 1,
-  checkNegative = false
-) => {
+/**
+ * Returns a random number distributed normally/logarithmically
+ *
+ * @param   {bool}        isLogarithmic   Numbers distribution switch, pass true for Logarithmic Distribution
+ * @param   {float}       mean            Mean or mu
+ * @param   {float}       stdev           Sigma or standard deviation
+ * @param   {float}       modifier        Output multiplier
+ * @param   {bool}        checkNegative   If true, clamps the returned value - if the rolled value is negative, return value is set to 0
+ *
+ * @return  {integer}
+ */
+const distribution = (isLogarithmic, mean, stdev, modifier = 1, checkNegative = false) => {
+  const distributionType = isLogarithmic === true
+    ? numbers.random.distribution.logNormal
+    : numbers.random.distribution.normal;
+
   const value = Math.floor(
     parseInt(
-      getRandomValue(mean, stdev, numbers.random.distribution.normal) *
+      getRandomValue(mean, stdev, distributionType) *
         modifier,
       10
     )
   );
-  return checkNegative ? checkIfNegative(value) : value;
+
+  return checkNegative
+    ? checkIfNegative(value)
+    : value;
+}
+
+const normalDistribution = (mean, stdev, modifier = 1, checkNegative = false) => {
+  return distribution(false, mean, stdev, modifier, checkNegative);
 };
 
-const logNormalDistribution = (
-  mean,
-  stdev,
-  modifier = 1,
-  checkNegative = false
-) => {
-  const value = Math.floor(
-    parseInt(
-      getRandomValue(mean, stdev, numbers.random.distribution.logNormal) *
-        modifier,
-      10
-    )
-  );
-  return checkNegative ? checkIfNegative(value) : value;
+const logNormalDistribution = (mean, stdev, modifier = 1, checkNegative = false) => {
+  return distribution(true, mean, stdev, modifier, checkNegative);
 };
 
 module.exports = {
