@@ -46,9 +46,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static associate(models) {
-      Fisherman.belongsTo(models.User, {
-        foreignKey: "id",
-      });
+      Fisherman.belongsTo(models.User);
 
       Fisherman.findOrCreateByDiscordId = async (id) => {
         const [user] = await models.User.findOrCreate({
