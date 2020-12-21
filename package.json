@@ -1,11 +1,13 @@
 {
   "name": "tsushobot",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Tsusho Discord bot",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "start": "node index.js"
+    "start": "node index.js",
+    "cloneEnv": "node scripts/cloneEnv.js --clone",
+    "version": "node -p \"require('./package').version\""
   },
   "repository": {
     "type": "git",
