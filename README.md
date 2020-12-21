@@ -25,8 +25,11 @@ A Discord.js based Discord chat bot. 🤖
     * Navigate to the project's folder in the command line
     * Check out to a new branch
     * Install the required dependencies by running ```npm i```
-    * Create an ```.env``` file in the root folder
-    * Inside of the ```.env``` file, create a ```TOKEN``` variable and set it to the Token you copied from your Bot page, e.g. ```TOKEN=YOURTOKENGOESHERE```
+    * Execute ```npm run cloneEnv``` - this will create a new ```.env``` file
+    * If you wish to overwrite the existing ```.env``` (**not recommended**), execute ```npm run cloneEnv -- --force```
+    * Check the contents of ```.env``` for more details on feature configuration
+    * Inside of the ```.env``` file, update the ```TOKEN``` variable and set it to the Token you copied from your Bot page, e.g. ```TOKEN=YOURTOKENGOESHERE```
+    * Run tests with ```npm test```
     * The project should be functional at this point. Try running ```npm start``` - if you get any errors, you probably skipped a step.
 
 ---
