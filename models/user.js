@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Media, {
         foreignKey: "requestedByUserId",
       });
+      User.hasMany(models.Bet, {
+        foreignKey: "userId",
+      });
     }
 
     static async findOrCreateByDiscordId(id) {

@@ -7,6 +7,7 @@ const constants = require("../config/constants").constants;
 const embedService = require("../services/embedService");
 const rngService = require("../services/rngService");
 const userModel = require("../models").sequelize.models.User;
+const betModel = require("../models").sequelize.models.Bet;
 chai.use(sinonChai);
 const expect = chai.expect;
 
@@ -41,11 +42,13 @@ describe("!gamble", () => {
 
     beforeEach("stub sandbox", () => {
       this.mockUser = {
+        id: 1,
         balance: 10,
         save: sandbox.stub().resolves(true),
       };
       this.stubEmbedMessage = sandbox.stub(embedService, "embedMessage").returns(true);
       this.stubFindOrCreateByDiscordId = sandbox.stub(userModel, "findOrCreateByDiscordId").returns(this.mockUser);
+      this.stubBetCreate = sandbox.stub(betModel, "create").resolves(true);
       this.stubGetRandomInt = sandbox.stub(rngService, "getRandomInt").returns(0);
       this.stubGetRandomArrayIndex = sandbox.stub(rngService, "getRandomArrayIndex").returns("Outcome.");
     });
@@ -89,6 +92,11 @@ describe("!gamble", () => {
               `Your new balance is **${endBalance}**.`,
             ].join("\n\n")
           );
+          expect(this.stubBetCreate).to.have.been.calledWith({
+            userId: this.mockUser.id,
+            outcome: 0,
+            amount: profit,
+          });
         });
       });
     });
@@ -105,6 +113,11 @@ describe("!gamble", () => {
           arg,
           [`Outcome. **You lost.**`, `You lost **5** Tsushobucks.`, `Your new balance is **5**.`].join("\n\n")
         );
+        expect(this.stubBetCreate).to.have.been.calledWith({
+          userId: this.mockUser.id,
+          outcome: 1,
+          amount: 5,
+        });
       });
     });
   });
