@@ -2,12 +2,8 @@ const embedService = require("../services/embedService");
 const rngService = require("../services/rngService");
 const userModel = require("../models").sequelize.models.User;
 
-const getRandomArrayIndex = (array) => {
-  return array[rngService.getRandomInt(0, array.length - 1)];
-};
-
 const embed = (msg, args, count, userBalance, farmOutcomes) => {
-  const message = `${getRandomArrayIndex(
+  const message = `${rngService.getRandomArrayIndex(
     farmOutcomes[count.toString()]
   )}\n\nYou earned **${count}** Tsushobucks.\n\nYour total Tsushobuck balance is **${userBalance}**.`;
   return embedService.embedMessage(msg, args, message);
