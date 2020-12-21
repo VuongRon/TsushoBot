@@ -32,7 +32,6 @@ const gamble = async (msg, args, outcomes) => {
         console.error(err);
         return;
       });
-      console.log("user saved");
     } else {
       message = "You can't bet more Tsushobucks than you have.";
     }
