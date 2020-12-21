@@ -1,6 +1,8 @@
 const embedService = require("../services/embedService");
 const rngService = require("../services/rngService");
-const userModel = require("../models").sequelize.models.User;
+const models = require("../models").sequelize.models;
+const userModel = models.User;
+const betModel = models.Bet;
 
 const gamble = async (msg, args, outcomes) => {
   const user = await userModel.findOrCreateByDiscordId(msg.author.id);
@@ -32,6 +34,16 @@ const gamble = async (msg, args, outcomes) => {
         console.error(err);
         return;
       });
+      await betModel
+        .create({
+          userId: user.id,
+          outcome,
+          amount: outcome === 0 ? Math.ceil(value * 0.99) : value,
+        })
+        .catch((err) => {
+          console.error(err);
+          return;
+        });
     } else {
       message = "You can't bet more Tsushobucks than you have.";
     }
