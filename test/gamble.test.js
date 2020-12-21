@@ -50,7 +50,7 @@ describe("!gamble", () => {
       this.stubGetRandomArrayIndex = sandbox.stub(rngService, "getRandomArrayIndex").returns("Outcome.");
     });
 
-    const badArgs = ["abc", "$1.99", "o10"];
+    const badArgs = ["abc", "$1.99", "o10", ""];
     badArgs.forEach((arg) => {
       it(`should fail with invalid value input: ${arg}`, async () => {
         await gamble.execute(mockMessage, [arg], { constants });
