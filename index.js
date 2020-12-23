@@ -4,6 +4,7 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const botCommands = require("./commands");
 const channelBindingService = require("./services/channelBindingService").ChannelBinding;
+const commandThrottlingService = require("./services/commandThrottlingService").CommandThrottling;
 const constants = require("./config/constants").constants;
 
 Object.keys(botCommands).map((key) => {
@@ -33,6 +34,22 @@ client.on("message", (msg) => {
   const boundCommand = new channelBindingService(msg, client.commands.get(command).name);
   if (boundCommand.belongsToThisChannel() === false) {
     // If needed, add console output informing about the command rejection
+    return;
+  }
+  
+  /**
+   * At this point we have the command initially processed by the Channel Binding Service,
+   * so we can now check if the owner of this message is attempting to execude a command
+   * that is currently on cooldown for that user.
+   * 
+   * NOTICE: This is a user-specific and command-specific rejection
+   */
+  const throttledCommand = new commandThrottlingService(boundCommand.commandName, msg.author.username);
+  if (throttledCommand.canBeExecuted() === false) {
+    // Reject the execution as we don't want to hit the rate limit from spamming the specific command
+    // Possibly, integrate this with command tracking for spam detection
+    //
+    // Consider logging this rejection to warn spammers
     return;
   }
 
