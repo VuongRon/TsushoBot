@@ -91,13 +91,13 @@ class CommandThrottling {
 
       // Get the defined .env command throttling
       // Matching COMMAND_THROTTLING_<command_name>
-      let throttling = process.env[option];
+      let throttling = parseInt(process.env[option], 10);
       
       // Ignore if, for some reason, the throttling had no time specified,
       // is NaN or undefined. To apply command throttling properly, we can only
       // accept numbers
-      if (throttling === "" || throttling === undefined || isNaN(throttling) === true) {
-        return true;
+      if (isNaN(throttling) === true) {
+        return;
       }
 
       // The command has been defined correctly, add it to the list
