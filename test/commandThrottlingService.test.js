@@ -32,7 +32,7 @@ const injectTestThrottling = (value = testCommandCooldown) => {
 }
 
 describe("Channel Throttling Service", () => {
-  afterEach("restore .env and the sandbox", () => {
+  afterEach("restore .env", () => {
     process.env = env;
   });
 
