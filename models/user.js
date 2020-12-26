@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Media, {
         foreignKey: "requestedByUserId",
       });
+      User.hasMany(models.Bet, {
+        foreignKey: "userId",
+      });
     }
 
     static async findOrCreateByDiscordId(id) {
@@ -39,6 +42,10 @@ module.exports = (sequelize, DataTypes) => {
       whitelisted: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+      },
+      balance: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
     },
     {

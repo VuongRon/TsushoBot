@@ -4,6 +4,9 @@ const userModel = db.models.User;
 const mediaModel = db.models.Media;
 const mime = require("mime-types");
 const axios = require("axios").default;
+const approverRole = process.env.hasOwnProperty("APPROVER_ROLE")
+  ? process.env.APPROVER_ROLE
+  : "Moderator";
 require("../services/channelBindingService").ChannelBinding;
 
 const URLExists = async (url) => {
@@ -39,17 +42,24 @@ const addResource = async (msg, args, options) => {
     );
     const resourceValid = await checkResource(passedResource);
     if (resourceValid && !resourceExists) {
-      await mediaModel
-        .create({
-          mediaContent: passedResource,
-          requestedByUserId: user.discordId,
-          commandName: passedCommand,
-        })
-        .catch((err) => {
-          console.error(err);
-          return;
-        });
-      const message = "Successfully added the resource for approval.";
+      const media = mediaModel.build({
+        mediaContent: passedResource,
+        requestedByUserId: user.discordId,
+        commandName: passedCommand,
+      });
+
+      let message;
+      msg.member.roles.cache.some((role) => role.name === approverRole)
+        ? (media.approved = true)
+        : (media.approved = false);
+      await media.save().catch((err) => {
+        console.error(err);
+        return;
+      });
+
+      media.approved
+        ? (message = "Successfully added the resource.")
+        : (message = "Successfully added the resource for approval.");
       return embedService.embedMessage(msg, args, message);
     } else {
       const message = "The resource cannot be added.";
