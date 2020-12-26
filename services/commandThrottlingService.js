@@ -1,5 +1,5 @@
 /**
- * Command Throttling defines the cooldown for each command __for each user__
+ * Command Throttling defines the cooldown and for each command __for each user__
  * The same command can be executed by many users - later handled by Discord - 
  * but the same command can not be executed by the same user multiple times
  * until the cooldown ends.
@@ -115,6 +115,12 @@ class CommandThrottling {
     return false;
   }
 
+  /**
+   * Add this command to the list and set a cooldown for the message owner
+   * to prevent the command execution
+   *
+   * @return  {void}
+   */
   throttleCommand = () => {
     // Get the command cooldown we fetched earlier from the .env
     // Convert the cooldown to milliseconds and add it to the current time
@@ -137,6 +143,7 @@ class CommandThrottling {
       return true;
     }
 
+    // Reject the command execution if this command is on cooldown
     if (this.isOnCooldown() === true) {
       return false;
     }
