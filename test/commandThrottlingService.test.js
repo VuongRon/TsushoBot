@@ -2,7 +2,7 @@ const expect = require("chai").expect;
 const { CommandThrottling } = require("../services/commandThrottlingService");
 const commandThrottlingService = require("../services/commandThrottlingService").CommandThrottling;
 
-// This will restore to the origibna
+// This will restore to the original state
 const env = Object.assign({}, process.env);
 
 // We have to assume this key will exist in the .env
