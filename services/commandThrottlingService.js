@@ -32,7 +32,7 @@ class CommandThrottling {
     this.envCommandPart = "COMMAND_THROTTLING_";
 
     /**
-     * COmbination of <envCommandPart> and <command>
+     * Combination of <envCommandPart> and <command>
      *
      * @var {string}
      */
