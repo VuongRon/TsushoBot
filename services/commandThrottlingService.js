@@ -32,6 +32,13 @@ class CommandThrottling {
     this.envCommandPart = "COMMAND_THROTTLING_";
 
     /**
+     * COmbination of <envCommandPart> and <command>
+     *
+     * @var {string}
+     */
+    this.envCommandDefinition;
+
+    /**
      * Object of commands defined in the .env that has to be throttled
      *
      * @var {object}
@@ -47,11 +54,11 @@ class CommandThrottling {
   fetchCommandsToThrottle = () => {
     const options = Object.keys(process.env);
     let commands = {};
-    let commandComparison = this.envCommandPart + this.command;
+    this.envCommandDefinition = this.envCommandPart + this.command;
     
     options.forEach((option) => {
       // Ignore the mismatch
-      if (option != commandComparison) {
+      if (option != this.envCommandDefinition) {
         return;
       }
 
@@ -81,7 +88,7 @@ class CommandThrottling {
    * @return  {boolean}
    */
   canBeThrottled = () => {
-    return this.commandsToThrottle[this.envCommandPart + this.command.toUpperCase()] !== undefined
+    return this.commandsToThrottle[this.envCommandDefinition.toUpperCase()] !== undefined
   }
 
   /**
@@ -124,7 +131,7 @@ class CommandThrottling {
   throttleCommand = () => {
     // Get the command cooldown we fetched earlier from the .env
     // Convert the cooldown to milliseconds and add it to the current time
-    let commandCooldown = Date.now() + this.commandsToThrottle[this.envCommandPart + this.command].cooldown * 1000;
+    let commandCooldown = Date.now() + this.commandsToThrottle[this.envCommandDefinition].cooldown * 1000;
 
     // Set a cooldown for this command for the current user
     CommandThrottling.currentThrottles[this.command] = { [this.messageOwner]: commandCooldown };
