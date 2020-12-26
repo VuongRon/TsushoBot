@@ -3,6 +3,10 @@
  * The same command can be executed by many users - later handled by Discord - 
  * but the same command can not be executed by the same user multiple times
  * until the cooldown ends.
+ *
+ * Ideally the command should have a cooldown set to > 0 (integer) or it will have no effect
+ * on this command at all - it won't be throttled since the 0-cooldown will make it
+ * immediately available anyway and 0.5s cooldown makes no sense ¯\_(ツ)_/¯
  */
 class CommandThrottling {
   static currentThrottles = {};
@@ -25,6 +29,11 @@ class CommandThrottling {
 
     return (cooldown - Date.now()) / 1000;
   }
+
+  /**
+   * @param   {string}  command  Command name
+   * @param   {string}  owner    Username
+   */
   constructor(command, owner) {
     /**
      * Executed command name. Already processed by Channel Binding as
@@ -57,7 +66,7 @@ class CommandThrottling {
     this.envCommandDefinition;
 
     /**
-     * Object of commands defined in the .env that has to be throttled
+     * Object of commands defined in the .env that have to be throttled
      *
      * @var {object}
      */
