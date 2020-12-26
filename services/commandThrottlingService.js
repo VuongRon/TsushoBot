@@ -56,11 +56,12 @@ class CommandThrottling {
       }
 
       // Get the defined .env command throttling
+      // Matching COMMAND_THROTTLING_<command_name>
       let throttling = process.env[option];
       
       // Ignore if, for some reason, the throttling had no time specified,
       // is NaN or undefined. To apply command throttling properly, we can only
-      // accept 
+      // accept numbers
       if (throttling === "" || throttling === undefined || isNaN(throttling) === true) {
         return true;
       }
@@ -90,7 +91,7 @@ class CommandThrottling {
    *
    * @return  {boolean}
    */
-  isCurrentlyThrottled = () => {
+  isOnCooldown = () => {
     let throttledCommand = CommandThrottling.currentThrottles[this.command];
 
     // The user is allowed to execute this command if it's not on the list yet
@@ -110,7 +111,7 @@ class CommandThrottling {
     // current user from the list in this command
     delete throttledCommand[this.messageOwner];
 
-    // NOTICE: we can leave the command in the map as it will get overwritten
+    // NOTICE: we can leave the command on the list as it will get overwritten
     return false;
   }
 
@@ -136,7 +137,7 @@ class CommandThrottling {
       return true;
     }
 
-    if (this.isCurrentlyThrottled() === true) {
+    if (this.isOnCooldown() === true) {
       return false;
     }
 
