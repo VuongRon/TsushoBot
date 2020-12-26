@@ -7,6 +7,24 @@
 class CommandThrottling {
   static currentThrottles = {};
 
+  /**
+   * Returns the remaining cooldown in seconds for the current command / user
+   *
+   * @param   {string}  command  Executed command
+   * @param   {string}  user     Message owner
+   *
+   * @return  {float}
+   */
+  static getRemainingCooldown = (command, user) => {
+    const cooldown = CommandThrottling.currentThrottles[command][user];
+
+    // The command should exist. Return zero if it's not defined
+    if (cooldown === undefined) {
+      return 0;
+    }
+
+    return (cooldown - Date.now()) / 1000;
+  }
   constructor(command, owner) {
     /**
      * Executed command name. Already processed by Channel Binding as
