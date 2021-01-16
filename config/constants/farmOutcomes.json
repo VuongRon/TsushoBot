@@ -1,5 +1,5 @@
-{
-  "1": [
+[
+  [
       "You found a dollar in your pocket.",
       "You sold lemonade on the street for a few hours.",
       "A lady saw you and thought you were homeless, then passed you a dollar.",
@@ -12,7 +12,7 @@
       "The McDonald's employee gave you the wrong amount of change at the drive-thru.",
       "You drove for Uber for a while but then you had to replace your car once it died."
     ],
-  "2": [
+  [
       "A friend bet you 2 bucks to take your pants off in public..",
       "You decided to be frugal and not buy your weekly Jr. Chicken this week.",
       "You scraped up some change in the cracks of your greasy chair.",
@@ -23,7 +23,7 @@
       "You sold a couple Pokemon cards to a friend.",
       "You withdrew ad revenue from a gaming podcast you posted."
     ],
-  "3": [
+  [
       "You collected 1 mid-tier payout after buying 25 scratch tickets!",
       "You switched to Geico.",
       "You began to plunge the toilet with your hands instead of buying a plunger.",
@@ -36,7 +36,7 @@
       "You placed 5th in a Super Mario 64 speedrun tournament.",
       "You edited videos for your cousin's Minecraft YouTube channel and he wanted to pay you back."
     ],
-  "4": [
+  [
       "You worked 12 minutes overtime at your gas station shift.",
       "You rented a lawn mower for the afternoon to mow your neighbours' lawns, but you dropped $50 on the way home..",
       "You went to donate plasma, but started getting dizzy after the first ounce.",
@@ -48,7 +48,7 @@
       "You collected ad revenue from your mobile app.",
       "You sold some of your old chemistry notes to a highschool student."
     ],
-  "5": [
+  [
       "You opted to split a Subway $5 footlong for 2 meals instead of getting the usual.",
       "Granny visited and wanted to make sure you were doing ok so she passed you a 5.",
       "You found $5 on the ground when out on your morning jog.",
@@ -61,7 +61,7 @@
       "Kotaku paid you to repost your game review of Roblox on their site.",
       "You signed up for a free online bank account with a $5 incentive."
     ],
-  "6": [
+  [
       "A cyclist ran into you and gave you some change not to report him.",
       "You finally decided to sell your physical copy of Diablo 3.",
       "You took 22 free flosses and toothpaste from your last dentist visit.",
@@ -74,7 +74,7 @@
       "You made some models of people in blender and sold them as animation assets.",
       "You joined a focus group for gamers with a cash incentive."
     ],
-  "7": [
+  [
       "You started flipping free Red Bulls from your university campus for profit.",
       "You got paid out for playing drums in your friend's band last night.",
       "You robbed a gas station cash register but there was only $7 inside..",
@@ -86,7 +86,7 @@
       "You mined some bitcoin for a couple months.",
       "You sold some nice looking photos on your phone to Shutterstock."
     ],
-  "8": [
+  [
       "You unsubscribed from Skillshare after never completing any courses.",
       "You broke your piggy bank and found some change inside.",
       "You baked some cookies and sold them at the Sunday market.",
@@ -100,7 +100,7 @@
       "You sold your old Razer headset.",
       "You let the local hardware store put an ad on the side of your car."
     ],
-  "9": [
+  [
       "You ate 5 pounds of breadsticks at your local Italian restaurant for a food challenge and won the grand prize.",
       "You won a mid-tier payout at a slot machine in your local casino.. after 5 hours losing.",
       "You collected profits for this month from your Onlyfans.",
@@ -115,7 +115,7 @@
       "You tutored a kid in math over Skype for a couple sessions.",
       "You babysat your nephew for a night."
     ],
-  "10": [
+  [
       "You asked to borrow a dollar from a guy at the gas station but he handed you a 10 instead.",
       "You farmed WoW gold for 5 hours and sold it to your buddy.",
       "You sold your rank 1 Diablo 3 account to the highest bidder.",
@@ -129,4 +129,4 @@
       "You sold your old couch, you don't have guests anyways..",
       "You shoveled your neighbour's driveway."
     ]
-}
+]

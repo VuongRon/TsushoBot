@@ -4,7 +4,8 @@ const userModel = require("../models").sequelize.models.User;
 
 const embed = (msg, args, count, userBalance, farmOutcomes) => {
   const message = `${rngService.getRandomArrayIndex(
-    farmOutcomes[count.toString()]
+    // Adjust farmOutcomes index offset to 0-based indexing
+    farmOutcomes[count - 1]
   )}\n\nYou earned **${count}** Tsushobucks.\n\nYour total Tsushobuck balance is **${userBalance}**.`;
   return embedService.embedMessage(msg, args, message);
 };
