@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+
+  "exclude": [
+    "node_modules"
+  ],
+
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+
+    // Leave this on until entire project is fully converted to TS,
+    // allows for vanilla JS files to be moved into the output directory and scanned by the TS engine
+    "allowJs": true,
+
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+
+    "sourceMap": true,
+
+    // Composite setup
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true
+  }
+}

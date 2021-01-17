@@ -4,9 +4,10 @@
   "description": "Tsusho Discord bot",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
-    "start": "node index.js",
-    "cloneEnv": "node scripts/cloneEnv.js --clone",
+    "build:src": "tsc -b src",
+    "test": "jest --forceExit --coverage --verbose",
+    "start": "node dist/index.js",
+    "cloneEnv": "node dist/scripts/cloneEnv.js --clone",
     "version": "node -p \"require('./package').version\""
   },
   "repository": {
@@ -32,10 +33,14 @@
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.14",
+    "@types/jest": "^26.0.20",
+    "@types/validator": "^13.1.3",
     "chai": "^4.2.0",
-    "mocha": "^8.2.1",
+    "jest": "^26.6.3",
     "sinon": "^9.2.2",
     "sinon-chai": "^3.5.0",
+    "ts-jest": "^26.4.4",
     "typescript": "^4.1.3"
   }
 }

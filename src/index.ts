@@ -11,10 +11,16 @@ Object.keys(botCommands).map((key) => {
   client.commands.set(botCommands[key].name, botCommands[key]);
 });
 
-client.on("message", (msg) => {
+client.on("message", (msg: any) => {
+  /**
+   * Don't process bot messages, could be even more specific to ignore self messages.
+   */
+  if (msg.author.bot) {
+    return;
+  }
   const args = msg.content.split(/ +/);
   const command = args.shift().toLowerCase();
-  const options = {};
+  const options: any = {};
 
   if (!client.commands.has(command)) return;
 

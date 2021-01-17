@@ -1,5 +1,6 @@
 const fs = require("fs");
-const constantsDir = "./config/constants";
+const path = require("path");
+const constantsDir = path.join(__dirname, "constants");
 
 /**
  * Reads and dynamically creates subsets of constants from configuration
@@ -32,7 +33,7 @@ class Constants {
       // Define the constant Property name based on the config file name
       let configProperty = config.split(".json").shift();
 
-      const configPath = `${constantsDir}/${config}`;
+      const configPath = path.join(constantsDir, config);
       const data = JSON.parse(fs.readFileSync(configPath));
 
       try {

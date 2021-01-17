@@ -22,14 +22,14 @@ const embedMessage = (msg, args, message) => {
   });
 };
 
-const embed = (msg, args, options = {}) => {
+const embed = (msg, args, options: any = {}) => {
   let embed = Object.assign(embedTemplate(msg), options);
   if (options.argsTitle)
     embed = Object.assign(embed, { title: argsTitle(args) });
   return msg.channel.send({ embed });
 };
 
-module.exports = {
+export {
   embedMessage,
-  embed,
-};
+  embed
+}
