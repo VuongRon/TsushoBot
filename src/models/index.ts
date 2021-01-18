@@ -1,6 +1,6 @@
 export { sequelize } from "./models";
 export { Bet } from "./bet";
-export { Fisherman } from "./fisherman";
+export { Fisherman, addItem } from "./fisherman";
 export {
     Media,
     findFirstUnapprovedByCommandName,
@@ -8,4 +8,4 @@ export {
     findOneByMediaContent,
     selectRandomFromCommand
 } from "./media";
-export { User } from "./user";
+export { User, findOrCreateByDiscordId } from "./user";

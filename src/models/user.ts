@@ -45,6 +45,22 @@ const init = (sequelizeInstance: Sequelize) => {
     );
 }
 
+const findOrCreateByDiscordId = async (id: string) => {
+    const user = await User.findOrCreate({
+        where: {
+            discordId: id,
+        },
+    }).catch(err => {
+        console.error(err);
+    });
+
+    if (!user) {
+        return null;
+    }
+
+    return user[0];
+}
+
 const associate = () => {
     User.hasMany(Media, {
         foreignKey: "requestedByUserId"
@@ -57,5 +73,6 @@ const associate = () => {
 export {
     User,
     init,
-    associate
+    associate,
+    findOrCreateByDiscordId
 }

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build:src": "tsc -b src",
+    "db:migrate": "npx sequelize-cli db:migrate",
     "test": "jest --forceExit --coverage --verbose",
     "start": "node dist/index.js",
     "cloneEnv": "node dist/scripts/cloneEnv.js --clone",

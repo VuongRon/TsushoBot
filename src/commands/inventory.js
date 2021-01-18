@@ -1,7 +1,6 @@
 const embedService = require("../services/embedService");
-const db = require("../models").sequelize;
 
-const fishermanModel = db.models.Fisherman;
+import { findOrCreateByDiscordId } from "../models";
 
 const embed = (msg, args, user) => {
   const argsTitle = true;
@@ -62,7 +61,7 @@ const embed = (msg, args, user) => {
 };
 
 const inventory = async (msg, args) => {
-  const fisherman = await fishermanModel.findOrCreateByDiscordId(msg.author.id);
+  const fisherman = await findOrCreateByDiscordId(msg.author.id);
   await fisherman.save().catch((err) => {
     console.error(err);
     return;

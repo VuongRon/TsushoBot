@@ -1,4 +1,4 @@
-import { Model, DataTypes, Sequelize } from "sequelize";
+import { Model, DataTypes, BelongsToGetAssociationMixin, Sequelize } from "sequelize";
 import { User } from "./user";
 
 import {
@@ -34,6 +34,9 @@ class Fisherman extends Model<FishermanAttributes> implements FishermanAttribute
     line!: boolean;
     bait!: boolean;
     boat!: boolean;
+
+    // Mixin virtual functions
+    public getUser!: BelongsToGetAssociationMixin<User>;
 }
 
 const init = (sequelizeInstance: Sequelize) => {
@@ -112,7 +115,7 @@ const getValueOfInv = (fisherman: Fisherman) => {
 }
 
 const sellInventory = async (fisherman: Fisherman) => {
-    const userModel = await User.findByPk(fisherman.userId);
+    const userModel = await fisherman.getUser();
     if (!userModel) return null;
     let temp = getValueOfInvService(fisherman);
     console.log(fisherman);
@@ -122,22 +125,32 @@ const sellInventory = async (fisherman: Fisherman) => {
     return temp;
 }
 
-const addItem = async (itemId: number, fisherman: Fisherman) => {
+const addItem = async (itemId: number, fishermanUser: User) => {
+    if (!fishermanUser) {
+        return false;
+    }
+
     let item = new Item(itemId);
     if (item.userp == null || item.price == null) {
         return false;
     }
-    const userModel = await User.findByPk(fisherman.userId);
-    if (fisherman[item.userp]) return false;
-
-    if (!userModel) {
+    
+    const fisherman = await Fisherman.findOne({
+        where: {
+            userId: fishermanUser['id']
+        }
+    })
+    
+    if (!fisherman) {
         return false;
     }
 
-    if (userModel.balance >= item.price) {
+    if (fisherman[item.userp]) return false;
+
+    if (fishermanUser.balance >= item.price) {
         fisherman[item.userp] = true;
-        userModel.balance -= item.price;
-        await userModel.save();
+        fishermanUser.balance -= item.price;
+        await fishermanUser.save();
         return true;
     }
 }

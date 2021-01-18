@@ -1,8 +1,7 @@
 const embedService = require("../services/embedService");
 const fishService = require("../services/fishService");
-const db = require("../models").sequelize;
 
-const fishermanModel = db.models.Fisherman;
+import { findOrCreateByDiscordId, addItem } from "../models";
 
 const embed = (msg, args, user, item, transaction) => {
   const author = {
@@ -44,22 +43,22 @@ const embed = (msg, args, user, item, transaction) => {
 };
 
 const buying = async (msg, args) => {
-  const fisherman = await fishermanModel.findOrCreateByDiscordId(msg.author.id);
+  const user = await findOrCreateByDiscordId(msg.author.id);
   let id;
   if (Number.isInteger(parseInt(args)) && args.length == 1) {
     id = parseInt(args);
   }
   let transaction = undefined;
   if (Number.isInteger(id) && id > 0 && id < 4) {
-    transaction = fisherman.addItem(id);
+    transaction = await addItem(id, user);
   }
   let item1 = new fishService.Item(id);
-  await fisherman.save().catch((err) => {
+  await user.save().catch((err) => {
     console.error(err);
     return;
   });
 
-  return embed(msg, args, fisherman, item1, transaction);
+  return embed(msg, args, user, item1, transaction);
 };
 
 module.exports = {
