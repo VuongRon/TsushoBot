@@ -1,10 +1,9 @@
 const embedService = require("../services/embedService");
 const fishService = require("../services/fishService");
-const db = require("../models").sequelize;
 
-const fishermanModel = db.models.Fisherman;
+import { FishermanModule } from "../models";
 
-const embed = (msg, args, user) => {
+const embed = (msg, args, fisherman) => {
   const author = {
     name: `The Shop`,
     icon_url: `${msg.author.avatarURL()}`,
@@ -15,14 +14,14 @@ const embed = (msg, args, user) => {
   allItems.forEach((item) =>
     fields.push({
       name: `${item.id}. ${item.name}`,
-      value: eval("!user." + item.userp)
+      value: !(fisherman[item.userp])
         ? `**${item.price}** Tsushobucks \n${item.flvrshop}`
         : `:white_check_mark: You own this item`,
     })
   );
 
-  fields.forEach((field, i) => {
-    fields[i].inline = true;
+  fields.forEach(field => {
+    field.inline = true;
   });
   return embedService.embed(msg, args, {
     author,
@@ -32,11 +31,7 @@ const embed = (msg, args, user) => {
 };
 
 const shop = async (msg, args) => {
-  const fisherman = await fishermanModel.findOrCreateByDiscordId(msg.author.id);
-  await fisherman.save().catch((err) => {
-    console.error(err);
-    return;
-  });
+  const fisherman = await FishermanModule.findOrCreateByDiscordId(msg.author.id);
   return embed(msg, args, fisherman);
 };
 

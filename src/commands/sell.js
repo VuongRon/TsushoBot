@@ -1,18 +1,26 @@
 const embedService = require("../services/embedService");
-const db = require("../models").sequelize;
 
-const fishermanModel = db.models.Fisherman;
+import { FishermanModule } from "../models";
 
 const embed = (msg, args, valueOfInf) => {
   const argsTitle = true;
-  const fields = [
+  let fields = [];
+  if (valueOfInf == null) {
+    fields = [
+      {
+        name: "An error occurred while trying to sell your inventory",
+        value: "We were unable to sell your inventory, please try again later."
+      }
+    ]
+  }
+  fields = [
     {
       name: `You sold all your fish for **${valueOfInf}** Tsushobucks`,
       value: "Dont go spend it all in one place!",
     },
   ];
-  fields.forEach((field, i) => {
-    fields[i].inline = true;
+  fields.forEach(field => {
+    field.inline = true;
   });
   return embedService.embed(msg, args, {
     argsTitle,
@@ -21,12 +29,11 @@ const embed = (msg, args, valueOfInf) => {
 };
 
 const selling = async (msg, args) => {
-  const fisherman = await fishermanModel.findOrCreateByDiscordId(msg.author.id);
-  let valueOfInf = fisherman.sellInventory();
-  await fisherman.save().catch((err) => {
-    console.error(err);
-    return;
-  });
+  const fisherman = await FishermanModule.findOrCreateByDiscordId(msg.author.id);
+  let valueOfInf = await FishermanModule.sellInventory(fisherman);
+  if (valueOfInf == -1) {
+    valueOfInf = null;
+  }
   return embed(msg, args, valueOfInf);
 };
 

@@ -1,11 +1,5 @@
 export { sequelize } from "./models";
-export { Bet } from "./bet";
-export { Fisherman, addItem } from "./fisherman";
-export {
-    Media,
-    findFirstUnapprovedByCommandName,
-    findOneById,
-    findOneByMediaContent,
-    selectRandomFromCommand
-} from "./media";
-export { User, findOrCreateByDiscordId } from "./user";
+export * as BetModule from "./bet";
+export * as FishermanModule from "./fisherman";
+export * as MediaModule from "./media";
+export * as UserModule from "./user";

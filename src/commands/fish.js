@@ -2,20 +2,19 @@ const embedService = require("../services/embedService");
 const rngService = require("../services/rngService");
 const fishService = require("../services/fishService");
 const talkedRecently = new Set();
-const db = require("../models").sequelize;
 
-const fishermanModel = db.models.Fisherman;
+import { FishermanModule } from "../models";
 
 const generateRoll = (std) => {
   return rngService.normalDistribution(50, std);
 };
 
-function getFish(user) {
+function getFish(fisherman) {
   var roll = generateRoll(25);
-  if (user.bait) {
+  if (fisherman.bait) {
     roll = generateRoll(30);
   }
-  if (user.line) {
+  if (fisherman.line) {
     roll = roll > 50 ? roll + 5 : roll - 5;
   }
   if (roll == 113) {
@@ -24,7 +23,7 @@ function getFish(user) {
   return new fishService.Fish(roll);
 }
 
-const embed = (msg, args, fish, userFish) => {
+const embed = (msg, args, fish, fishAmount) => {
   const author = {
     name: `${msg.author.username} is fishing...`,
     icon_url: `${msg.author.avatarURL()}`,
@@ -43,7 +42,7 @@ const embed = (msg, args, fish, userFish) => {
     ];
   } else {
     if (fish.value !== undefined) {
-      valuem = `*${fish.cmt}*\n\u200b\nYou now have **${userFish}** :${fish.value}:`;
+      valuem = `*${fish.cmt}*\n\u200b\nYou now have **${fishAmount}** :${fish.value}:`;
     } else {
       valuem = `*${fish.cmt}*`;
     }
@@ -64,20 +63,20 @@ const embed = (msg, args, fish, userFish) => {
 };
 
 const fishing = async (msg, args) => {
-  const fisherman = await fishermanModel.findOrCreateByDiscordId(msg.author.id);
-  var fish = getFish(fisherman);
-  var userFish;
+  const fisherman = await FishermanModule.findOrCreateByDiscordId(msg.author.id);
+  let fish = getFish(fisherman);
+  let fishAmount;
   if (!fish) {
     fisherman.removeAllFish();
   } else if (fish.value !== undefined) {
-    eval("fisherman." + fish.value + "++");
-    userFish = eval("fisherman." + fish.value);
+    fisherman[fish.value]++;
+    fishAmount = fisherman[fish.value];
   }
   await fisherman.save().catch((err) => {
     console.error(err);
     return;
   });
-  return embed(msg, args, fish, userFish);
+  return embed(msg, args, fish, fishAmount);
 };
 
 module.exports = {

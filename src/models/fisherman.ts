@@ -1,5 +1,5 @@
-import { Model, DataTypes, BelongsToGetAssociationMixin, Sequelize } from "sequelize";
-import { User } from "./user";
+import { Model, DataTypes, BelongsToGetAssociationMixin, Sequelize, BelongsToCreateAssociationMixin } from "sequelize";
+import * as UserModule from "./user";
 
 import {
     getValueOfInv as getValueOfInvService,
@@ -34,9 +34,30 @@ class Fisherman extends Model<FishermanAttributes> implements FishermanAttribute
     line!: boolean;
     bait!: boolean;
     boat!: boolean;
+}
 
-    // Mixin virtual functions
-    public getUser!: BelongsToGetAssociationMixin<User>;
+/**
+ * Finds a fisherman model by the discordId of it's associated User model, or creates it if it doesn't exist
+ * @param id the discordId of the associated user model to find
+ * @returns the fisherman model instance if it was found or created, otherwise null
+ */
+const findOrCreateByDiscordId = async (discordId: string): Promise<Fisherman> => {
+    const userModel = await UserModule.findOrCreateByDiscordId(discordId);
+
+    let fisherman: Fisherman;
+    fisherman = await userModel.getFisherman();
+    // no fisherman associated to userModel
+    if (!fisherman) {
+        try {
+            fisherman = await userModel.createFisherman();
+            return fisherman;
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
+
+    return fisherman;
 }
 
 const init = (sequelizeInstance: Sequelize) => {
@@ -105,7 +126,7 @@ const init = (sequelizeInstance: Sequelize) => {
 }
 
 const associate = () => {
-    Fisherman.belongsTo(User);
+    Fisherman.belongsTo(UserModule.User);
 }
 
 const getValueOfInv = (fisherman: Fisherman) => {
@@ -114,43 +135,40 @@ const getValueOfInv = (fisherman: Fisherman) => {
     return value * bonus;
 }
 
-const sellInventory = async (fisherman: Fisherman) => {
-    const userModel = await fisherman.getUser();
-    if (!userModel) return null;
+const sellInventory = async (fisherman: Fisherman): Promise<number> => {
+    const userModel = await UserModule.User.findByPk(fisherman.userId);
+    if (!userModel) return -1;
     let temp = getValueOfInvService(fisherman);
     console.log(fisherman);
     userModel.balance += temp;
     removeAllFish(fisherman);
     await userModel.save();
+    await fisherman.save();
     return temp;
 }
 
-const addItem = async (itemId: number, fishermanUser: User) => {
-    if (!fishermanUser) {
-        return false;
-    }
-
+const addItem = async (itemId: number, user: UserModule.User) => {
     let item = new Item(itemId);
     if (item.userp == null || item.price == null) {
         return false;
     }
-    
-    const fisherman = await Fisherman.findOne({
-        where: {
-            userId: fishermanUser['id']
-        }
-    })
-    
+
+    const fisherman = await user.getFisherman();
+
     if (!fisherman) {
         return false;
     }
 
     if (fisherman[item.userp]) return false;
 
-    if (fishermanUser.balance >= item.price) {
+    if (user.balance >= item.price) {
         fisherman[item.userp] = true;
-        fishermanUser.balance -= item.price;
-        await fishermanUser.save();
+        user.balance -= item.price;
+        await user.save().catch((err) => {
+            console.error(err);
+            return;
+        });
+        await fisherman.save();
         return true;
     }
 }
@@ -172,5 +190,6 @@ export {
     associate,
     getValueOfInv,
     sellInventory,
-    addItem
+    addItem,
+    findOrCreateByDiscordId
 }

@@ -104,16 +104,18 @@ function getAllItems() {
   return allItems;
 }
 
-function getValueOfInv(user) {
+function getValueOfInv(fisherman) {
+  // TODO: This hardcoded value are extremely bad to have
+  // and should be substituted with variables / different way to initialize the fish
   let value =
-    user.fish * new Fish(76).price +
-    user.motorized_wheelchair * new Fish(-6).price +
-    user.manual_wheelchair * new Fish(-1).price +
-    user.heart * new Fish(9).price +
-    user.blowfish * new Fish(101).price +
-    user.tropical_fish * new Fish(91).price +
-    user.boot * new Fish(51).price +
-    user.wrench * new Fish(26).price;
+    fisherman.fish * new Fish(76).price +
+    fisherman.motorized_wheelchair * new Fish(-6).price +
+    fisherman.manual_wheelchair * new Fish(-1).price +
+    fisherman.heart * new Fish(9).price +
+    fisherman.blowfish * new Fish(101).price +
+    fisherman.tropical_fish * new Fish(91).price +
+    fisherman.boot * new Fish(51).price +
+    fisherman.wrench * new Fish(26).price;
   return value;
 }
 

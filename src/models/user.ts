@@ -1,5 +1,7 @@
-import { Model, DataTypes, Sequelize } from "sequelize";
+import { Model, DataTypes, Sequelize, HasOneGetAssociationMixin, HasOneCreateAssociationMixin, HasManyGetAssociationsMixin, HasManySetAssociationsMixin, HasOneSetAssociationMixin } from "sequelize";
+import { FishermanModule } from ".";
 import { Bet } from "./bet";
+import { Fisherman } from "./fisherman";
 import { Media } from "./media";
 
 interface UserAttributes {
@@ -14,6 +16,17 @@ class User extends Model<UserAttributes> implements UserAttributes {
     public count!: number;
     public whitelisted!: boolean;
     public balance!: number;
+
+    // Mixin virtual functions
+    /**
+     * Returns the fisherman associated with the given User model instance
+     */
+    public getFisherman!: HasOneGetAssociationMixin<Fisherman>;
+    public setFisherman!: HasOneSetAssociationMixin<Fisherman, "userId">;
+    public createFisherman!: HasOneCreateAssociationMixin<Fisherman>;
+    public getMedias!: HasManyGetAssociationsMixin<Media>;
+    public setMedias!: HasManySetAssociationsMixin<Media, "requestedByUserId">;
+
 }
 
 const init = (sequelizeInstance: Sequelize) => {
@@ -45,23 +58,27 @@ const init = (sequelizeInstance: Sequelize) => {
     );
 }
 
-const findOrCreateByDiscordId = async (id: string) => {
+/**
+ * Finds a user model by its discordId, or creates it if it doesn't exist
+ * @param discordId the discordId of the user to find
+ * @returns the user model instance if it was found or created, otherwise null
+ */
+const findOrCreateByDiscordId = async (discordId: string): Promise<User> => {
     const user = await User.findOrCreate({
         where: {
-            discordId: id,
-        },
+            discordId: discordId,
+        }
     }).catch(err => {
         console.error(err);
     });
-
-    if (!user) {
-        return null;
-    }
 
     return user[0];
 }
 
 const associate = () => {
+    User.hasOne(Fisherman, {
+        foreignKey: "userId"
+    });
     User.hasMany(Media, {
         foreignKey: "requestedByUserId"
     });

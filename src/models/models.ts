@@ -1,9 +1,9 @@
 import { Sequelize } from "sequelize";
 
-import { init as betInit, associate as betAssociate } from "./bet";
-import { init as fishermanInit, associate as fishermanAssociate } from "./fisherman";
-import { init as mediaInit, associate as mediaAssociate } from "./media";
-import { init as userInit, associate as userAssociate } from "./user";
+import * as BetModule from "./bet";
+import * as FishermanModule from "./fisherman";
+import * as MediaModule from "./media";
+import * as UserModule from "./user";
 
 const env = process.env.NODE_ENV || 'development';
 import * as configJson from "../config/config.json";
@@ -23,17 +23,17 @@ else {
 
 // Models initialization
 // =====================
-betInit(sequelize);
-fishermanInit(sequelize);
-mediaInit(sequelize);
-userInit(sequelize);
+UserModule.init(sequelize);
+FishermanModule.init(sequelize);
+BetModule.init(sequelize);
+MediaModule.init(sequelize);
 
 // Models Associations
 // ===================
-betAssociate();
-fishermanAssociate();
-mediaAssociate();
-userAssociate();
+UserModule.associate();
+FishermanModule.associate();
+BetModule.associate();
+MediaModule.associate();
 
 export {
     sequelize

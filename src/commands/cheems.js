@@ -1,17 +1,4 @@
-const numbers = require("numbers");
 const talkedRecently = new Set();
-
-const getRandomValue = (mean, stdev, method) => {
-  return method(1, mean, stdev);
-};
-
-const checkArgsLength = (args) => {
-  args = args.join(" ");
-  let maxLength = 100;
-  return args.length > maxLength
-    ? args.substring(0, maxLength - 3) + "..."
-    : args;
-};
 
 const cheems = [
   "https://static.wikia.nocookie.net/dogelore/images/8/87/411.png/revision/latest/top-crop/width/360/height/450?cb=20200330152532",

@@ -43,7 +43,9 @@ const init = (sequelizeInstance: Sequelize) => {
 }
 
 const associate = () => {
-  Bet.belongsTo(User);
+  Bet.belongsTo(User, {
+    foreignKey: "userId"
+  });
 }
 
 export {

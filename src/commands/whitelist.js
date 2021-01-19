@@ -1,7 +1,8 @@
 require("dotenv").config();
 const embedService = require("../services/embedService");
-const db = require("../models").sequelize;
-const userModel = db.models.User;
+
+import { UserModule } from "../models";
+
 const axios = require("axios").default;
 
 const approverRole = process.env.hasOwnProperty("APPROVER_ROLE") ? process.env.APPROVER_ROLE : "Moderator";
@@ -19,7 +20,7 @@ const setWhitelist = async (msg, args) => {
   if (msg.channel.type === "text" && msg.member.roles.cache.some((role) => role.name === approverRole)) {
     if (msg.mentions.users.size) {
       const mentionedUser = msg.mentions.users.first();
-      const user = await userModel.findOrCreateByDiscordId(mentionedUser.id);
+      const user = await UserModule.findOrCreateByDiscordId(mentionedUser.id);
       user.whitelisted = !user.whitelisted;
       await user.save().catch((err) => {
         console.error(err);
@@ -31,7 +32,7 @@ const setWhitelist = async (msg, args) => {
         : (message = `${mentionedUser.tag} is no longer whitelisted.`);
       return embedService.embedMessage(msg, args, message);
     } else if (!Array.isArray(args) || !args.length) {
-      const whitelistedUsers = await userModel
+      const whitelistedUsers = await UserModule.User
         .findAll({
           where: {
             whitelisted: true,

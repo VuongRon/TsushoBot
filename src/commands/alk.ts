@@ -1,8 +1,8 @@
-import { sequelize, selectRandomFromCommand } from "../models";
+import { sequelize, MediaModule } from "../models";
 import { embedMessage } from "../services/embedService";
 
 const getResource = async (msg, args) => {
-  const resource = await selectRandomFromCommand("alk", sequelize).catch(err => console.error(err));
+  const resource = await MediaModule.selectRandomFromCommand("alk", sequelize).catch(err => console.error(err));
   if (!resource) {
     return null; /** TODO */
   }

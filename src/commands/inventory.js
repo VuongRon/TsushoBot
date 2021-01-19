@@ -1,8 +1,8 @@
 const embedService = require("../services/embedService");
 
-import { findOrCreateByDiscordId } from "../models";
+import { FishermanModule, UserModule } from "../models";
 
-const embed = (msg, args, user) => {
+const embed = (msg, args, user, fisherman) => {
   const argsTitle = true;
   const author = {
     name: `${msg.author.username}'s inventory`,
@@ -11,47 +11,47 @@ const embed = (msg, args, user) => {
   const fields = [
     {
       name: ":motorized_wheelchair:",
-      value: `**${user.motorized_wheelchair}**`,
+      value: `**${fisherman.motorized_wheelchair}**`,
     },
     {
       name: ":manual_wheelchair:",
-      value: `**${user.manual_wheelchair}**`,
+      value: `**${fisherman.manual_wheelchair}**`,
     },
     {
       name: ":heart:",
-      value: `**${user.heart}**`,
+      value: `**${fisherman.heart}**`,
     },
     {
       name: ":wrench:",
-      value: `**${user.wrench}**`,
+      value: `**${fisherman.wrench}**`,
     },
     {
       name: ":boot:",
-      value: `**${user.boot}**`,
+      value: `**${fisherman.boot}**`,
     },
     {
       name: ":fish:",
-      value: `**${user.fish}**`,
+      value: `**${fisherman.fish}**`,
     },
     {
       name: ":tropical_fish:",
-      value: `**${user.tropical_fish}**`,
+      value: `**${fisherman.tropical_fish}**`,
     },
     {
       name: ":blowfish:",
-      value: `**${user.blowfish}**`,
+      value: `**${fisherman.blowfish}**`,
     },
     {
       name: ":yen:",
-      value: `**${user.User.balance}**`,
+      value: `**${user.balance}**`,
     },
     {
       name: "\u200b",
-      value: `Your current inventory is worth **${user.getValueOfInv()}** Tsushobucks`,
+      value: `Your current inventory is worth **${FishermanModule.getValueOfInv(fisherman)}** Tsushobucks`,
     },
   ];
-  fields.forEach((field, i) => {
-    fields[i].inline = true;
+  fields.forEach(field => {
+    field["inline"] = true;
   });
   return embedService.embed(msg, args, {
     author,
@@ -61,12 +61,10 @@ const embed = (msg, args, user) => {
 };
 
 const inventory = async (msg, args) => {
-  const fisherman = await findOrCreateByDiscordId(msg.author.id);
-  await fisherman.save().catch((err) => {
-    console.error(err);
-    return;
-  });
-  return embed(msg, args, fisherman);
+  const fishermanModel = await FishermanModule.findOrCreateByDiscordId(msg.author.id);
+  const userModel = await UserModule.User.findByPk(fishermanModel.userId);
+
+  return embed(msg, args, userModel, fishermanModel);
 };
 
 module.exports = {

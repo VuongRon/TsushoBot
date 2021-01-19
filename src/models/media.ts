@@ -82,18 +82,24 @@ const findOneById = async (id) => {
     return model;
 }
 
-const selectRandomFromCommand = async (commandName: string, sequelizeInstance: Sequelize) => {
-    const mediaResults = await Media.findAll({
-        where: {
-            commandName: commandName,
-            approved: true,
-        },
-        order: sequelizeInstance.random(),
-        limit: 1,
-    }).catch(err => console.error(err));
-    if (mediaResults && mediaResults.length != 0) {
-        return mediaResults[0];
+const selectRandomFromCommand = async (commandName: string, sequelizeInstance: Sequelize): Promise<Media | null> => {
+    try {
+        const mediaResults = await Media.findAll({
+            where: {
+                commandName: commandName,
+                approved: true,
+            },
+            order: sequelizeInstance.random(),
+            limit: 1,
+        })
+        if (mediaResults && mediaResults.length != 0) {
+            return mediaResults[0];
+        }
     }
+    catch (err) {
+        console.error(err);
+    }
+
     return null;
 }
 

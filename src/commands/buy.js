@@ -1,23 +1,23 @@
 const embedService = require("../services/embedService");
 const fishService = require("../services/fishService");
 
-import { findOrCreateByDiscordId, addItem } from "../models";
+import { UserModule, FishermanModule } from "../models";
 
-const embed = (msg, args, user, item, transaction) => {
+const embed = (msg, args, user, item, transactionSucceeded) => {
   const author = {
     name: `${msg.author.username} is purchasing an item`,
     icon_url: `${msg.author.avatarURL()}`,
   };
   const argsTitle = false;
   let fields;
-  if (transaction == undefined) {
+  if (transactionSucceeded == undefined) {
     fields = [
       {
         name: "The transaction failed",
         value: `You either dont have enough money or specified the wrong item.`,
       },
     ];
-  } else if (transaction) {
+  } else if (transactionSucceeded) {
     fields = [
       {
         name: `You bought a ${item.name}`,
@@ -32,8 +32,8 @@ const embed = (msg, args, user, item, transaction) => {
       },
     ];
   }
-  fields.forEach((field, i) => {
-    fields[i].inline = true;
+  fields.forEach(field => {
+    field.inline = true;
   });
   return embedService.embed(msg, args, {
     author,
@@ -43,22 +43,17 @@ const embed = (msg, args, user, item, transaction) => {
 };
 
 const buying = async (msg, args) => {
-  const user = await findOrCreateByDiscordId(msg.author.id);
+  const user = await UserModule.findOrCreateByDiscordId(msg.author.id);
   let id;
   if (Number.isInteger(parseInt(args)) && args.length == 1) {
     id = parseInt(args);
   }
-  let transaction = undefined;
+  let transactionSucceeded = undefined;
   if (Number.isInteger(id) && id > 0 && id < 4) {
-    transaction = await addItem(id, user);
+    transactionSucceeded = await FishermanModule.addItem(id, user);
   }
-  let item1 = new fishService.Item(id);
-  await user.save().catch((err) => {
-    console.error(err);
-    return;
-  });
-
-  return embed(msg, args, user, item1, transaction);
+  let item = new fishService.Item(id);
+  return embed(msg, args, user, item, transactionSucceeded);
 };
 
 module.exports = {

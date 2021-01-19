@@ -1,6 +1,7 @@
 const embedService = require("../services/embedService");
 const rngService = require("../services/rngService");
-const userModel = require("../models").sequelize.models.User;
+
+import { UserModule } from "../models";
 
 const embed = (msg, args, count, userBalance, farmOutcomes) => {
   const message = `${rngService.getRandomArrayIndex(
@@ -12,7 +13,7 @@ const embed = (msg, args, count, userBalance, farmOutcomes) => {
 
 const count = async (msg, args, farmOutcomes) => {
   const authorId = msg.author.id;
-  const user = await userModel.findOrCreateByDiscordId(authorId);
+  const user = await UserModule.findOrCreateByDiscordId(authorId);
   const count = rngService.getRandomInt(1, 10);
   user.balance += count;
   await user.save().catch((err) => {
