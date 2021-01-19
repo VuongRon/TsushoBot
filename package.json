@@ -9,6 +9,7 @@
     "test": "jest --forceExit --coverage --verbose",
     "start": "node dist/index.js",
     "cloneEnv": "node dist/scripts/cloneEnv.js --clone",
+    "postinstall": "npm run db:migrate",
     "version": "node -p \"require('./package').version\""
   },
   "repository": {
