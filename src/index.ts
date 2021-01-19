@@ -1,15 +1,63 @@
 require("dotenv").config();
-const Discord = require("discord.js");
-const client = new Discord.Client();
-client.commands = new Discord.Collection();
+import { Collection, Client } from "discord.js";
+
+type Command = {
+  /**
+   * Name of the command
+   */
+  name: string,
+  /**
+   * Command description
+   */
+  description: string,
+  /**
+   * Indicates whether the command is enabled or not
+   */
+  enabled: boolean,
+  /**
+   * Command execution entry point
+   */
+  execute: (msg: string, args: any[], options: any) => void;
+}
+
+class ExtendedClient extends Client {
+  /**
+   * Hashmap of string->Command
+   */
+  public commands: Collection<string, Command> = new Collection();
+}
+
+const client = new ExtendedClient();
+
 const botCommands = require("./commands");
 const channelBindingService = require("./services/channelBindingService").ChannelBinding;
 const commandThrottlingService = require("./services/commandThrottlingService").CommandThrottling;
 const constants = require("./config/constants").constants;
 
-Object.keys(botCommands).map((key) => {
-  client.commands.set(botCommands[key].name, botCommands[key]);
-});
+/**
+ * Enabled commands processing
+ */
+let enabledCommands: string[] = [];
+let enabledCommandsStr = process.env.ENABLED_COMMANDS;
+if (enabledCommandsStr) {
+  enabledCommands = enabledCommandsStr.split(' ');
+
+  enabledCommands.forEach((s, index, arr) => arr[index] = s.toLowerCase());
+}
+
+/**
+ * Check if enabledCommands is null \ empty
+ */
+if (enabledCommands && enabledCommands.length > 0) {
+  // Disable all commands except enabled commands (commands are enabled by default when imported)
+  for (let key in botCommands) {
+    if (enabledCommands.findIndex(commandName => commandName == key) == -1) {
+      botCommands[key]["enabled"] = false;
+    }
+  } 
+}
+
+client.commands = new Collection(Object.entries(botCommands));
 
 client.on("message", (msg: any) => {
   /**
@@ -19,7 +67,7 @@ client.on("message", (msg: any) => {
     return;
   }
   const args = msg.content.split(/ +/);
-  const command = args.shift().toLowerCase();
+  const command = args.shift().toLowerCase().substr(1);
   const options: any = {};
 
   if (!client.commands.has(command)) return;
@@ -42,15 +90,27 @@ client.on("message", (msg: any) => {
    * This assumes a valid channel ID has been specified in the binding configuration, otherwise
    * the command will not get executed due to the channel ID mismatch
    */
-  const boundCommand = new channelBindingService(msg, client.commands.get(command).name);
+
+  const commandInstance = client.commands.get(command);
+  /**
+   * Check if command instance exists in given key index
+   */
+  if (!commandInstance) return;
+
+  /**
+   * Check whether the command is enabled - if it is not - ignore and exit processing
+   */
+  if (!commandInstance.enabled) return;
+
+  const boundCommand = new channelBindingService(msg, commandInstance.name);
   if (boundCommand.belongsToThisChannel() === false) {
     // If needed, add console output informing about the command rejection
     return;
   }
-  
+
   /**
    * At this point we have the command initially processed by the Channel Binding Service,
-   * so we can now check if the owner of this message is attempting to execude a command
+   * so we can now check if the owner of this message is attempting to execute a command
    * that is currently on cooldown for that user.
    * 
    * NOTICE: This is a user-specific and command-specific rejection
@@ -65,10 +125,10 @@ client.on("message", (msg: any) => {
   }
 
   try {
-    console.log(`called command: ${client.commands.get(command).name}`);
+    console.log(`called command: ${commandInstance.name}`);
     if (command === "!help") options.commands = client.commands;
     options.constants = constants;
-    client.commands.get(command).execute(msg, args, options);
+    commandInstance.execute(msg, args, options);
   } catch (error) {
     console.error(error);
     msg.reply("Something broke and that last command did not work.");
@@ -78,7 +138,9 @@ client.on("message", (msg: any) => {
 const TOKEN = process.env.TOKEN;
 
 client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+  client.user ?
+    console.log(`Logged in as ${client.user.tag}!`) : console.log(`Logged in without defined user`);
+  ;
 });
 
 client.login(TOKEN);

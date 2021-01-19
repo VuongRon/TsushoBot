@@ -9,6 +9,7 @@ const temp = {};
 for (let index in files) {
   const fileName = files[index].split(".")[0];
   temp[fileName] = require(`./${fileName}`);
+  temp[fileName]["enabled"] = true;
 }
 
 module.exports = temp;
