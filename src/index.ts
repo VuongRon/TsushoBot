@@ -73,11 +73,6 @@ client.on("message", (msg: any) => {
   if (!client.commands.has(command)) return;
 
   /**
-   * This place is reserved for another service in the chain: CommandWhitelistingService
-   * This service should filter the command before ChannelBinding and Throttling
-   */
-
-  /**
    * Automatically checks if the requested command can be executed in the channel
    * this message came from.
    * 
