@@ -2,21 +2,28 @@ const embedService = require("../services/embedService");
 
 import { FishermanModule } from "../models";
 
-const embed = (msg, args, valueOfInf) => {
+const embed = (msg, args, valueOfInv) => {
   const argsTitle = true;
   let fields = [];
-  if (valueOfInf == null) {
-    fields = [
-      {
-        name: "An error occurred while trying to sell your inventory",
-        value: "We were unable to sell your inventory, please try again later."
-      }
-    ]
+  let name, value = '';
+
+  if (valueOfInv == null) {
+    name = "An error occurred while trying to sell your inventory";
+    value = "We were unable to sell your inventory, please try again later.";
   }
+  else {
+    name = valueOfInv == 0 ?
+      "You didn't have anything of value to sell" :
+      `You sold all your fish for **${valueOfInv}** Tsushobucks`;
+    value = valueOfInv == 0 ?
+      "Your pockets were empty and you didn't have anything to sell" :
+      "Dont go spend it all in one place!";
+  }
+
   fields = [
     {
-      name: `You sold all your fish for **${valueOfInf}** Tsushobucks`,
-      value: "Dont go spend it all in one place!",
+      name: name,
+      value: value,
     },
   ];
   fields.forEach(field => {
@@ -30,11 +37,11 @@ const embed = (msg, args, valueOfInf) => {
 
 const selling = async (msg, args) => {
   const fisherman = await FishermanModule.findOrCreateByDiscordId(msg.author.id);
-  let valueOfInf = await FishermanModule.sellInventory(fisherman);
-  if (valueOfInf == -1) {
-    valueOfInf = null;
+  let valueOfInv = await FishermanModule.sellInventory(fisherman);
+  if (valueOfInv == -1) {
+    valueOfInv = null;
   }
-  return embed(msg, args, valueOfInf);
+  return embed(msg, args, valueOfInv);
 };
 
 module.exports = {
