@@ -40,7 +40,7 @@ const constants = require("./config/constants").constants;
 let enabledCommands: string[] = [];
 let enabledCommandsStr = process.env.ENABLED_COMMANDS;
 if (enabledCommandsStr) {
-  enabledCommands = enabledCommandsStr.split(' ');
+  enabledCommands = enabledCommandsStr.split(/\s+/gi);
 
   enabledCommands.forEach((s, index, arr) => arr[index] = s.toLowerCase());
 }
