@@ -25,7 +25,8 @@ A Discord.js based Discord chat bot. 🤖
     * Navigate to the project's folder in the command line
     * Check out to a new branch
     * Install the required dependencies by running ```npm i```
-    * To setup a local sqlite3 database file, run ```npm run db:migrate```
+    * This will automatically run the ```db:migrate``` task for you upon finishing the installation, or you can run it manually:
+      * To setup a local sqlite3 database file, run ```npm run db:migrate```
     * Execute ```npm run cloneEnv``` - this will create a new ```.env``` file
     * If you wish to overwrite the existing ```.env``` (**not recommended**), execute ```npm run cloneEnv -- --force```
     * Check the contents of ```.env``` for more details on feature configuration
