@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 
 const envLocation = ".env.copy";
 
@@ -11,7 +12,7 @@ const envLocation = ".env.copy";
  */
 const readMainEnv = (pathPrefix = "") => {
   if (fs.existsSync(pathPrefix + envLocation) === false) {
-    return 'undefined';
+    return null;
   }
   
   return fs.readFileSync(pathPrefix + envLocation);
@@ -31,13 +32,15 @@ const clone = (mainEnv, pathPrefix = "", force = false) => {
     throw ".env.copy does not exist";
   }
 
+  const clonePath = path.join(pathPrefix, ".env");
+
   // Abort if the .env already exists unless we have __force__ parameter set to true
-  if (fs.existsSync(`${pathPrefix}.env`) === true && force === false) {
+  if (fs.existsSync(clonePath) === true && force === false) {
     console.error(`%c .env already exists! Use "npm run cloneEnv -- --force" to overwrite the existing file.\n--- Ignore if this output is a part of testing. ---`, 'background: #222; color: #BD0000');
     return false;
   }
 
-  fs.writeFileSync(`${pathPrefix}.env`, mainEnv);
+  fs.writeFileSync(clonePath, mainEnv);
   return true;
 }
 

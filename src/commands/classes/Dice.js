@@ -67,7 +67,7 @@ class Dice {
   static enqueueNewGame = () => {
     setTimeout(() => {
         Dice.hasStartedYet = true;
-      }, Dice.queueTime * 1000
+      }, Dice.gameQueueTime * 1000
     );
   }
 
@@ -137,7 +137,7 @@ class Dice {
     }
 
     // Print the player with the most points
-    let header = `Game over! Next round will be started in ${Dice.queueTime} seconds.\n\n`;
+    let header = `Game over! Next round will be started in ${Dice.gameQueueTime} seconds.\n\n`;
     let message = `Leaderboard:\n\n`
 
     return header + message + contributors+`\n`;
@@ -181,14 +181,14 @@ class Dice {
      *
      * @var {integer}
      */
-    this.gameQueueTime = this.setQueueTime(constants.timeBeforeNextRound);
+    Dice.gameQueueTime = constants.timeBeforeNextRound;
 
     /**
      * Stores the result of a dice roll
      * 
      * @var {array}
      */
-    this.diceRolls = [,,,,,];
+    this.diceRolls = [];
   
     /**
      * Amount of points in the current roll executed by the player.
@@ -221,10 +221,6 @@ class Dice {
      * @var {object}
      */
     this.msg = msg;
-  }
-
-  setQueueTime = (time) => {
-    Dice.queueTime = time;
   }
 
   /**

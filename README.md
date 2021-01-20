@@ -6,6 +6,7 @@ A Discord.js based Discord chat bot. 🤖
 * [Setting up a Test Environment](#setting-up-a-test-environment)
 * [Running/Debugging the project](#running-debugging-the-project)
 * [Adding a new command](#adding-a-new-command)
+* [Testing](#testing)
 
 ---
 
@@ -40,7 +41,7 @@ A Discord.js based Discord chat bot. 🤖
     * If you wish to overwrite the existing ```.env``` (**not recommended**), execute ```npm run cloneEnv -- --force```
     * Check the contents of ```.env``` for more details on feature configuration
     * Inside of the ```.env``` file, update the ```TOKEN``` variable and set it to the Token you copied from your Bot page, e.g. ```TOKEN=YOURTOKENGOESHERE```
-    * Run tests with ```npm test```
+    * Run tests with ```npm test``` (refer to [the testing section](#testing))
     * The project should be functional at this point. refer to [this steps](#running-debugging-the-project) in order to run\debug it - if you get any errors, you probably skipped a step.
 
 ---
@@ -99,3 +100,12 @@ module.exports = {
 };
 
 ```
+
+---
+
+## Testing
+The project is using [jest-ts](https://github.com/kulshekhar/ts-jest) which is a Typescript preprocessor for [jest](https://jestjs.io/), for testing.
+
+To run the tests, run `npm test`, which compiles the `jest` test files in-memory and runs them.
+
+To understand more about how `jest-ts` works, refer to their [jest-ts's documentation](https://kulshekhar.github.io/ts-jest/docs/installation) or [jest's documentation](https://jestjs.io/docs/en/getting-started).
