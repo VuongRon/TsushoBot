@@ -107,7 +107,7 @@ describe ("Dice", () => {
     });
 
     it ("should __NOT__ detect 'a Three of a kind' before 'Full House' in [2, 5, 2, 5, 2]", () => {
-      // Full House takes precedence offer Three of a Kind, so we have to
+      // Full House takes precedence over Three of a Kind, so we have to
       // make sure the rule check breaks properly
       dice.diceRolls = [2, 5, 5, 2, 2].sort();
       dice.detectAppliedRule();
