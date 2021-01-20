@@ -1,8 +1,7 @@
-const expect = require("chai").expect;
-
+import { expect } from "chai";
 // Load Constants and the Game class 
-const Dice = require("../commands/classes/Dice").Dice;
-const constants = require("../config/constants").constants;
+import { Dice } from "../src/commands/classes/Dice";
+const constants = require("../src/config/constants").constants;
 
 // Cache messages from game constants
 const diceMessages = constants.dice.messages;
@@ -108,7 +107,7 @@ describe ("Dice", () => {
     });
 
     it ("should __NOT__ detect 'a Three of a kind' before 'Full House' in [2, 5, 2, 5, 2]", () => {
-      // Full House takes precedence ofer Three of a Kind, so we have to
+      // Full House takes precedence offer Three of a Kind, so we have to
       // make sure the rule check breaks properly
       dice.diceRolls = [2, 5, 5, 2, 2].sort();
       dice.detectAppliedRule();
@@ -160,7 +159,7 @@ describe ("Dice", () => {
      */
     it ("should lock the game after restarting", async () => {
       // We have to override the game queue time to not wait 10 seconds by default
-      Dice.queueTime = 0.005;
+      Dice.gameQueueTime = 0.005;
       
       // When we enqueue a new game, the "hasStartedYet" property is set to false
       // to make sure we can't execute the !dice command
@@ -170,7 +169,7 @@ describe ("Dice", () => {
       let gameStatePromise = new Promise( (resolve, reject) => {
         setTimeout(() => {
           resolve(Dice.hasStartedYet);
-        }, (Dice.queueTime * 1000));
+        }, (Dice.gameQueueTime * 1000));
       });
 
       // After the game has been restarted, the "hasStartedYet" property 

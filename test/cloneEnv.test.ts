@@ -1,6 +1,6 @@
-const expect = require("chai").expect;
-const fs = require("fs");
-const envClone = require("../scripts/cloneEnv");
+import * as path from "path";
+import * as fs from "fs";
+import { clone, readMainEnv } from "../src/scripts/cloneEnv";
 const testRootDirectory = "test";
 const envTestDir = "env";
 
@@ -26,8 +26,7 @@ const changeWorkingDirectory = () => {
  * @return  {string}
  */
 const checkWorkingDirectory = () => {
-  // Take the last part of the working directory
-  return process.cwd().split("\\").slice(-1)[0];
+  return path.basename(process.cwd());
 }
 
 /**
@@ -73,11 +72,11 @@ describe(".env Cloner", () => {
   /**
    * This should never happen, but sometimes we can remove the dev .env by accident :)
    */
-  it ("should detect .env.copy", () => {
+  it("should detect .env.copy", () => {
     // We are in the root at the moment
     const exists = fs.existsSync(".env.copy");
 
-    expect(exists).to.deep.equal(true);
+    expect(exists).toBeTruthy();
   });
 
   /**
@@ -87,34 +86,34 @@ describe(".env Cloner", () => {
    * Since we are working with directory deletion, make sure that we are
    * in the test directory!!!
    */
-  it ("should create a test folder (permissions test)", () => {
+  it("should create a test folder (permissions test)", () => {
     // Step into /test
     changeWorkingDirectory();
 
     // Create a new directory if it does not exist
     // Initially, it should not exist, because we perform a cleanup after each test...
-    let dirExists;
+    let envDirExists;
 
     // Create our new testing environment directory
     createTestDir();
-    
+
     // Cache the existence at this point in test
-    dirExists = fs.existsSync(envTestDir);
+    envDirExists = fs.existsSync(envTestDir);
 
     // Cleanup
-    let wasDirectoryDeleted;
+    let wasEnvDirDeleted;
     deleteTestEnvDirectory();
 
-    wasDirectoryDeleted = !fs.existsSync(envTestDir);
+    wasEnvDirDeleted = !fs.existsSync(envTestDir);
 
-    expect(dirExists).to.deep.equal(true, "Environment testing directory creation ('env/').") &&
-    expect(wasDirectoryDeleted).to.deep.equal(true, "Environment testing directory deletion ('env/')");
+    expect(envDirExists).toBeTruthy();
+    expect(wasEnvDirDeleted).toBeTruthy();
   });
 
   /**
    * Finally, attempt to create a copy of the main .env.copy file.
    */
-  it ("should create a copy of root .env.copy", () => {
+  it("should create a copy of root .env.copy", () => {
     // We are already inside the "test" directory (changed by the previous test).
     // But since we are testing, we have to check it anyway and create one if needed
     if (checkWorkingDirectory() !== testRootDirectory) {
@@ -126,22 +125,25 @@ describe(".env Cloner", () => {
 
     // At this point, we are in the test directory, so we have to read
     // the buffer from parent directory
-    const buffer = envClone.readMainEnv("..\\");
+    let buffer = readMainEnv("..\\");
+    expect(buffer).toBeDefined();
+
+    buffer = buffer || Buffer.from(".env content"); // create a dummy buffer if original buffer was not successfully read
 
     // Create a new copy in the testing environment directory (/test/env/)
-    envClone.clone(buffer, `${envTestDir}\\`, true);
+    clone(buffer, `${envTestDir}\\`, true);
 
     // Assertion point
     let newEnvExists = fs.existsSync(envTestDir);
-    
+
     // Perform the same cleanup routine
     let wasDirectoryDeleted;
     deleteTestEnvDirectory();
 
     wasDirectoryDeleted = !fs.existsSync(envTestDir);
 
-    expect(newEnvExists).to.deep.equal(true, "Environment clone creation") && 
-    expect(wasDirectoryDeleted).to.deep.equal(true, "Environment testing directory deletion ('env/')");
+    expect(newEnvExists).toBeTruthy();
+    expect(wasDirectoryDeleted).toBeTruthy();
   });
 
   /**
@@ -149,7 +151,7 @@ describe(".env Cloner", () => {
    * To test this we have to call clone() twice to initially create one copy and
    * attempt to overwrite it in the second call
    */
-  it ("should not overwrite the existing .env", () => {
+  it("should not overwrite the existing .env", () => {
     // Check the working directory again
     if (checkWorkingDirectory() !== testRootDirectory) {
       changeWorkingDirectory();
@@ -160,22 +162,24 @@ describe(".env Cloner", () => {
 
     // At this point, we are in the test directory, so we have to read
     // the buffer from parent directory
-    const buffer = envClone.readMainEnv("..\\");
+    let buffer = readMainEnv(`..${path.sep}`);
+
+    buffer = buffer || Buffer.from(".env content"); // create a dummy buffer if original buffer was not successfully read
 
     // Create a new copy in the testing environment directory (/test/env/)
-    envClone.clone(buffer, `${envTestDir}\\`, false);
+    clone(buffer, `${envTestDir}${path.sep}`, false);
 
     // Assertion point - this time we have to check if the clone() function
     // returns false, as this informs about the existing file, suggesting --force argument
-    let assertion = envClone.clone(buffer, `${envTestDir}\\`, false);
+    let assertion = clone(buffer, `${envTestDir}${path.sep}`, false);
 
     // And again, perform the same cleanup routine
     let wasDirectoryDeleted;
     deleteTestEnvDirectory();
 
     wasDirectoryDeleted = !fs.existsSync(envTestDir);
-    
-    expect(assertion).to.deep.equal(false, "Clone overwrite attempt") && 
-    expect(wasDirectoryDeleted).to.deep.equal(true, "Environment testing directory deletion ('env/')");
+
+    expect(assertion).toBeFalsy();
+    expect(wasDirectoryDeleted).toBeTruthy();
   });
 });
