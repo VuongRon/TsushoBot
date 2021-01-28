@@ -1,5 +1,4 @@
 import { Model, DataTypes, Sequelize, HasOneGetAssociationMixin, HasOneCreateAssociationMixin, HasManyGetAssociationsMixin, HasManySetAssociationsMixin, HasOneSetAssociationMixin } from "sequelize";
-import { FishermanModule } from ".";
 import { Bet } from "./bet";
 import { Fisherman } from "./fisherman";
 import { Media } from "./media";

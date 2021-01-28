@@ -1,7 +1,5 @@
 const embedService = require("../services/embedService");
-const db = require("../models").sequelize;
-const userModel = db.models.User;
-const mediaModel = db.models.Media;
+import { UserModule, MediaModule } from "../models";
 const mime = require("mime-types");
 const axios = require("axios").default;
 const approverRole = process.env.hasOwnProperty("APPROVER_ROLE")
@@ -32,17 +30,17 @@ const checkResource = async (resource) => {
 
 const addResource = async (msg, args, options) => {
   const commandNames = options.commandNames;
-  const user = await userModel.findOrCreateByDiscordId(msg.author.id);
+  const user = await UserModule.findOrCreateByDiscordId(msg.author.id);
   const passedCommand = args[0];
   const passedResource = args[1];
   if (user.whitelisted && commandNames.includes(passedCommand)) {
-    msg.delete();
-    const resourceExists = await mediaModel.findOneByMediaContent(
+    await msg.delete();
+    const resourceExists = await MediaModule.findOneByMediaContent(
       passedResource
     );
     const resourceValid = await checkResource(passedResource);
     if (resourceValid && !resourceExists) {
-      const media = mediaModel.build({
+      const media = MediaModule.Media.build({
         mediaContent: passedResource,
         requestedByUserId: user.discordId,
         commandName: passedCommand,
