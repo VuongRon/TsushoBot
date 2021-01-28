@@ -1,7 +1,6 @@
 require("dotenv").config();
 const embedService = require("../services/embedService");
-const db = require("../models").sequelize;
-const mediaModel = db.models.Media;
+import { MediaModule } from "../models";
 require("../services/channelBindingService").ChannelBinding;
 
 const approverRole = process.env.hasOwnProperty("APPROVER_ROLE")
@@ -90,7 +89,7 @@ const approve = async (msg, args, options) => {
     const commandNames = options.commandNames;
     if (commandNames.includes(args[0])) {
       const passedCommand = args[0];
-      const resource = await mediaModel
+      const resource = await MediaModule
         .findFirstUnapprovedByCommandName(passedCommand)
         .catch((err) => {
           console.error(err);
@@ -105,7 +104,7 @@ const approve = async (msg, args, options) => {
       }
     } else if (args[0] === "remove" && args[1]) {
       const passedId = args[1];
-      const resource = await mediaModel.findOneById(passedId).catch((err) => {
+      const resource = await MediaModule.findOneById(passedId).catch((err) => {
         console.error(err);
         return;
       });

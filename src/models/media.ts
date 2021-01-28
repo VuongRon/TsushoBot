@@ -76,7 +76,7 @@ const findFirstUnapprovedByCommandName = async (command) => {
     return model;
 }
 
-const findOneById = async (id) => {
+const findOneById = async (id: string) => {
     const model = await Media.findByPk(id).catch(err => console.error(err));
 
     return model;

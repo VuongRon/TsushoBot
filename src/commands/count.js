@@ -1,6 +1,6 @@
 const embedService = require("../services/embedService");
-const db = require("../models").sequelize;
-const userModel = db.models.User;
+import { UserModule } from "../models";
+
 
 const randomCount = () => {
   const num = Math.floor(Math.random() * 10) + 1;
@@ -20,7 +20,7 @@ const embed = (msg, args, count, userCount) => {
 
 const count = async (msg, args) => {
   const authorId = msg.author.id;
-  const [user] = await userModel
+  const [user] = await UserModule.User
     .findOrCreate({
       where: { discordId: authorId },
     })
