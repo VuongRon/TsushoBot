@@ -21,5 +21,5 @@ export type Command = {
   /**
    * Command execution entry point
    */
-  execute: (msg: Message, args: any[], options: any) => void;
+  execute: (msg: Message, args: string[], options: any) => void;
 };
