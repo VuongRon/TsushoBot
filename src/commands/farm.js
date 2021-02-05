@@ -23,10 +23,17 @@ const count = async (msg, args, farmOutcomes) => {
   return embed(msg, args, count, user.balance, farmOutcomes);
 };
 
-module.exports = {
-  name: "!farm",
+const execute = (msg, args, config, options) => {
+  count(msg, args, config);
+}
+
+const commandTemplate = {
+  name: "farm",
   description: "Farm Tsushobucks.",
-  execute(msg, args, options) {
-    count(msg, args, options.constants.farmOutcomes);
-  },
-};
+  config: null, /** TODO */
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

@@ -51,10 +51,17 @@ const gamble = async (msg, args, outcomes) => {
   return embedService.embedMessage(msg, args, message);
 };
 
-module.exports = {
-  name: "!gamble",
+const execute = (msg, args, config, options) => {
+  gamble(msg, args, config);
+}
+
+const commandTemplate = {
+  name: "gamble",
   description: "See if you can win some Tsushobucks quick.",
-  execute(msg, args, options) {
-    gamble(msg, args, options.constants.gambleOutcomes);
-  },
-};
+  config: null, /** TODO */
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

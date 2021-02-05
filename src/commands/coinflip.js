@@ -9,10 +9,17 @@ const embedMessage = (msg, args) => {
   });
 };
 
-module.exports = {
-  name: "!coinflip",
+const execute = (msg, args, config, options) => {
+  embedMessage(msg, args);
+}
+
+const commandTemplate = {
+  name: "coinflip",
   description: "Decide your fate by flipping a coin.",
-  execute(msg, args, options = {}) {
-    embedMessage(msg, args);
-  },
-};
+  config: null,
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

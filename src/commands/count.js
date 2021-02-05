@@ -36,11 +36,18 @@ const count = async (msg, args) => {
   return embed(msg, args, count, user.count);
 };
 
-module.exports = {
-  name: "!count",
+const execute = (msg, args, config, options) => {
+  count(msg, args);
+}
+
+const commandTemplate = {
+  name: "count",
   description:
-    "Incrementally increases your saved counter, with a chance to hit a critical increment.",
-  execute(msg, args, options = {}) {
-    count(msg, args);
-  },
-};
+    `Incrementally increases your saved counter, with a chance to hit a critical increment.`,
+  config: null,
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

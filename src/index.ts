@@ -1,33 +1,14 @@
 import { config } from "dotenv";
 config();
 
-import { Collection,  Message } from "discord.js";
-import { CommandCollection } from "./types/command.type";
+import { Message } from "discord.js";
 import { ExtendedClient } from "./types/discord-types.type";
 import { botCommands } from "./commands";
-import * as channelBindingService from "./services/channelBindingService";
-import * as commandEnablingService from "./services/commandEnablingService";
 // TODO - refactor `require`uses to typescript imports
 const constants = require("./config/constants").constants;
 
-// Prepare the imported commands
-// TODO: The Command Importer needs to be rewritten...
-const commandsCollection: CommandCollection = new Collection(Object.entries(botCommands));
-
-/**
- * Walk through the imported commands and override "enabled" flag on each command
- * according to the commandEnablingService's behavior
- * @see enableCommands
- */
-commandEnablingService.enableCommands(commandsCollection);
-
-/**
- * Check which commands have binding definitions and add them to the each command in this collection
- */
-channelBindingService.processBindings(commandsCollection);
-
 // Send our bot commands to the client
-const client = new ExtendedClient(commandsCollection);
+const client = new ExtendedClient(botCommands);
 client.on("message", (msg: Message) => {
   /**
    * Don't process bot messages, could be even more specific to ignore self messages.
@@ -49,25 +30,10 @@ client.on("message", (msg: Message) => {
    */
   if (!commandInstance) return;
 
-  /**
-   * Check whether the command is enabled - if it is not - ignore and exit processing
-   */
-  if (!commandInstance.enabled) return;
-
-  /**
-   * Check if the command has channel bindings defined.
-   * If there are no bindings - the command should be allowed to execute everywhere
-   * If the bindings are present, the command should be executed only in the channels
-   * with matching IDs
-   */
-  if (commandInstance.bindings && !channelBindingService.isCommandAllowed(commandInstance, msg)) {
-    return;
-  }
-
   try {
-    console.log(`called command: ${commandInstance.name}`);
-    if (command === "!help") options.commands = client.commands;
-    options.constants = constants;
+    console.log(`called command: !${commandInstance.name}`);
+    if (command == "help") options.commands = client.commands;
+    options.constants = constants; /** TODO remove from here as constants will be passed as configuration into the command initialization */
     commandInstance.execute(msg, args, options);
   } catch (error) {
     console.error(error);
@@ -78,8 +44,8 @@ client.on("message", (msg: Message) => {
 const TOKEN = process.env.TOKEN;
 
 client.on("ready", () => {
-  client.user 
-    ? console.log(`Logged in as ${client.user.tag}!`) 
+  client.user
+    ? console.log(`Logged in as ${client.user.tag}!`)
     : console.log(`Logged in without defined user`);
 });
 

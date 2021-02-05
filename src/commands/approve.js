@@ -1,7 +1,6 @@
 require("dotenv").config();
 const embedService = require("../services/embedService");
 import { MediaModule } from "../models";
-require("../services/channelBindingService").ChannelBinding;
 
 const approverRole = process.env.hasOwnProperty("APPROVER_ROLE")
   ? process.env.APPROVER_ROLE
@@ -115,10 +114,17 @@ const approve = async (msg, args, options) => {
   }
 };
 
-module.exports = {
-  name: "!approve",
+const execute = (msg, args, config, options) => {
+    approve(msg, args, config);
+}
+
+const commandTemplate = {
+  name: "approve",
   description: "Approve enqueued media resources.",
-  execute(msg, args, options = {}) {
-    approve(msg, args, options.constants.media);
-  },
-};
+  config: null /** TODO */,
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

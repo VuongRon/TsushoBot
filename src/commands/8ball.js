@@ -3,6 +3,7 @@ const rngService = require("../services/rngService");
 
 const embedMessage = (msg, args) => {
   const argsTitle = true;
+  // TODO extract responses into configuration file
   const responses = [
     "All signs point to yes...",
     "Yes!",
@@ -37,10 +38,17 @@ const embedMessage = (msg, args) => {
   });
 };
 
-module.exports = {
-  name: "!8ball",
+const execute = (msg, args) => {
+  embedMessage(msg, args);
+}
+
+const commandTemplate = {
+  name: "8ball",
   description: "Answers questions.",
-  execute(msg, args, options = {}) {
-    embedMessage(msg, args);
-  },
-};
+  execute: execute,
+  config: null
+}
+
+export {
+  commandTemplate
+}

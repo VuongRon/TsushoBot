@@ -67,10 +67,17 @@ const inventory = async (msg, args) => {
   return embed(msg, args, userModel, fishermanModel);
 };
 
-module.exports = {
-  name: "!inventory",
+const execute = (msg, args) => {
+  inventory(msg, args);
+}
+
+const commandTemplate = {
+  name: "inventory",
   description: "Shows your fish inventory.",
-  execute(msg, args, options = {}) {
-    inventory(msg, args);
-  },
-};
+  config: null,
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

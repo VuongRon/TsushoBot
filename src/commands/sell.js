@@ -44,10 +44,17 @@ const selling = async (msg, args) => {
   return embed(msg, args, valueOfInv);
 };
 
-module.exports = {
-  name: "!sell",
+const execute = (msg, args, config, options) => {
+  selling(msg, args);
+}
+
+const commandTemplate = {
+  name: "sell",
   description: "Sells your fish inventory for Tsushobucks",
-  execute(msg, args, options = {}) {
-    selling(msg, args);
-  },
-};
+  config: null,
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

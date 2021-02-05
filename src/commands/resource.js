@@ -66,10 +66,17 @@ const addResource = async (msg, args, options) => {
   }
 };
 
-module.exports = {
-  name: "!resource",
+const execute = (msg, args, config) => {
+  addResource(msg, args, config);
+}
+
+const commandTemplate = {
+  name: "resource",
   description: "Add a resource for approval.",
-  execute(msg, args, options = {}) {
-    addResource(msg, args, options.constants.media);
-  },
-};
+  config: null, /** TODO */
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

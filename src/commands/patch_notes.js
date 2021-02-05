@@ -19,7 +19,7 @@ const getPatchNotes = (msg, args) => {
 };
 
 module.exports = {
-  name: "!patchnotes",
+  name: "patchnotes",
   description:
     "Shows the patch notes. Accepts a version as an argument to show a specific release.",
   execute(msg, args, options = {}) {
