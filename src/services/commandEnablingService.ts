@@ -1,4 +1,4 @@
-import { CommandCollector } from "../types/command.type";
+import { CommandCollection } from "../types/command.type";
 
 /**
  * Inspects the ENABLED_COMMANDS .env key and sets the value of the "enabled" flag on
@@ -8,9 +8,9 @@ import { CommandCollector } from "../types/command.type";
  * commands will be enabled by default. If at least one command will be present
  * on the list, only the specified commands will be enabled
  *
- * @param {CommandCollector}  botCommands Reference to the imported bot commands object
+ * @param {CommandCollection}  botCommands Reference to the imported bot commands object
  */
-export function enableCommands(botCommands: CommandCollector): void {
+export function enableCommands(botCommands: CommandCollection): void {
   let enabledCommands: string[];
   let enabledCommandsStr: string | undefined = process.env.ENABLED_COMMANDS;
 

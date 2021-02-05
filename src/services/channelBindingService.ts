@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { Command, CommandCollector } from "../types/command.type";
+import { Command, CommandCollection } from "../types/command.type";
 
 const envBindingPartial = "CHANNEL_BINDING_";
 
@@ -7,9 +7,9 @@ const envBindingPartial = "CHANNEL_BINDING_";
  * Looks for defined channel bindings in the .env and adds them to the corresponding
  * commands
  *
- * @param {CommandCollector} botCommands Reference to the imported bot commands
+ * @param {CommandCollection} botCommands Reference to the imported bot commands
  */
-function processBindings(botCommands: CommandCollector): void {
+function processBindings(botCommands: CommandCollection): void {
   let bindingKey: string;
   // Bindings might become undefined when left commented or empty
   let binding: string | undefined;

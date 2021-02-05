@@ -24,9 +24,9 @@ type Command = {
   execute: (msg: Message, args: string[], options: any) => void;
 };
 
-type CommandCollector = Collection<string, Command>;
+type CommandCollection = Collection<string, Command>;
 
 export {
   Command,
-  CommandCollector
+  CommandCollection
 }

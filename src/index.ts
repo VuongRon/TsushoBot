@@ -2,7 +2,7 @@ import { config } from "dotenv";
 config();
 
 import { Collection, Client, Message } from "discord.js";
-import { CommandCollector } from "./types/command.type";
+import { CommandCollection } from "./types/command.type";
 import { botCommands } from "./commands";
 import * as channelBindingService from "./services/channelBindingService";
 import * as commandEnablingService from "./services/commandEnablingService";
@@ -13,11 +13,11 @@ class ExtendedClient extends Client {
   /**
    * Hashmap of string->Command
    */
-  public commands: CommandCollector = new Collection();
+  public commands: CommandCollection = new Collection();
 }
 
 const client = new ExtendedClient();
-const commandsCollection: CommandCollector = new Collection(Object.entries(botCommands));
+const commandsCollection: CommandCollection = new Collection(Object.entries(botCommands));
 
 /**
  * Enabled commands processing
