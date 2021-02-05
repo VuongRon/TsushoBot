@@ -1,6 +1,6 @@
-import { Message } from "discord.js";
+import { Collection, Message } from "discord.js";
 
-export type Command = {
+type Command = {
   /**
    * Name of the command
    */
@@ -23,3 +23,10 @@ export type Command = {
    */
   execute: (msg: Message, args: string[], options: any) => void;
 };
+
+type CommandCollector = Collection<string, Command>;
+
+export {
+  Command,
+  CommandCollector
+}
