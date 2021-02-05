@@ -3,7 +3,7 @@ config();
 
 import { Collection,  Message } from "discord.js";
 import { CommandCollection } from "./types/command.type";
-import { ExtendedClient } from "./classes/client";
+import { ExtendedClient } from "./types/discord-types.type";
 import { botCommands } from "./commands";
 import * as channelBindingService from "./services/channelBindingService";
 import * as commandEnablingService from "./services/commandEnablingService";
