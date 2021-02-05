@@ -1,9 +1,10 @@
-import { Collection, Client } from "discord.js";
+import { Client } from "discord.js";
 import { CommandCollection } from "./command.type";
 
 class ExtendedClient extends Client {
     /**
-     * @param   {CommandCollection}  botCommands  Collection of preprocessed bot commands
+     * 
+     * @param botCommands Collection of bot commands
      */
     constructor(botCommands: CommandCollection) {
         super();
@@ -13,7 +14,7 @@ class ExtendedClient extends Client {
     /**
      * Hashmap of string->Command
      */
-    public commands: CommandCollection = new Collection();
+    public commands: CommandCollection;
 }
 
 export {
