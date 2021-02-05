@@ -43,20 +43,6 @@ client.commands = commandsCollection;
 
   if (!client.commands.has(command)) return;
 
-  /**
-   * Automatically checks if the requested command can be executed in the channel
-   * this message came from.
-   * 
-   * This behavior ignores everything by default unless there is a binding specified 
-   * between the __command name__ and __channel ID__.
-   * 
-   * Presence in the channel bindings (not in the environment!) means 
-   * that commands can only be executed in specific channels.
-   * 
-   * This assumes a valid channel ID has been specified in the binding configuration, otherwise
-   * the command will not get executed due to the channel ID mismatch
-   */
-
   const commandInstance = client.commands.get(command);
   /**
    * Check if command instance exists in given key index
@@ -68,25 +54,13 @@ client.commands = commandsCollection;
    */
   if (!commandInstance.enabled) return;
 
-  const boundCommand = new channelBindingService(msg, commandInstance.name);
-  if (boundCommand.belongsToThisChannel() === false) {
-    // If needed, add console output informing about the command rejection
-    return;
-  }
-
   /**
-   * At this point we have the command initially processed by the Channel Binding Service,
-   * so we can now check if the owner of this message is attempting to execute a command
-   * that is currently on cooldown for that user.
-   * 
-   * NOTICE: This is a user-specific and command-specific rejection
+   * Check if the command has channel bindings defined.
+   * If there are no bindings - the command should be allowed to execute everywhere
+   * If the bindings are present, the command should be executed only in the channels
+   * with matching IDs
    */
-  const throttledCommand = new commandThrottlingService(boundCommand.commandName, msg.author.username);
-  if (throttledCommand.canBeExecuted() === false) {
-    // Reject the execution as we don't want to hit the rate limit from spamming the specific command
-    // Possibly, integrate this with command tracking for spam detection
-    //
-    // Consider logging this rejection to warn spammers
+  if (commandInstance.bindings && !channelBindingService.isCommandAllowed(commandInstance, msg)) {
     return;
   }
 
