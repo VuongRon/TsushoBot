@@ -188,7 +188,7 @@ class Dice {
      * 
      * @var {array}
      */
-    this.diceRolls = [];
+    this.diceRolls = new Array(5);
   
     /**
      * Amount of points in the current roll executed by the player.
