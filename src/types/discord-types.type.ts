@@ -1,5 +1,5 @@
 import { Collection, Client } from "discord.js";
-import { CommandCollection } from "../types/command.type";
+import { CommandCollection } from "./command.type";
 
 class ExtendedClient extends Client {
     /**
