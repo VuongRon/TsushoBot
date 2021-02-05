@@ -42,6 +42,7 @@ client.on("message", (msg: Message) => {
   const command: string = args.shift()!.toLowerCase().substr(1);
   const options: any = {};
 
+  // Abort if the command string sent to the chat is not a command defined in this bot
   if (!client.commands.has(command)) return;
 
   const commandInstance = client.commands.get(command);
@@ -79,9 +80,9 @@ client.on("message", (msg: Message) => {
 const TOKEN = process.env.TOKEN;
 
 client.on("ready", () => {
-  client.user ?
-    console.log(`Logged in as ${client.user.tag}!`) : console.log(`Logged in without defined user`);
-  ;
+  client.user 
+    ? console.log(`Logged in as ${client.user.tag}!`) 
+    : console.log(`Logged in without defined user`);
 });
 
 client.login(TOKEN);
