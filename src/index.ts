@@ -1,24 +1,6 @@
 require("dotenv").config();
 import { Collection, Client } from "discord.js";
 
-type Command = {
-  /**
-   * Name of the command
-   */
-  name: string,
-  /**
-   * Command description
-   */
-  description: string,
-  /**
-   * Indicates whether the command is enabled or not
-   */
-  enabled: boolean,
-  /**
-   * Command execution entry point
-   */
-  execute: (msg: string, args: any[], options: any) => void;
-}
 
 class ExtendedClient extends Client {
   /**
