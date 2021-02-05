@@ -1,4 +1,6 @@
-const argsTitle = (args) => {
+import { Message } from "discord.js";
+
+const argsTitle = (args: string[]): string => {
   const argsArray = args.join(" ");
   const maxLength = 100;
   return argsArray.length > maxLength
@@ -6,7 +8,7 @@ const argsTitle = (args) => {
     : argsArray;
 };
 
-const embedTemplate = (msg) => {
+const embedTemplate = (msg: Message) => {
   return {
     color: 16750462,
     author: {
@@ -16,13 +18,13 @@ const embedTemplate = (msg) => {
   };
 };
 
-const embedMessage = (msg, args, message) => {
+const embedMessage = (msg: Message, args: string[], message: string) => {
   return embed(msg, args, {
     description: message,
   });
 };
 
-const embed = (msg, args, options: any = {}) => {
+const embed = (msg: Message, args: string[], options: any = {}) => {
   let embed = Object.assign(embedTemplate(msg), options);
   if (options.argsTitle)
     embed = Object.assign(embed, { title: argsTitle(args) });
