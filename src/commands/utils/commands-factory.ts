@@ -24,8 +24,7 @@ namespace CommandsFactory {
                 template.description,
                 isEnabled,
                 bindings,
-                template.execute,
-                template.config);
+                template.execute);
 
             // Add new command to the collection
             collection.set(command.name, command);

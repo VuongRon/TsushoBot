@@ -1,10 +1,4 @@
-const embedService = require("../services/embedService");
-const rngService = require("../services/rngService");
-
-const embedMessage = (msg, args) => {
-  const argsTitle = true;
-  // TODO extract responses into configuration file
-  const responses = [
+[
     "All signs point to yes...",
     "Yes!",
     "My sources say nope.",
@@ -31,24 +25,4 @@ const embedMessage = (msg, args) => {
     "Sure thing.",
     "Positive.",
     "Go for it."
-  ];
-  return embedService.embed(msg, args, {
-    argsTitle,
-    description: responses[rngService.getRandomInt(0, responses.length, false)],
-  });
-};
-
-const execute = (msg, args) => {
-  embedMessage(msg, args);
-}
-
-const commandTemplate = {
-  name: "8ball",
-  description: "Answers questions.",
-  execute: execute,
-  config: null
-}
-
-export {
-  commandTemplate
-}
+]

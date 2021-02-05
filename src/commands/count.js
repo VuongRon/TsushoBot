@@ -36,7 +36,7 @@ const count = async (msg, args) => {
   return embed(msg, args, count, user.count);
 };
 
-const execute = (msg, args, config, options) => {
+const execute = (msg, args) => {
   count(msg, args);
 }
 
@@ -44,7 +44,6 @@ const commandTemplate = {
   name: "count",
   description:
     `Incrementally increases your saved counter, with a chance to hit a critical increment.`,
-  config: null,
   execute: execute
 }
 

@@ -74,7 +74,6 @@ const execute = (msg, args) => {
 const commandTemplate = {
   name: "inventory",
   description: "Shows your fish inventory.",
-  config: null,
   execute: execute
 }
 

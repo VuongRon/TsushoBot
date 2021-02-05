@@ -79,7 +79,7 @@ const fishing = async (msg, args) => {
   return embed(msg, args, fish, fishAmount);
 };
 
-const execute = (msg, args, config, options) => {
+const execute = (msg, args) => {
   if (!talkedRecently.has(msg.author.id)) {
     fishing(msg, args);
     talkedRecently.add(msg.author.id);
@@ -92,7 +92,6 @@ const execute = (msg, args, config, options) => {
 const commandTemplate = {
   name: "fish",
   description: "Fishing yeah",
-  config: null,
   execute: execute
 }
 

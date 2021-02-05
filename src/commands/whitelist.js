@@ -85,7 +85,6 @@ const commandTemplate = {
   name: "whitelist",
   description:
     "Adds or removes the `whitelisted` flag from a user. Only executable by moderators in a server's text channel.",
-  config: null,
   execute: execute
 }
 

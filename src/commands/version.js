@@ -9,7 +9,6 @@ const execute = (msg, args, config, options) => {
 const commandTemplate = {
   name: "version",
   description: "Shows the current TsushoBot version.",
-  config: null,
   execute: execute
 }
 

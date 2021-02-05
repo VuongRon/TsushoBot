@@ -9,14 +9,13 @@ const embedMessage = (msg, args) => {
   });
 };
 
-const execute = (msg, args, config, options) => {
+const execute = (msg, args) => {
   embedMessage(msg, args);
 }
 
 const commandTemplate = {
   name: "coinflip",
   description: "Decide your fate by flipping a coin.",
-  config: null,
   execute: execute
 }
 

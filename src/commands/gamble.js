@@ -1,8 +1,9 @@
 const embedService = require("../services/embedService");
 const rngService = require("../services/rngService");
 import { UserModule, BetModule } from "../models";
+const outcomes = require("./config/gamble.json");
 
-const gamble = async (msg, args, outcomes) => {
+const gamble = async (msg, args) => {
   const user = await UserModule.findOrCreateByDiscordId(msg.author.id);
   let value = parseInt(args[0]);
   if (args[0] === "all") value = user.balance;
@@ -51,14 +52,13 @@ const gamble = async (msg, args, outcomes) => {
   return embedService.embedMessage(msg, args, message);
 };
 
-const execute = (msg, args, config, options) => {
-  gamble(msg, args, config);
+const execute = (msg, args) => {
+  gamble(msg, args);
 }
 
 const commandTemplate = {
   name: "gamble",
   description: "See if you can win some Tsushobucks quick.",
-  config: null, /** TODO */
   execute: execute
 }
 

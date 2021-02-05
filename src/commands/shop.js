@@ -42,7 +42,6 @@ const execute = (msg, args, config, options) => {
 const commandTemplate = {
   name: "shop",
   description: "Spend your Tsushobucks here",
-  config: null,
   execute: execute
 }
 

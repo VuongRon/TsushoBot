@@ -209,7 +209,7 @@ class Dice {
     /**
      * Defines the Embed color for the player's roll outcome.
      * The Embed message will have a White accent by default, 
-     * changin each time the player rolls a special combination - more than just Ones of Fives
+     * changing each time the player rolls a special combination - more than just Ones of Fives
      *
      * @var {integer}
      */
@@ -485,7 +485,7 @@ class Dice {
     },
 
     /**
-     * The msot basic rule, checks if the rolls have 1 or 5.
+     * The most basic rule, checks if the rolls have 1 or 5.
      * Each '1' is worth 10 points, a '5' is worth 5 points
      * 
      * There will be no return value, because we are not displaying a

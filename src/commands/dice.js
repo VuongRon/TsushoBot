@@ -1,15 +1,18 @@
 const embedService = require("../services/embedService");
 const DiceGame = require("./classes/Dice").Dice;
 
-const embedMessage = (msg, args, config) => {
-  let diceConstants = config;
-  let dice = new DiceGame(diceConstants, msg);
+const config = require("./config/dice.json");
+const colorsConfig = require("../config/constants/colors.json");
+
+const embedMessage = (msg, args) => {
+  let dice = new DiceGame(config, msg);
 
   // We do not want the game to continue before the "cooldown"
   if (DiceGame.hasStartedYet === false) {
     return embedService.embed(msg, args, {
       description: `The game has not started yet!`,
-      color: diceConstants.colors.black,
+      color: colorsConfig.black,
+      // should use global color
     });
   }
 
@@ -35,14 +38,13 @@ const embedMessage = (msg, args, config) => {
   });
 };
 
-const execute = (msg, args, config, options) => {
-  embedMessage(msg, args, config);
+const execute = (msg, args) => {
+  embedMessage(msg, args);
 }
 
 const commandTemplate = {
   name: "dice",
   description: "Dice 10000 played differently.",
-  config: null, /** TODO */
   execute: execute
 }
 

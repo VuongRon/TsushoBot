@@ -26,8 +26,7 @@ const execute = (msg: Message, args: string[]) => {
 const commandTemplate: CommandTemplate = {
   name: "alk",
   description: "Posts a random Alkaizer.",
-  execute: execute,
-  config: null
+  execute: execute
 }
 
 export {

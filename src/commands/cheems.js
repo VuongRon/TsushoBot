@@ -83,7 +83,7 @@ const embedMessage = (msg, args) => {
   return msg.channel.send(`${cheems[roll]}`);
 };
 
-const execute = (msg, args, config, options) => {
+const execute = (msg, args) => {
   if (!talkedRecently.has(msg.author.id)) {
     embedMessage(msg, args);
     talkedRecently.add(msg.author.id);
@@ -96,7 +96,6 @@ const execute = (msg, args, config, options) => {
 const commandTemplate = {
   name: "cheems",
   description: "cheemsburgber",
-  config: null,
   execute: execute
 }
 

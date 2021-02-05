@@ -56,14 +56,13 @@ const buying = async (msg, args) => {
   return embed(msg, args, user, item, transactionSucceeded);
 };
 
-const execute = (msg, args, config, options) => {
+const execute = (msg, args) => {
   buying(msg, args);
 }
 
 const commandTemplate = {
   name: "buy",
   description: "Buying items",
-  config: null,
   execute: execute
 }
 

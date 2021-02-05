@@ -3,8 +3,7 @@ import { Collection, Message } from "discord.js";
 interface CommandTemplate {
   name: string,
   description: string,
-  execute: (msg: Message, args: string[], config: any, options: any) => void,
-  config: any
+  execute: (msg: Message, args: string[], options: any) => void,
 }
 
 class Command implements CommandTemplate {
@@ -48,35 +47,24 @@ class Command implements CommandTemplate {
   /**
    * Command execution entry point
    */
-  private _execute: (msg: Message, args: string[], config: any, options: any) => void;
+  private _execute: (msg: Message, args: string[], options: any) => void;
 
   public execute(msg: Message, args: string[], options: any): void {
     if (this.canExecute(msg)) {
-      this._execute(msg, args, this.config, options);
+      this._execute(msg, args, options);
     }
-  }
-
-  /**
-   * Command's configuration object
-   */
-  private _config: any;
-
-  public get config(): any {
-    return this._config;
   }
 
   constructor(name: string,
     description: string,
     enabled: boolean,
     bindings: Set<string>,
-    execute: (msg: Message, args: string[], config: any, options: any) => void,
-    config: any) {
+    execute: (msg: Message, args: string[], options: any) => void) {
     this._name = name;
     this._description = description;
     this._enabled = enabled;
     this._bindings = bindings;
     this._execute = execute;
-    this._config = config;
   }
 
   private canExecute(msg: Message): boolean {
@@ -97,16 +85,6 @@ class Command implements CommandTemplate {
     if (this._bindings.size == 0) return true;
 
     const channelBindingValid = this._bindings.has(message.channel.id);
-
-    /**
-     * TODO:
-     * Find out if logger is actually needed, create a logger service, also if needed
-     *
-     * This requires leaving the property check, because DMChannels __do not__ contain "name" property
-     */
-    if (!channelBindingValid && "name" in message.channel) {
-      console.log(`Command "${this._name}" is not bound to "${message.channel.name}" channel`);
-    }
 
     return channelBindingValid;
   }

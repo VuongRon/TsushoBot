@@ -97,7 +97,6 @@ const execute = (msg, args, config, options) => {
 const commandTemplate = {
   name: "stats",
   description: "Shows your randomized stats. Each stat is normally distributed.",
-  config: null,
   execute: execute
 }
 

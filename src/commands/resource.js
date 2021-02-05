@@ -5,7 +5,7 @@ const axios = require("axios").default;
 const approverRole = process.env.hasOwnProperty("APPROVER_ROLE")
   ? process.env.APPROVER_ROLE
   : "Moderator";
-require("../services/channelBindingService").ChannelBinding;
+const config = require("./config/resource.json");
 
 const URLExists = async (url) => {
   try {
@@ -28,8 +28,8 @@ const checkResource = async (resource) => {
   }
 };
 
-const addResource = async (msg, args, options) => {
-  const commandNames = options.commandNames;
+const addResource = async (msg, args) => {
+  const commandNames = config.commandNames;
   const user = await UserModule.findOrCreateByDiscordId(msg.author.id);
   const passedCommand = args[0];
   const passedResource = args[1];
@@ -66,14 +66,13 @@ const addResource = async (msg, args, options) => {
   }
 };
 
-const execute = (msg, args, config) => {
-  addResource(msg, args, config);
+const execute = (msg, args) => {
+  addResource(msg, args);
 }
 
 const commandTemplate = {
   name: "resource",
   description: "Add a resource for approval.",
-  config: null, /** TODO */
   execute: execute
 }
 

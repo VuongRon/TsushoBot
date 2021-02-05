@@ -15,7 +15,7 @@ const getHelp = (msg, args, commands) => {
   });
 };
 
-const execute = (msg, args, config, options) => {
+const execute = (msg, args, options) => {
   if (options.commands) {
     getHelp(msg, args, options.commands);
   }
@@ -24,7 +24,6 @@ const execute = (msg, args, config, options) => {
 const commandTemplate = {
   name: "help",
   description: "The command to show all other commands.",
-  config: null,
   execute: execute
 }
 

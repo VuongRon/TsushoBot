@@ -3,7 +3,9 @@ const rngService = require("../services/rngService");
 
 import { UserModule } from "../models";
 
-const embed = (msg, args, count, userBalance, farmOutcomes) => {
+const farmOutcomes = require("./config/farm.json");
+
+const embed = (msg, args, count, userBalance) => {
   const message = `${rngService.getRandomArrayIndex(
     // Adjust farmOutcomes index offset to 0-based indexing
     farmOutcomes[count - 1]
@@ -11,7 +13,7 @@ const embed = (msg, args, count, userBalance, farmOutcomes) => {
   return embedService.embedMessage(msg, args, message);
 };
 
-const count = async (msg, args, farmOutcomes) => {
+const count = async (msg, args) => {
   const authorId = msg.author.id;
   const user = await UserModule.findOrCreateByDiscordId(authorId);
   const count = rngService.getRandomInt(1, 10);
@@ -20,17 +22,16 @@ const count = async (msg, args, farmOutcomes) => {
     console.error(err);
     return;
   });
-  return embed(msg, args, count, user.balance, farmOutcomes);
+  return embed(msg, args, count, user.balance);
 };
 
-const execute = (msg, args, config, options) => {
-  count(msg, args, config);
+const execute = (msg, args) => {
+  count(msg, args);
 }
 
 const commandTemplate = {
   name: "farm",
   description: "Farm Tsushobucks.",
-  config: null, /** TODO */
   execute: execute
 }
 

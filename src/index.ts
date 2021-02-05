@@ -4,8 +4,6 @@ config();
 import { Message } from "discord.js";
 import { ExtendedClient } from "./types/discord-types.type";
 import { botCommands } from "./commands";
-// TODO - refactor `require`uses to typescript imports
-const constants = require("./config/constants").constants;
 
 // Send our bot commands to the client
 const client = new ExtendedClient(botCommands);
@@ -33,7 +31,6 @@ client.on("message", (msg: Message) => {
   try {
     console.log(`called command: !${commandInstance.name}`);
     if (command == "help") options.commands = client.commands;
-    options.constants = constants; /** TODO remove from here as constants will be passed as configuration into the command initialization */
     commandInstance.execute(msg, args, options);
   } catch (error) {
     console.error(error);

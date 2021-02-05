@@ -51,7 +51,6 @@ const execute = (msg, args, config, options) => {
 const commandTemplate = {
   name: "sell",
   description: "Sells your fish inventory for Tsushobucks",
-  config: null,
   execute: execute
 }
 
