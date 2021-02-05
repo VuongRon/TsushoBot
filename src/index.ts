@@ -15,12 +15,14 @@ const constants = require("./config/constants").constants;
 const commandsCollection: CommandCollection = new Collection(Object.entries(botCommands));
 
 /**
- * Enabled commands processing
+ * Walk through the imported commands and override "enabled" flag on each command
+ * according to the commandEnablingService's behavior
+ * @see enableCommands
  */
 commandEnablingService.enableCommands(commandsCollection);
 
 /**
- * Check which commands have binding definitions and add them to the commandInstance
+ * Check which commands have binding definitions and add them to the each command in this collection
  */
 channelBindingService.processBindings(commandsCollection);
 
