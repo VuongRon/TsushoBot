@@ -28,17 +28,18 @@ commandEnablingService.enableCommands(commandsCollection);
  */
 channelBindingService.processBindings(commandsCollection);
 
-client.on("message", (msg: any) => {
 // Send our bot commands to the client
 client.commands = commandsCollection;
+client.on("message", (msg: Message) => {
   /**
    * Don't process bot messages, could be even more specific to ignore self messages.
    */
   if (msg.author.bot) {
     return;
   }
-  const args = msg.content.split(/ +/);
-  const command = args.shift().toLowerCase().substr(1);
+
+  const args: string[] = msg.content.split(/ +/);
+  const command: string = args.shift()!.toLowerCase().substr(1);
   const options: any = {};
 
   if (!client.commands.has(command)) return;
