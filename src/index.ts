@@ -11,12 +11,21 @@ const constants = require("./config/constants").constants;
 
 class ExtendedClient extends Client {
   /**
+   * @param   {CommandCollection}  botCommands  Collection of preprocessed bot commands
+   */
+  constructor(botCommands: CommandCollection) {
+    super();
+    this.commands = botCommands;
+  }
+
+  /**
    * Hashmap of string->Command
    */
   public commands: CommandCollection = new Collection();
 }
 
-const client = new ExtendedClient();
+// Prepare the imported commands
+// TODO: The Command Importer needs to be rewritten...
 const commandsCollection: CommandCollection = new Collection(Object.entries(botCommands));
 
 /**
@@ -30,7 +39,7 @@ commandEnablingService.enableCommands(commandsCollection);
 channelBindingService.processBindings(commandsCollection);
 
 // Send our bot commands to the client
-client.commands = commandsCollection;
+const client = new ExtendedClient(commandsCollection);
 client.on("message", (msg: Message) => {
   /**
    * Don't process bot messages, could be even more specific to ignore self messages.
