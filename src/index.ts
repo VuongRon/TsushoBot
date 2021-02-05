@@ -21,25 +21,10 @@ const commandsCollection: CommandCollector = new Collection(Object.entries(botCo
 /**
  * Enabled commands processing
  */
-let enabledCommands: string[] = [];
-let enabledCommandsStr = process.env.ENABLED_COMMANDS;
-if (enabledCommandsStr) {
-  enabledCommands = enabledCommandsStr.split(/\s+/gi);
-
-  enabledCommands.forEach((s, index, arr) => arr[index] = s.toLowerCase());
-}
+commandEnablingService.enableCommands(commandsCollection);
 
 /**
- * Check if enabledCommands is null \ empty
  */
-if (enabledCommands && enabledCommands.length > 0) {
-  // Disable all commands except enabled commands (commands are enabled by default when imported)
-  for (let key in botCommands) {
-    if (enabledCommands.findIndex(commandName => commandName == key) == -1) {
-      botCommands[key]["enabled"] = false;
-    }
-  } 
-}
 
 client.on("message", (msg: any) => {
 // Send our bot commands to the client
