@@ -24,7 +24,9 @@ const commandsCollection: CommandCollector = new Collection(Object.entries(botCo
 commandEnablingService.enableCommands(commandsCollection);
 
 /**
+ * Check which commands have binding definitions and add them to the commandInstance
  */
+channelBindingService.processBindings(commandsCollection);
 
 client.on("message", (msg: any) => {
 // Send our bot commands to the client
