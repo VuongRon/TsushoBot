@@ -12,10 +12,11 @@ class ExtendedClient extends Client {
   /**
    * Hashmap of string->Command
    */
-  public commands: Collection<string, Command> = new Collection();
+  public commands: CommandCollector = new Collection();
 }
 
 const client = new ExtendedClient();
+const commandsCollection: CommandCollector = new Collection(Object.entries(botCommands));
 
 /**
  * Enabled commands processing
@@ -40,9 +41,9 @@ if (enabledCommands && enabledCommands.length > 0) {
   } 
 }
 
-client.commands = new Collection(Object.entries(botCommands));
-
 client.on("message", (msg: any) => {
+// Send our bot commands to the client
+client.commands = commandsCollection;
   /**
    * Don't process bot messages, could be even more specific to ignore self messages.
    */
