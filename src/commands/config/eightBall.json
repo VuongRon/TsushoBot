@@ -1,9 +1,4 @@
-const embedService = require("../services/embedService");
-const rngService = require("../services/rngService");
-
-const embedMessage = (msg, args) => {
-  const argsTitle = true;
-  const responses = [
+[
     "All signs point to yes...",
     "Yes!",
     "My sources say nope.",
@@ -30,17 +25,4 @@ const embedMessage = (msg, args) => {
     "Sure thing.",
     "Positive.",
     "Go for it."
-  ];
-  return embedService.embed(msg, args, {
-    argsTitle,
-    description: responses[rngService.getRandomInt(0, responses.length, false)],
-  });
-};
-
-module.exports = {
-  name: "!8ball",
-  description: "Answers questions.",
-  execute(msg, args, options = {}) {
-    embedMessage(msg, args);
-  },
-};
+]

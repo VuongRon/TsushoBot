@@ -6,7 +6,7 @@ const getHelp = (msg, args, commands) => {
   commands.forEach((command) => {
     if (command.name && command.description)
       fields.push({
-        name: command.name,
+        name: `!${command.name}`,
         value: command.description,
       });
   });
@@ -15,10 +15,18 @@ const getHelp = (msg, args, commands) => {
   });
 };
 
-module.exports = {
-  name: "!help",
+const execute = (msg, args, options) => {
+  if (options.commands) {
+    getHelp(msg, args, options.commands);
+  }
+}
+
+const commandTemplate = {
+  name: "help",
   description: "The command to show all other commands.",
-  execute(msg, args, options = {}) {
-    if (options.commands) getHelp(msg, args, options.commands);
-  },
-};
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

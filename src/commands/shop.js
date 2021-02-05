@@ -35,10 +35,16 @@ const shop = async (msg, args) => {
   return embed(msg, args, fisherman);
 };
 
-module.exports = {
-  name: "!shop",
+const execute = (msg, args, config, options) => {
+  shop(msg, args);
+}
+
+const commandTemplate = {
+  name: "shop",
   description: "Spend your Tsushobucks here",
-  execute(msg, args, options = {}) {
-    shop(msg, args);
-  },
-};
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

@@ -79,16 +79,22 @@ const fishing = async (msg, args) => {
   return embed(msg, args, fish, fishAmount);
 };
 
-module.exports = {
-  name: "!fish",
+const execute = (msg, args) => {
+  if (!talkedRecently.has(msg.author.id)) {
+    fishing(msg, args);
+    talkedRecently.add(msg.author.id);
+    setTimeout(() => {
+      talkedRecently.delete(msg.author.id);
+    }, 3500);
+  }
+}
+
+const commandTemplate = {
+  name: "fish",
   description: "Fishing yeah",
-  execute(msg, args, options = {}) {
-    if (!talkedRecently.has(msg.author.id)) {
-      fishing(msg, args);
-      talkedRecently.add(msg.author.id);
-      setTimeout(() => {
-        talkedRecently.delete(msg.author.id);
-      }, 3500);
-    }
-  },
-};
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

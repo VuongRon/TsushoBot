@@ -1,14 +1,16 @@
 require("dotenv").config();
 const embedService = require("../services/embedService");
 import { MediaModule } from "../models";
-require("../services/channelBindingService").ChannelBinding;
 
 const approverRole = process.env.hasOwnProperty("APPROVER_ROLE")
   ? process.env.APPROVER_ROLE
   : "Moderator";
 
-const getApproval = async (msg, args, options, resource) => {
-  const reactionEmojis = options.reactionFilterEmojis;
+const emojisConfig = require("../config/constants/reactions.json");
+const config = require("./config/approve.json");
+
+const getApproval = async (msg, args, resource) => {
+  const reactionEmojis = emojisConfig.reactionFilterEmojis;
   const reactionEmojisFilter = Object.values(reactionEmojis);
   const reactionFilter = (reaction, user) => {
     return (
@@ -49,7 +51,7 @@ const getApproval = async (msg, args, options, resource) => {
         })
         .then(() => {
           message.delete();
-          approve(msg, args, options);
+          approve(msg, args);
         })
         .catch(() => {
           message.delete();
@@ -80,13 +82,13 @@ const removeApproval = async (msg, args, resource) => {
   }
 };
 
-const approve = async (msg, args, options) => {
+const approve = async (msg, args) => {
   if (
     msg.channel.type === "text" &&
     msg.member.roles.cache.some((role) => role.name === approverRole) &&
     args
   ) {
-    const commandNames = options.commandNames;
+    const commandNames = config.commandNames;
     if (commandNames.includes(args[0])) {
       const passedCommand = args[0];
       const resource = await MediaModule
@@ -96,7 +98,7 @@ const approve = async (msg, args, options) => {
           return;
         });
       if (resource) {
-        await getApproval(msg, args, options, resource);
+        await getApproval(msg, args, resource);
       } else {
         const message =
           "There are no more enqueued resources for this command type.";
@@ -115,10 +117,16 @@ const approve = async (msg, args, options) => {
   }
 };
 
-module.exports = {
-  name: "!approve",
+const execute = (msg, args) => {
+    approve(msg, args);
+}
+
+const commandTemplate = {
+  name: "approve",
   description: "Approve enqueued media resources.",
-  execute(msg, args, options = {}) {
-    approve(msg, args, options.constants.media);
-  },
-};
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

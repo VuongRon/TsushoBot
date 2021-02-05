@@ -90,10 +90,16 @@ const embedMessage = (msg, args) => {
   });
 };
 
-module.exports = {
-  name: "!stats",
+const execute = (msg, args, config, options) => {
+  embedMessage(msg, args);
+}
+
+const commandTemplate = {
+  name: "stats",
   description: "Shows your randomized stats. Each stat is normally distributed.",
-  execute(msg, args, options = {}) {
-    embedMessage(msg, args);
-  },
-};
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

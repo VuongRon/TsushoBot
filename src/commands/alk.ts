@@ -1,10 +1,12 @@
+import { Message } from "discord.js";
 import { sequelize, MediaModule } from "../models";
 import { embedMessage } from "../services/embedService";
+import { CommandTemplate } from "../types/command.type";
 
 const getResource = async (msg, args) => {
   const resource = await MediaModule.selectRandomFromCommand("alk", sequelize).catch(err => console.error(err));
   if (!resource) {
-    return null; /** TODO */
+    return; /** TODO */
   }
   return msg.channel.send(resource.mediaContent).catch(async (err) => {
     console.error(err);
@@ -17,10 +19,16 @@ const getResource = async (msg, args) => {
   });
 };
 
-module.exports = {
-  name: "!alk",
+const execute = (msg: Message, args: string[]) => {
+  getResource(msg, args);
+}
+
+const commandTemplate: CommandTemplate = {
+  name: "alk",
   description: "Posts a random Alkaizer.",
-  execute(msg, args, options = {}) {
-    getResource(msg, args);
-  },
-};
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

@@ -83,16 +83,22 @@ const embedMessage = (msg, args) => {
   return msg.channel.send(`${cheems[roll]}`);
 };
 
-module.exports = {
-  name: "!cheems",
+const execute = (msg, args) => {
+  if (!talkedRecently.has(msg.author.id)) {
+    embedMessage(msg, args);
+    talkedRecently.add(msg.author.id);
+    setTimeout(() => {
+      talkedRecently.delete(msg.author.id);
+    }, 20000);
+  }
+},
+
+const commandTemplate = {
+  name: "cheems",
   description: "cheemsburgber",
-  execute(msg, args, options = {}) {
-    if (!talkedRecently.has(msg.author.id)) {
-      embedMessage(msg, args);
-      talkedRecently.add(msg.author.id);
-      setTimeout(() => {
-        talkedRecently.delete(msg.author.id);
-      }, 20000);
-    }
-  },
-};
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

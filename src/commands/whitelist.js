@@ -77,12 +77,17 @@ const setWhitelist = async (msg, args) => {
   }
 };
 
-module.exports = {
-  name: "!whitelist",
+const execute = (msg, args, config, options) => {
+  setWhitelist(msg, args);
+}
+
+const commandTemplate = {
+  name: "whitelist",
   description:
     "Adds or removes the `whitelisted` flag from a user. Only executable by moderators in a server's text channel.",
-  guildOnly: true,
-  execute(msg, args, options = {}) {
-    setWhitelist(msg, args);
-  },
-};
+  execute: execute
+}
+
+export {
+  commandTemplate
+}

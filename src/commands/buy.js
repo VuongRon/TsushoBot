@@ -56,10 +56,16 @@ const buying = async (msg, args) => {
   return embed(msg, args, user, item, transactionSucceeded);
 };
 
-module.exports = {
-  name: "!buy",
+const execute = (msg, args) => {
+  buying(msg, args);
+}
+
+const commandTemplate = {
+  name: "buy",
   description: "Buying items",
-  execute(msg, args, options = {}) {
-    buying(msg, args);
-  },
-};
+  execute: execute
+}
+
+export {
+  commandTemplate
+}
