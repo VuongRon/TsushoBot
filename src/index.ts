@@ -1,28 +1,14 @@
 import { config } from "dotenv";
 config();
 
-import { Collection, Client, Message } from "discord.js";
+import { Collection,  Message } from "discord.js";
 import { CommandCollection } from "./types/command.type";
+import { ExtendedClient } from "./classes/client";
 import { botCommands } from "./commands";
 import * as channelBindingService from "./services/channelBindingService";
 import * as commandEnablingService from "./services/commandEnablingService";
 // TODO - refactor `require`uses to typescript imports
 const constants = require("./config/constants").constants;
-
-class ExtendedClient extends Client {
-  /**
-   * @param   {CommandCollection}  botCommands  Collection of preprocessed bot commands
-   */
-  constructor(botCommands: CommandCollection) {
-    super();
-    this.commands = botCommands;
-  }
-
-  /**
-   * Hashmap of string->Command
-   */
-  public commands: CommandCollection = new Collection();
-}
 
 // Prepare the imported commands
 // TODO: The Command Importer needs to be rewritten...
