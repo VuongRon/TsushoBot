@@ -5,6 +5,7 @@ const getResource = async (msg, args) => {
   const resource = await MediaModule.selectRandomFromCommand("alk", sequelize).catch(err => console.error(err));
   if (!resource) {
     return null; /** TODO */
+    // ???
   }
   return msg.channel.send(resource.mediaContent).catch(async (err) => {
     console.error(err);
