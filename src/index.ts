@@ -1,5 +1,6 @@
-import * as dotenv from "dotenv";
-dotenv.config();
+import { config } from "dotenv";
+config();
+
 import { Collection, Client, Message } from "discord.js";
 import { CommandCollector } from "./types/command.type";
 import { botCommands } from "./commands";
