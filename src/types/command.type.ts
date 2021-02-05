@@ -1,13 +1,13 @@
 import { Collection, Message } from "discord.js";
 
-interface CommandTemplate<T> {
+interface CommandTemplate {
   name: string,
   description: string,
-  execute: (msg: Message, args: string[], config: T, options: any) => void,
-  config: T
+  execute: (msg: Message, args: string[], config: any, options: any) => void,
+  config: any
 }
 
-class Command<T> implements CommandTemplate<T> {
+class Command implements CommandTemplate {
   /**
    * Name of the command
    */
@@ -48,7 +48,7 @@ class Command<T> implements CommandTemplate<T> {
   /**
    * Command execution entry point
    */
-  private _execute: (msg: Message, args: string[], config: T, options: any) => void;
+  private _execute: (msg: Message, args: string[], config: any, options: any) => void;
 
   public execute(msg: Message, args: string[], options: any): void {
     if (this.canExecute(msg)) {
@@ -59,9 +59,9 @@ class Command<T> implements CommandTemplate<T> {
   /**
    * Command's configuration object
    */
-  private _config: T;
+  private _config: any;
 
-  public get config(): T {
+  public get config(): any {
     return this._config;
   }
 
@@ -69,8 +69,8 @@ class Command<T> implements CommandTemplate<T> {
     description: string,
     enabled: boolean,
     bindings: Set<string>,
-    execute: (msg: Message, args: string[], config: T, options: any) => void,
-    config: T) {
+    execute: (msg: Message, args: string[], config: any, options: any) => void,
+    config: any) {
     this._name = name;
     this._description = description;
     this._enabled = enabled;
@@ -112,7 +112,7 @@ class Command<T> implements CommandTemplate<T> {
   }
 };
 
-type CommandCollection = Collection<string, Command<any>>;
+type CommandCollection = Collection<string, Command>;
 
 export {
   CommandTemplate,

@@ -5,12 +5,12 @@ import { getCommandBindings } from "../../services/channelBindingService";
 import { Command, CommandCollection, CommandTemplate } from "../../types/command.type";
 
 namespace CommandsFactory {
-    export function createCommandCollection<T>(templates: CommandTemplate<T>[]): CommandCollection {
+    export function createCommandCollection(templates: CommandTemplate[]): CommandCollection {
         let collection: CommandCollection = new Collection();
 
         const enabledCommandsSet = getEnabledCommandsSet();
 
-        let command: Command<T>;
+        let command: Command;
         for (let template of templates) {
             // enabled by default
             let isEnabled = true;
@@ -20,7 +20,7 @@ namespace CommandsFactory {
 
             let bindings = getCommandBindings(template.name);
 
-            command = new Command<T>(template.name,
+            command = new Command(template.name,
                 template.description,
                 isEnabled,
                 bindings,
