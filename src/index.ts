@@ -1,6 +1,12 @@
-require("dotenv").config();
-import { Collection, Client } from "discord.js";
-
+import * as dotenv from "dotenv";
+dotenv.config();
+import { Collection, Client, Message } from "discord.js";
+import { CommandCollector } from "./types/command.type";
+import { botCommands } from "./commands";
+import * as channelBindingService from "./services/channelBindingService";
+import * as commandEnablingService from "./services/commandEnablingService";
+// TODO - refactor `require`uses to typescript imports
+const constants = require("./config/constants").constants;
 
 class ExtendedClient extends Client {
   /**
@@ -10,11 +16,6 @@ class ExtendedClient extends Client {
 }
 
 const client = new ExtendedClient();
-
-const botCommands = require("./commands");
-const channelBindingService = require("./services/channelBindingService").ChannelBinding;
-const commandThrottlingService = require("./services/commandThrottlingService").CommandThrottling;
-const constants = require("./config/constants").constants;
 
 /**
  * Enabled commands processing
