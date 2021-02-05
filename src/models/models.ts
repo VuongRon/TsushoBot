@@ -6,7 +6,7 @@ import * as MediaModule from "./media";
 import * as UserModule from "./user";
 
 const env = process.env.NODE_ENV || 'development';
-import * as configJson from "../config/config.json";
+import * as configJson from "../config/db-config.json";
 const config = configJson[env];
 
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
