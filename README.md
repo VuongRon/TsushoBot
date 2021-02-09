@@ -84,9 +84,12 @@ const executionLogic = (msg: Message, args: string[], options: any) => {
   // @see: https://leovoel.github.io/embed-visualizer/
   // You can change the color accent by passing:
   //  color: your_color_value_decimal
-  // @see: https://convertingcolors.com/
+  // @see: https://convertingcolors.com
+  //
+  // About argsTitle: when true, the string after the command name in the chat
+  // will be used as an embed title: e.g. !command Some String As An Embed Title
   return embed(msg, args, {
-    argsTitle: "Embed title",
+    argsTitle: true,
     description: "Embed description contents",
     color: [optional: decimal encoded color, white by default]
   });
