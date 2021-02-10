@@ -1,11 +1,13 @@
 import { Message } from "discord.js";
 
 const argsTitle = (args: string[]): string => {
-  const argsArray = args.join(" ");
-  const maxLength = 100;
-  return argsArray.length > maxLength
+  const argsArray: string = args.join(" ");
+  const maxLength: number = 100;
+  const commandArgs: string = argsArray.length > maxLength
     ? argsArray.substring(0, maxLength - 3) + "..."
     : argsArray;
+
+  return commandArgs;
 };
 
 const embedTemplate = (msg: Message) => {
@@ -18,16 +20,19 @@ const embedTemplate = (msg: Message) => {
   };
 };
 
-const embedMessage = (msg: Message, args: string[], message: string) => {
+const embedMessage = (msg: Message, args: string[], message: string): Promise<Message> => {
   return embed(msg, args, {
     description: message,
   });
 };
 
-const embed = (msg: Message, args: string[], options: any = {}) => {
+const embed = (msg: Message, args: string[], options: any = {}): Promise<Message> => {
   let embed = Object.assign(embedTemplate(msg), options);
-  if (options.argsTitle)
+
+  if (options.argsTitle) {
     embed = Object.assign(embed, { title: argsTitle(args) });
+  }
+
   return msg.channel.send({ embed });
 };
 
