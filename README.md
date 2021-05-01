@@ -42,8 +42,8 @@ A Discord.js based Discord chat bot. 🤖
    - If you wish to overwrite the existing `.env` (**not recommended**), execute `npm run cloneEnv -- --force`
    - Check the contents of `.env` for more details on feature configuration
    - Inside of the `.env` file, update the `TOKEN` variable and set it to the Token you copied from your Bot page, e.g. `TOKEN=YOURTOKENGOESHERE`
-   - Run tests with `npm test` (refer to [the testing section](#testing))
-   - The project should be functional at this point. refer to [this steps](#running-debugging-the-project) in order to run\debug it - if you get any errors, you probably skipped a step.
+   - Before the project is ready to be used, it needs to be compiled, please refer to [this steps](#running-debugging-the-project).
+   The project should be functional at this point - if you get any errors, you probably skipped a step.
 
 ---
 
