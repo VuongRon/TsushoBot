@@ -55,7 +55,7 @@ Run `npm run build:src` in order to compile the src Typescript project.
 To then run the project, you can run `npm start`.
 
 In order to debug the project, in VS code go to Run (Default keyboard shortcut: Ctrl+Shift+D), then at the top choose "Launch Program" and click the green triangle (Start Debugging).
-Not that you need to place your breakpoints in your source code (Typescript/Javascript) in the `src` folder, and **not** the `dist` folder.
+You need to place your breakpoints in your source code (Typescript/Javascript) in the `src` folder, and **not** in the `dist` folder.
 
 ---
 
