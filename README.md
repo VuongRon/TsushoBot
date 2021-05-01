@@ -68,7 +68,7 @@ You need to place your breakpoints in your source code (Typescript/Javascript) i
   |- [command_name].ts
 ```
 
-2. Add a command template TODO update adding command templates
+2. Add a command template
 
 ```ts
 import { Message } from "discord.js";
