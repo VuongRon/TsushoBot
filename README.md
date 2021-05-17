@@ -43,8 +43,8 @@ A Discord.js based Discord chat bot. 🤖
    - If you wish to overwrite the existing `.env` (**not recommended**), execute `npm run cloneEnv -- --force` - this will create a fresh copy of `.env` template
    - Check the contents of `.env` for more details on feature configuration
    - Inside of the `.env` file, update the `TOKEN` variable and set it to the Token you copied from your Bot page, e.g. `TOKEN=YOURTOKENGOESHERE`
-   - Before the project is ready to be used, it needs to be compiled, please refer to [this steps](#running-debugging-the-project).
-   The project should be functional at this point - if you get any errors, you probably skipped a step.
+   - Run tests with `npm test` (refer to [the testing section](#testing))
+   - The project should be functional at this point. Refer to [these steps](#running-debugging-the-project) in order to run\debug it - if you get any errors, you probably skipped a step.
 
 ---
 
@@ -56,7 +56,7 @@ Run `npm run build:src` in order to compile the src Typescript project.
 To then run the project, you can run `npm start`.
 
 In order to debug the project, in VS code go to Run (Default keyboard shortcut: Ctrl+Shift+D), then at the top choose "Launch Program" and click the green triangle (Start Debugging).
-You need to place your breakpoints in your source code (Typescript/Javascript) in the `src` folder, and **not** in the `dist` folder.
+Note that you need to place your breakpoints in your source code (Typescript/Javascript) in the `src` folder, and **not** in the `dist` folder.
 
 ---
 
