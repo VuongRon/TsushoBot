@@ -64,49 +64,52 @@ Note that you need to place your breakpoints in your source code (Typescript/Jav
 
 1. Create a new file under the `commands` directory:
 
-```
-/ commands
-  |- [command_name].ts
-```
+   ```text
+   / commands
+      |- [command_name].ts
+   ```
 
 2. Add a command template
 
-```ts
-import { Message } from "discord.js";
+   ```ts
+   import { Message } from "discord.js";
 
-import { CommandTemplate } from "../types/command.type";
-import { embed } from "../services/embedService";
+   import { CommandTemplate } from "../types/command.type";
+   import { embed } from "../services/embedService";
 
-const executionLogic = (msg: Message, args: string[], options: any) => {
-  /**
-   * Command logic goes here
-   */
+   const executionLogic = (msg: Message, args: string[], options: any) => {
+      /**
+       * Command logic goes here
+      */
 
-  // @see: https://leovoel.github.io/embed-visualizer/
-  // You can change the color accent by passing:
-  //  color: your_color_value_decimal
-  // @see: https://convertingcolors.com/
-  return embed(msg, args, {
-    argsTitle: "Embed title",
-    description: "Embed description contents",
-    color: [optional: decimal encoded color, white by default]
-  });
-};
+      // @see: https://leovoel.github.io/embed-visualizer/
+      // You can change the color accent by passing:
+      //  color: your_color_value_decimal
+      // @see: https://convertingcolors.com
+      //
+      // About argsTitle: when true, the string after the command name in the chat
+      // will be used as an embed title: e.g. !command Some String As An Embed Title
+      return embed(msg, args, {
+      argsTitle: true,
+      description: "Embed description contents",
+      color: [optional: decimal encoded color, white by default]
+      });
+   };
 
-const execute = (msg: Message, args: string[], options: any) => {
-  executionLogic(msg, args, options);
-};
+   const execute = (msg: Message, args: string[], options: any) => {
+      executionLogic(msg, args, options);
+   };
 
-const commandTemplate: CommandTemplate = {
-  name: "command name (without !)",
-  description: "command description",
-  execute: execute,
-};
+   const commandTemplate: CommandTemplate = {
+      name: "command name (without !)",
+      description: "command description",
+      execute: execute,
+   };
 
-export { 
-  commandTemplate
-};
-```
+   export { 
+      commandTemplate
+   };
+   ```
 
 3. Add additional command json configuration by adding a file under:
 ```
