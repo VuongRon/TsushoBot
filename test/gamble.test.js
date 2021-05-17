@@ -2,12 +2,12 @@ const chai = require("chai");
 const sinon = require("sinon");
 const sinonChai = require("sinon-chai");
 const sandbox = sinon.createSandbox();
-const gamble = require("../commands/gamble");
-const constants = require("../config/constants").constants;
-const embedService = require("../services/embedService");
-const rngService = require("../services/rngService");
-const userModel = require("../models").sequelize.models.User;
-const betModel = require("../models").sequelize.models.Bet;
+const gamble = require("../dist/commands/gamble");
+const constants = require("../dist/config/constants").constants;
+const embedService = require("../dist/services/embedService");
+const rngService = require("../dist/services/rngService");
+const UserModule = require("../dist/models").UserModule;
+const betModel = require("../dist/models").sequelize.models.Bet;
 chai.use(sinonChai);
 const expect = chai.expect;
 
@@ -47,7 +47,7 @@ describe("!gamble", () => {
         save: sandbox.stub().resolves(true),
       };
       this.stubEmbedMessage = sandbox.stub(embedService, "embedMessage").returns(true);
-      this.stubFindOrCreateByDiscordId = sandbox.stub(userModel, "findOrCreateByDiscordId").returns(this.mockUser);
+      this.stubFindOrCreateByDiscordId = sandbox.stub(UserModule, "findOrCreateByDiscordId").returns(this.mockUser);
       this.stubBetCreate = sandbox.stub(betModel, "create").resolves(true);
       this.stubGetRandomInt = sandbox.stub(rngService, "getRandomInt").returns(0);
       this.stubGetRandomArrayIndex = sandbox.stub(rngService, "getRandomArrayIndex").returns("Outcome.");
