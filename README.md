@@ -112,11 +112,14 @@ Note that you need to place your breakpoints in your source code (Typescript/Jav
    ```
 
 3. Add additional command json configuration by adding a file under:
-```
+
+```text
 / commands/config
   |- [command_name].json
 ```
+
 and then consume the configuration inside your command file:
+
 ```ts
 // ...
 
