@@ -4,10 +4,11 @@ A Discord.js based Discord chat bot. 🤖
 
 ---
 
-- [Setting up a Test Environment](#setting-up-a-test-environment)
-- [Running/Debugging the project](#running-debugging-the-project)
-- [Adding a new command](#adding-a-new-command)
-- [Testing](#testing)
+- [TsushoBot](#tsushobot)
+  - [Setting Up A Test Environment](#setting-up-a-test-environment)
+  - [<a id="running-debugging-the-project"></a> Running/Debugging the project](#-runningdebugging-the-project)
+  - [Adding A New Command](#adding-a-new-command)
+  - [Testing](#testing)
 
 ---
 
@@ -42,20 +43,20 @@ A Discord.js based Discord chat bot. 🤖
    - If you wish to overwrite the existing `.env` (**not recommended**), execute `npm run cloneEnv -- --force`
    - Check the contents of `.env` for more details on feature configuration
    - Inside of the `.env` file, update the `TOKEN` variable and set it to the Token you copied from your Bot page, e.g. `TOKEN=YOURTOKENGOESHERE`
-   - Before the project is ready to be used, it needs to be compiled, please refer to [this steps](#running-debugging-the-project).
+   - Before the project is ready to be used, it needs to be compiled, please refer to [these steps](#running-debugging-the-project).
    The project should be functional at this point - if you get any errors, you probably skipped a step.
 
 ---
 
 ## <a id="running-debugging-the-project"></a> Running/Debugging the project
 
-In order to run the project, it requires getting compiled first from Typescript to Javascript.
+In order to run the project, you first need to compile TypeScript files into JavaScript files.
 
-Run `npm run build:src` in order to compile the src Typescript project.
+Run `npm run build:src` in order to compile the src TypeScript project.
 To then run the project, you can run `npm start`.
 
 In order to debug the project, in VS code go to Run (Default keyboard shortcut: Ctrl+Shift+D), then at the top choose "Launch Program" and click the green triangle (Start Debugging).
-You need to place your breakpoints in your source code (Typescript/Javascript) in the `src` folder, and **not** in the `dist` folder.
+You need to place your breakpoints in your source code (TypeScript/JavaScript) in the `src` folder, and **not** in the `dist` folder.
 
 ---
 
