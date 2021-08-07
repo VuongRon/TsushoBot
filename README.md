@@ -36,14 +36,15 @@ A Discord.js based Discord chat bot. 🤖
    - Navigate to the project's folder in the command line
    - Check out to a new branch
    - Install the required dependencies by running `npm i`
-   - This will automatically run the `db:migrate` task for you upon finishing the installation, or you can run it manually:
-     - To setup a local sqlite3 database file, run `npm run db:migrate`
-   - Execute `npm run cloneEnv` - this will create a new `.env` file
+   - This will automatically execute the setup:
+     - runs the `db:migrate` - to setup a local sqlite3 database file manually, run `npm run db:migrate`
+     - builds the source (executing `npm run build:src`)
+     - clones a fresh `.env` file
    - If you wish to overwrite the existing `.env` (**not recommended**), execute `npm run cloneEnv -- --force`
    - Check the contents of `.env` for more details on feature configuration
    - Inside of the `.env` file, update the `TOKEN` variable and set it to the Token you copied from your Bot page, e.g. `TOKEN=YOURTOKENGOESHERE`
    - Run tests with `npm test` (refer to [the testing section](#testing))
-   - The project should be functional at this point. refer to [this steps](#running-debugging-the-project) in order to run\debug it - if you get any errors, you probably skipped a step.
+   - The project should be functional at this point. Refer to [these steps](#running-debugging-the-project) in order to run\debug it - if you get any errors, you probably skipped a step.
 
 ---
 
@@ -55,7 +56,7 @@ Run `npm run build:src` in order to compile the src Typescript project.
 To then run the project, you can run `npm start`.
 
 In order to debug the project, in VS code go to Run (Default keyboard shortcut: Ctrl+Shift+D), then at the top choose "Launch Program" and click the green triangle (Start Debugging).
-Not that you need to place your breakpoints in your source code (Typescript/Javascript) in the `src` folder, and **not** the `dist` folder.
+Note that you need to place your breakpoints in your source code (Typescript/Javascript) in the `src` folder, and **not** in the `dist` folder.
 
 ---
 
@@ -63,59 +64,62 @@ Not that you need to place your breakpoints in your source code (Typescript/Java
 
 1. Create a new file under the `commands` directory:
 
-```
-/ commands
-  |- [command_name].ts
-```
+   ```text
+   / commands
+      |- [command_name].ts
+   ```
 
-2. Add a command template TODO update adding command templates
+2. Add a command template
 
-```ts
-import { Message } from "discord.js";
+   ```ts
+   import { Message } from "discord.js";
 
-import { CommandTemplate } from "../types/command.type";
-import { embed } from "../services/embedService";
+   import { CommandTemplate } from "../types/command.type";
+   import { embed } from "../services/embedService";
 
-const executionLogic = (msg: Message, args: string[], options: any) => {
-  /**
-   * Command logic goes here
-   */
+   const executionLogic = (msg: Message, args: string[], options: any) => {
+      /**
+       * Command logic goes here
+      */
 
-  // @see: https://leovoel.github.io/embed-visualizer/
-  // You can change the color accent by passing:
-  //  color: your_color_value_decimal
-  // @see: https://convertingcolors.com
-  //
-  // About argsTitle: when true, the string after the command name in the chat
-  // will be used as an embed title: e.g. !command Some String As An Embed Title
-  return embed(msg, args, {
-    argsTitle: true,
-    description: "Embed description contents",
-    color: [optional: decimal encoded color, white by default]
-  });
-};
+      // @see: https://leovoel.github.io/embed-visualizer/
+      // You can change the color accent by passing:
+      //  color: your_color_value_decimal
+      // @see: https://convertingcolors.com
+      //
+      // About argsTitle: when true, the string after the command name in the chat
+      // will be used as an embed title: e.g. !command Some String As An Embed Title
+      return embed(msg, args, {
+      argsTitle: true,
+      description: "Embed description contents",
+      color: [optional: decimal encoded color, white by default]
+      });
+   };
 
-const execute = (msg: Message, args: string[], options: any) => {
-  executionLogic(msg, args, options);
-};
+   const execute = (msg: Message, args: string[], options: any) => {
+      executionLogic(msg, args, options);
+   };
 
-const commandTemplate: CommandTemplate = {
-  name: "command name (without !)",
-  description: "command description",
-  execute: execute,
-};
+   const commandTemplate: CommandTemplate = {
+      name: "command name (without !)",
+      description: "command description",
+      execute: execute,
+   };
 
-export { 
-  commandTemplate
-};
-```
+   export { 
+      commandTemplate
+   };
+   ```
 
 3. Add additional command json configuration by adding a file under:
-```
+
+```text
 / commands/config
   |- [command_name].json
 ```
+
 and then consume the configuration inside your command file:
+
 ```ts
 // ...
 
