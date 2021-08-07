@@ -6,7 +6,7 @@ A Discord.js based Discord chat bot. 🤖
 
 - [TsushoBot](#tsushobot)
   - [Setting Up A Test Environment](#setting-up-a-test-environment)
-  - [<a id="running-debugging-the-project"></a> Running/Debugging the project](#-runningdebugging-the-project)
+  - [Running/Debugging the project](#runningdebugging-the-project)
   - [Adding A New Command](#adding-a-new-command)
   - [Testing](#testing)
 
@@ -49,7 +49,7 @@ A Discord.js based Discord chat bot. 🤖
 
 ---
 
-## <a id="running-debugging-the-project"></a> Running/Debugging the project
+## Running/Debugging the project
 
 In order to run the project, you first need to compile TypeScript files into JavaScript files.
 
