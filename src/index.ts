@@ -1,12 +1,18 @@
 import { config } from "dotenv";
 config();
 
-import { Message } from "discord.js";
+import { Intents, Message } from "discord.js";
 import { ExtendedClient } from "./types/discord-types.type";
 import { botCommands } from "./commands";
 
 // Send our bot commands to the client
-const client = new ExtendedClient(botCommands);
+const client = new ExtendedClient(
+  {
+    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+  },
+  botCommands
+);
+
 client.on("message", (msg: Message) => {
   /**
    * Don't process bot messages, could be even more specific to ignore self messages.
@@ -40,7 +46,7 @@ client.on("message", (msg: Message) => {
 
 const TOKEN = process.env.TOKEN;
 
-client.on("ready", () => {
+client.once("ready", () => {
   client.user
     ? console.log(`Logged in as ${client.user.tag}!`)
     : console.log(`Logged in without defined user`);

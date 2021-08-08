@@ -6,7 +6,7 @@ import { CommandTemplate } from "../types/command.type";
 const getResource = async (msg: Message, args: string[]) => {
   const resource = await MediaModule.selectRandomFromCommand("alk", sequelize).catch(err => console.error(err));
   if (!resource) {
-    return; /** TODO */
+    return; /* TODO */
   }
   return msg.channel.send(resource.mediaContent).catch(async (err) => {
     console.error(err);
