@@ -40,7 +40,7 @@ A Discord.js based Discord chat bot. 🤖
      - runs the `db:migrate` - to setup a local sqlite3 database file manually, run `npm run db:migrate`
      - builds the source (executing `npm run build:src`)
      - clones a fresh `.env` file
-   - If you wish to overwrite the existing `.env` (**not recommended**), execute `npm run cloneEnv -- --force`
+   - If you wish to create a new `.env` file, execute `npm run env:new`
    - Check the contents of `.env` for more details on feature configuration
    - Inside of the `.env` file, update the `TOKEN` variable and set it to the Token you copied from your Bot page, e.g. `TOKEN=YOURTOKENGOESHERE`
    - Run tests with `npm test` (refer to [the testing section](#testing))
