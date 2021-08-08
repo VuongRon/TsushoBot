@@ -33,7 +33,7 @@ describe("Test: Set.findObject()", () => {
     const testPerson: Person = newPerson();
     people.add(testPerson);
 
-    // Make sure that search can be performed by any key in the
+    // Make sure that search can be performed by any key in the given set
     // Note: both findObject() and findAllObjects() perform the same search,
     // so there's no need to duplicate this test in another method
     Object.keys(testPerson).forEach((key: string) => {
