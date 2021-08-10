@@ -87,16 +87,15 @@ const embedMessage = (msg, args) => {
   });
 };
 
-const execute = (msg, args, config, options) => {
+const execute = (msg, args, options) => {
   embedMessage(msg, args);
-}
+};
 
 const commandTemplate = {
   name: "stats",
-  description: "Shows your randomized stats. Each stat is normally distributed.",
-  execute: execute
-}
+  description:
+    "Shows your randomized stats. Each stat is normally distributed.",
+  execute: execute,
+};
 
-export {
-  commandTemplate
-}
+export { commandTemplate };
