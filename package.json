@@ -12,7 +12,8 @@
     "start": "concurrently \"npm run build:src\" \"node dist/index.js\" --max-processes 1",
     "start:nobuild": "node dist/index.js",
     "postinstall": "concurrently \"npm run db:migrate\" \"npm run build:src\" \"npm run env:new\" --max-processes 1",
-    "version": "node -p \"require('./package').version\""
+    "version": "node -p \"require('./package').version\"",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -40,12 +41,23 @@
     "@types/chai": "^4.2.14",
     "@types/jest": "^26.0.20",
     "@types/validator": "^13.1.3",
+    "@typescript-eslint/eslint-plugin": "^4.29.1",
+    "@typescript-eslint/parser": "^4.29.1",
     "chai": "^4.2.0",
     "concurrently": "^6.1.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "husky": "^7.0.1",
     "jest": "^26.6.3",
+    "lint-staged": "^11.1.2",
+    "prettier": "^2.3.2",
     "sinon": "^9.2.2",
     "sinon-chai": "^3.5.0",
     "ts-jest": "^26.4.4",
     "typescript": "^4.1.3"
+  },
+  "lint-staged": {
+    "*.{ts,js}": "eslint --cache --fix",
+    "*.{ts,js,json,css,md}": "prettier --write"
   }
 }

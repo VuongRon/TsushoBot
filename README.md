@@ -107,7 +107,7 @@ Note that you need to place your breakpoints in your source code (TypeScript/Jav
       execute: execute,
    };
 
-   export { 
+   export {
       commandTemplate
    };
    ```

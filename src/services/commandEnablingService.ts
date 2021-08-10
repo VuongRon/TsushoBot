@@ -9,7 +9,8 @@ const ENABLED_COMMANDS_KEY = "ENABLED_COMMANDS";
  */
 function getEnabledCommandsSet(): Set<string> | null {
   let enabledCommands: string[];
-  let enabledCommandsStr: string | undefined = process.env[ENABLED_COMMANDS_KEY];
+  let enabledCommandsStr: string | undefined =
+    process.env[ENABLED_COMMANDS_KEY];
 
   // No commands variable was specified in the .env
   if (!enabledCommandsStr) return null;
@@ -28,6 +29,4 @@ function getEnabledCommandsSet(): Set<string> | null {
   return new Set<string>(enabledCommands);
 }
 
-export {
-  getEnabledCommandsSet
-}
+export { getEnabledCommandsSet };

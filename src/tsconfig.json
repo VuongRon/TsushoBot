@@ -1,14 +1,9 @@
 {
-    "extends": "../tsconfig-base.json",
-    "include": [
-        "**/*",
-        "**/*.json"
-    ],
-    "exclude": [
-        "tsconfig.json"
-    ],
-    "compilerOptions": {
-        "noImplicitAny": false,
-        "outDir": "../dist",
-    }
+  "extends": "../tsconfig-base.json",
+  "include": ["**/*", "**/*.json"],
+  "exclude": ["tsconfig.json"],
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "outDir": "../dist"
+  }
 }
