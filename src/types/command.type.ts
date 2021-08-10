@@ -1,9 +1,9 @@
-import { Collection, Message } from "discord.js";
+import { Collection, Message, Interaction, MessageEmbedOptions } from "discord.js";
 
 interface CommandTemplate {
-  name: string,
-  description: string,
-  execute: (msg: Message, args: string[], options: any) => void,
+  name: string;
+  description: string;
+  embed: (interaction: Interaction) => MessageEmbedOptions;
 }
 
 class Command implements CommandTemplate {
@@ -45,26 +45,28 @@ class Command implements CommandTemplate {
   }
 
   /**
-   * Command execution entry point
+   * Returns an Embed Response for the Interaction Reply built by this command
+   *
+   * @param   {Interaction}  interaction  Interaction Object received from client event upon registering a slash command execution
    */
-  private _execute: (msg: Message, args: string[], options: any) => void;
+  private _embed: (interaction: Interaction) => MessageEmbedOptions;
 
-  public execute(msg: Message, args: string[], options: any): void {
-    if (this.canExecute(msg)) {
-      this._execute(msg, args, options);
-    }
+  public embed(interaction: Interaction): MessageEmbedOptions {
+    return this._embed(interaction);
   }
 
-  constructor(name: string,
+  constructor(
+    name: string,
     description: string,
     enabled: boolean,
     bindings: Set<string>,
-    execute: (msg: Message, args: string[], options: any) => void) {
+    embed: (interaction: Interaction) => MessageEmbedOptions
+  ) {
     this._name = name;
     this._description = description;
     this._enabled = enabled;
     this._bindings = bindings;
-    this._execute = execute;
+    this._embed = embed;
   }
 
   private canExecute(msg: Message): boolean {
@@ -88,12 +90,8 @@ class Command implements CommandTemplate {
 
     return channelBindingValid;
   }
-};
+}
 
 type CommandCollection = Collection<string, Command>;
 
-export {
-  CommandTemplate,
-  Command,
-  CommandCollection
-}
+export { CommandTemplate, Command, CommandCollection };
