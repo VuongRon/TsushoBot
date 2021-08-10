@@ -8,8 +8,8 @@ import { commandTemplate as statsCommand } from "./stats";
 // Initialize bot commands collection
 let botCommands: CommandCollection = CommandsFactory.createCommandCollection([
   eightBallCommand,
-  coinflipCommand,
-  statsCommand,
+  // coinflipCommand,
+  // statsCommand,
 ]);
 
 export { botCommands };

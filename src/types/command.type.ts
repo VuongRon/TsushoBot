@@ -1,9 +1,19 @@
-import { Collection, Message } from "discord.js";
+import {
+  ApplicationCommandOption,
+  ApplicationCommandOptionData,
+  Collection,
+  CommandInteraction,
+  Message,
+} from "discord.js";
 
 interface CommandTemplate {
-  name: string,
-  description: string,
-  execute: (msg: Message, args: string[], options: any) => void,
+  name: string;
+  description: string;
+  enabled?: boolean;
+  bindings?: Set<string> | undefined;
+  options?: ApplicationCommandOptionData[] | undefined;
+  // execute: (msg: Message, args: string[], options: any) => void;
+  execute: (interaction: CommandInteraction) => Promise<void>;
 }
 
 class Command implements CommandTemplate {
@@ -38,36 +48,51 @@ class Command implements CommandTemplate {
    * Channel Bindings - allows the command to be executed only from the specified channels.
    * Defines an array of string ChannelIDs
    */
-  private _bindings: Set<string>;
+  private _bindings: Set<string> | undefined;
 
-  public get bindings(): Set<string> {
+  public get bindings(): Set<string> | undefined {
     return this._bindings;
+  }
+
+  private _options: ApplicationCommandOptionData[] | undefined;
+
+  public get options(): ApplicationCommandOptionData[] | undefined {
+    return this._options;
   }
 
   /**
    * Command execution entry point
    */
-  private _execute: (msg: Message, args: string[], options: any) => void;
+  // private _execute: (msg: Message, args: string[], options: any) => void;
 
-  public execute(msg: Message, args: string[], options: any): void {
-    if (this.canExecute(msg)) {
-      this._execute(msg, args, options);
-    }
+  // public execute(msg: Message, args: string[], options: any): void {
+  //   if (this.canExecute(msg)) {
+  //     this._execute(msg, args, options);
+  //   }
+  // }
+  private _execute: (interaction: CommandInteraction) => Promise<void>;
+
+  public async execute(interaction: CommandInteraction): Promise<void> {
+    await this._execute(interaction);
   }
 
-  constructor(name: string,
+  constructor(
+    name: string,
     description: string,
-    enabled: boolean,
-    bindings: Set<string>,
-    execute: (msg: Message, args: string[], options: any) => void) {
+    enabled: boolean = true,
+    bindings: Set<string> | undefined,
+    options: ApplicationCommandOptionData[] | undefined,
+    execute: (interaction: CommandInteraction) => Promise<void>
+  ) {
     this._name = name;
     this._description = description;
     this._enabled = enabled;
     this._bindings = bindings;
+    this._options = options;
     this._execute = execute;
   }
 
-  private canExecute(msg: Message): boolean {
+  private canExecute(msg: Message): boolean | undefined {
     return this._enabled && this.isChannelBindingValid(msg);
   }
 
@@ -80,20 +105,16 @@ class Command implements CommandTemplate {
    * @param message Currently processed Discord message
    * @returns whether the binding is valid for the specified message
    */
-  isChannelBindingValid(message: Message): boolean {
+  isChannelBindingValid(message: Message): boolean | undefined {
     // if bindings are empty, return true as command can execute everywhere
-    if (this._bindings.size == 0) return true;
+    if (this._bindings?.size == 0) return true;
 
-    const channelBindingValid = this._bindings.has(message.channel.id);
+    const channelBindingValid = this._bindings?.has(message.channel.id);
 
     return channelBindingValid;
   }
-};
+}
 
 type CommandCollection = Collection<string, Command>;
 
-export {
-  CommandTemplate,
-  Command,
-  CommandCollection
-}
+export { CommandTemplate, Command, CommandCollection };

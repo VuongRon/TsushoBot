@@ -1,5 +1,6 @@
-import { Client, ClientOptions, Intents } from "discord.js";
+import { Client, ClientOptions } from "discord.js";
 import { CommandCollection } from "./command.type";
+import { registerCommands } from "../services/commandRegisteringService";
 
 class ExtendedClient extends Client {
   /**
@@ -10,6 +11,7 @@ class ExtendedClient extends Client {
   constructor(clientOptions: ClientOptions, botCommands: CommandCollection) {
     super(clientOptions);
     this.commands = botCommands;
+    registerCommands(botCommands);
   }
 
   /**
