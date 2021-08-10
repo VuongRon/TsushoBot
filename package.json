@@ -58,6 +58,6 @@
   },
   "lint-staged": {
     "*.{ts,js}": "eslint --cache --fix",
-    "*.{ts,js,css,md}": "prettier --write"
+    "*.{ts,js,json,css,md}": "prettier --write"
   }
 }
