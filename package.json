@@ -11,7 +11,7 @@
     "test:legacy": "mocha test",
     "start": "concurrently \"npm run build:src\" \"node dist/index.js\" --max-processes 1",
     "start:nobuild": "node dist/index.js",
-    "postinstall": "concurrently \"npm run db:migrate\" \"npm run build:src\" \"npm run cloneEnv\" --max-processes 1",
+    "postinstall": "concurrently \"npm run db:migrate\" \"npm run build:src\" \"npm run env:new\" --max-processes 1",
     "version": "node -p \"require('./package').version\""
   },
   "repository": {
