@@ -81,9 +81,6 @@ const embedMessage = (msg, args) => {
       value: `${getWeight(sample)}`,
     },
   ];
-  fields.forEach((field, i) => {
-    fields[i].inline = true;
-  });
   return embedService.embed(msg, args, {
     argsTitle,
     fields,

@@ -6,6 +6,7 @@
   "scripts": {
     "build:src": "tsc -b src",
     "db:migrate": "npx sequelize-cli db:migrate",
+    "env:new": "node -p \"require('fs').copyFile('.env.copy', '.env', (err)=>{if(err){throw err}})\"",
     "test": "jest --forceExit --coverage --verbose",
     "test:legacy": "mocha test",
     "start": "concurrently \"npm run build:src\" \"node dist/index.js\" --max-processes 1",

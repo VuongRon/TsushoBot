@@ -13,7 +13,15 @@ const client = new ExtendedClient(
   botCommands
 );
 
-client.on("message", (msg: Message) => {
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isCommand()) return;
+
+  if (interaction.commandName === "ping") {
+    await interaction.reply("Pong!");
+  }
+});
+
+client.on("messageCreate", async (msg: Message) => {
   /**
    * Don't process bot messages, could be even more specific to ignore self messages.
    */
