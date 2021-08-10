@@ -31,7 +31,4 @@ const embed = (msg: Message, args: string[], options: any = {}) => {
   return msg.channel.send({ embed });
 };
 
-export {
-  embedMessage,
-  embed
-}
+export { embedMessage, embed };
