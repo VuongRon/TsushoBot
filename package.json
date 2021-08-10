@@ -6,11 +6,11 @@
   "scripts": {
     "build:src": "tsc -b src",
     "db:migrate": "npx sequelize-cli db:migrate",
+    "env:new": "node -p \"require('fs').copyFile('.env.copy', '.env', (err)=>{if(err){throw err}})\"",
     "test": "jest --forceExit --coverage --verbose",
     "test:legacy": "mocha test",
     "start": "node dist/index.js",
-    "cloneEnv": "node dist/scripts/cloneEnv.js --clone",
-    "postinstall": "concurrently \"npm run db:migrate\" \"npm run build:src\" \"npm run cloneEnv\" --max-processes 1",
+    "postinstall": "concurrently \"npm run db:migrate\" \"npm run build:src\" \"npm run env:new\" --max-processes 1",
     "version": "node -p \"require('./package').version\""
   },
   "repository": {
