@@ -1,5 +1,4 @@
 import { Message } from "discord.js";
-
 import { CommandTemplate } from "../types/command.type";
 import { embed } from "../services/embedService";
 import { getRandomInt } from "../services/rngService";
