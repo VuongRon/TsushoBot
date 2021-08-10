@@ -1,9 +1,9 @@
 import { Collection, Message } from "discord.js";
 
 interface CommandTemplate {
-  name: string,
-  description: string,
-  execute: (msg: Message, args: string[], options: any) => void,
+  name: string;
+  description: string;
+  execute: (msg: Message, args: string[], options: any) => void;
 }
 
 class Command implements CommandTemplate {
@@ -55,11 +55,13 @@ class Command implements CommandTemplate {
     }
   }
 
-  constructor(name: string,
+  constructor(
+    name: string,
     description: string,
     enabled: boolean,
     bindings: Set<string>,
-    execute: (msg: Message, args: string[], options: any) => void) {
+    execute: (msg: Message, args: string[], options: any) => void
+  ) {
     this._name = name;
     this._description = description;
     this._enabled = enabled;
@@ -88,12 +90,8 @@ class Command implements CommandTemplate {
 
     return channelBindingValid;
   }
-};
+}
 
 type CommandCollection = Collection<string, Command>;
 
-export {
-  CommandTemplate,
-  Command,
-  CommandCollection
-}
+export { CommandTemplate, Command, CommandCollection };

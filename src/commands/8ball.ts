@@ -15,14 +15,12 @@ const embedMessage = (msg, args) => {
 
 const execute = (msg: Message, args: string[]) => {
   embedMessage(msg, args);
-}
+};
 
 const commandTemplate: CommandTemplate = {
   name: "8ball",
   description: "Answers questions.",
-  execute: execute
-}
+  execute: execute,
+};
 
-export {
-  commandTemplate
-}
+export { commandTemplate };

@@ -28,7 +28,4 @@ function getCommandBindings(commandName: string): Set<string> {
   return new Set();
 }
 
-
-export {
-  getCommandBindings
-};
+export { getCommandBindings };
