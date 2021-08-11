@@ -1,4 +1,5 @@
 import { Interaction, MessageEmbedAuthor, MessageEmbedOptions } from "discord.js";
+import { CommandResponse } from "../types/discord-types.type";
 
 /** Creates a new Embed response depending on the Type of the event we are handling */
 export class EmbedBuilder {
@@ -33,11 +34,5 @@ export class EmbedBuilder {
    */
   public get(): MessageEmbedOptions {
     return this.embedObject;
-  }
-
-  public static fallbackEmbed(): MessageEmbedOptions {
-    return {
-      title: "There was a problem with executing the following command",
-    };
   }
 }
