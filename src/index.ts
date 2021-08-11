@@ -1,11 +1,10 @@
 import { config } from "dotenv";
 config();
 
-import { Intents, Interaction, MessageEmbedOptions } from "discord.js";
-import { ExtendedClient } from "./types/discord-types.type";
+import { Intents, Interaction } from "discord.js";
+import { CommandResponse, ExtendedClient } from "./types/discord-types.type";
 import { botCommands } from "./commands";
 import { Command } from "./types/command.type";
-import { EmbedBuilder } from "./services/EmbedBuilder";
 
 // Send our bot commands to the client
 const client = new ExtendedClient(
@@ -18,18 +17,12 @@ const client = new ExtendedClient(
 client.on("interactionCreate", async (interaction: Interaction) => {
   if (!interaction.isCommand()) return;
 
-  // Since Interaction already outputs a semi-response in the chat, we have to
-  // Reply to the interaction with a fallback embed in case the command does not
-  // exist in the collection - was not imported, etc.
   const command: Command | undefined = botCommands.get(interaction.commandName);
 
-  // Resolve to Fallback Embed Response if the command did not exist in the collection
-  // We handle both Single and Multiple embeds in case this command has to embed
-  // multiple messages in form of split sections
-  const embedResponse: MessageEmbedOptions | MessageEmbedOptions[] =
-    command?.embed(interaction) ?? EmbedBuilder.fallbackEmbed();
+  const commandResponse: CommandResponse = command?.execute(interaction) ??
+    "undefined command";
 
-  interaction.reply({ embeds: [embedResponse] });
+  await interaction.reply(commandResponse);
 
   //if (interaction.commandName === "ping") {
   //  await interaction.reply("Pong!");
