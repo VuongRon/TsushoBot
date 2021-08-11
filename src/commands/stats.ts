@@ -1,3 +1,8 @@
+import { Interaction, MessageEmbedOptions } from "discord.js";
+import { EmbedBuilder } from "../services/EmbedBuilder";
+import { CommandTemplate } from "../types/command.type";
+import { CommandResponse } from "../types/discord-types.type";
+
 const embedService = require("../services/embedService");
 const rngService = require("../services/rngService");
 const MultivariateNormal = require("multivariate-normal").default;
@@ -87,15 +92,17 @@ const embedMessage = (msg, args) => {
   });
 };
 
-const execute = (msg, args, options) => {
-  embedMessage(msg, args);
-};
+// const execute = (msg, args, options) => {
+//   embedMessage(msg, args);
+// };
 
-const commandTemplate = {
+const commandTemplate: CommandTemplate = {
   name: "stats",
-  description:
-    "Shows your randomized stats. Each stat is normally distributed.",
-  execute: execute,
+  description: "Shows your randomized stats. Each stat is normally distributed.",
+
+  execute: function (interaction: Interaction): CommandResponse {
+    return { embeds: [new EmbedBuilder(interaction).get()] };
+  },
 };
 
 export { commandTemplate };

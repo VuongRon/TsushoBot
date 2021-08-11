@@ -1,6 +1,7 @@
 import { Interaction, MessageEmbedOptions } from "discord.js";
 import { CommandTemplate } from "../types/command.type";
 import { EmbedBuilder } from "../services/EmbedBuilder";
+import { CommandResponse } from "../types/discord-types.type";
 
 /*
  |--------------------------------------------------------------------------
@@ -25,7 +26,7 @@ const commandTemplate: CommandTemplate = {
   name: "testcommand",
   description: "A test command.",
 
-  embed: function (interaction: Interaction): MessageEmbedOptions {
+  execute: function (interaction: Interaction): CommandResponse {
     /**
      * By default, the EmbedBuilder returns an Embed with the author only - an empty embed,
      * that has to be constructed by this command.
@@ -46,7 +47,7 @@ const commandTemplate: CommandTemplate = {
      *    .color(green)
      *    .get();
      */
-    return new EmbedBuilder(interaction).get();
+    return { embeds: [new EmbedBuilder(interaction).get()] };
   },
 };
 
