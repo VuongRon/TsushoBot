@@ -5,6 +5,6 @@ import { CommandsFactory } from "./utils/commands-factory";
 import { commandTemplate as eightBallCommand } from "./8ball";
 import { commandTemplate as testCommand } from "./test";
 // Initialize bot commands collection
-let botCommands: CommandCollection = CommandsFactory.createCommandCollection([eightBallCommand, testCommand]);
+let botCommands: CommandCollection = CommandsFactory.createCommandCollection([eightBallCommand]);
 
 export { botCommands };
