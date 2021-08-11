@@ -20,7 +20,7 @@ namespace CommandsFactory {
 
       let bindings = getCommandBindings(template.name);
 
-      command = new Command(template.name, template.description, isEnabled, bindings, template.embed);
+      command = new Command(template.name, template.description, isEnabled, bindings, template.execute);
 
       // Add new command to the collection
       collection.set(command.name, command);
