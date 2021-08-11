@@ -1,4 +1,4 @@
-import { Client, ClientOptions, Intents } from "discord.js";
+import { Client, ClientOptions, InteractionReplyOptions, MessagePayload } from "discord.js";
 import { CommandCollection } from "./command.type";
 
 class ExtendedClient extends Client {
@@ -18,4 +18,7 @@ class ExtendedClient extends Client {
   public commands: CommandCollection;
 }
 
-export { ExtendedClient };
+/** Type of a reply handled by Interaction -> Reply. Commands  */
+type CommandResponse = string | InteractionReplyOptions | MessagePayload;
+
+export { ExtendedClient, CommandResponse };
