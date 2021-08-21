@@ -1,7 +1,14 @@
-import { Client, ClientOptions, InteractionReplyOptions, MessagePayload } from "discord.js";
+import {
+  Client,
+  ClientOptions,
+  EmbedFieldData,
+  InteractionReplyOptions,
+  MessageEmbedAuthor,
+  MessagePayload,
+} from "discord.js";
 import { CommandCollection } from "./command.type";
 
-class ExtendedClient extends Client {
+export class ExtendedClient extends Client {
   /**
    *
    * @param clientOptions An object containing the client options
@@ -19,6 +26,10 @@ class ExtendedClient extends Client {
 }
 
 /** Type of a reply handled by Interaction -> Reply. Commands  */
-type CommandResponse = string | InteractionReplyOptions | MessagePayload;
+export type CommandResponse = string | InteractionReplyOptions | MessagePayload | undefined;
 
-export { ExtendedClient, CommandResponse };
+/** Array of TWO EmbedField, which will be forced to have inline style  */
+export type EmbedDoubleColumn = [EmbedFieldData, EmbedFieldData];
+
+/** Array of THREE EmbedField, which will be forced to have inline style  */
+export type EmbedTripleColumn = [EmbedFieldData, EmbedFieldData, EmbedFieldData];
