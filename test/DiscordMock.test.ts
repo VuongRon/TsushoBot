@@ -152,7 +152,7 @@ describe("Can Mock Discord Client and its elements", () => {
     client.on("interactionCreate", (interaction: Interaction) => {
       // We know that our interaction is a slash command, but we have to let TypeScript
       // know about this by a performing a type check
-      // This will also tell us if the Type of interaction was properly set to APPLICATION_COMMAND (2)
+      // This will also tell us if the Type of this interaction was CommandInteraction
       if (!interaction.isCommand()) return;
 
       expect(interaction.commandName).toBe(customCommandInteractionName);

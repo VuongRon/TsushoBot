@@ -1,6 +1,6 @@
 export class InvalidCommandInteractionException extends Error {
   constructor() {
-    super("This Interaction is not of APPLICATION_COMMAND type");
+    super("This Interaction is not of CommandInteraction type");
   }
 }
 export class InvalidEmbedAuthorException extends Error {

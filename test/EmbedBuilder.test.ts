@@ -281,7 +281,7 @@ describe("Embed building", () => {
     expect(commandName).toBe("testcommand");
   });
 
-  // If this interaction was not of APPLICATION_COMMAND type, this should throw an exception
+  // If this interaction was not of CommandInteraction type, this should throw an exception
   it("Can not extract command name from non-interaction type", () => {
     expect(() => {
       new EmbedBuilder(_interaction)["getCommandName"]();

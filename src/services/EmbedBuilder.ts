@@ -317,8 +317,7 @@ export class EmbedBuilder {
    * @return  {string}  [return description]
    */
   private getCommandName(): string {
-    // This check is required to let TypeScript know the type of this interaction is APPLICATION_COMMAND
-    // The interaction is required to have "type: 2"
+    // This check is required to let TypeScript know the type of this interaction is CommandInteraction
     if (!this.interaction.isCommand()) {
       throw new InvalidCommandInteractionException();
     }
