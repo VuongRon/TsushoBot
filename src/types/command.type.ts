@@ -1,10 +1,10 @@
-import { Collection, Message, Interaction, MessageEmbedOptions, InteractionReplyOptions } from "discord.js";
+import { Collection, Message, CommandInteraction } from "discord.js";
 import { CommandResponse } from "./discord-types.type";
 
 interface CommandTemplate {
   name: string;
   description: string;
-  execute: (interaction: Interaction) => CommandResponse;
+  execute: (interaction: CommandInteraction) => CommandResponse;
 }
 
 class Command implements CommandTemplate {
@@ -48,11 +48,11 @@ class Command implements CommandTemplate {
   /**
    * Returns an Embed Response for the Interaction Reply built by this command
    *
-   * @param   {Interaction}  interaction  Interaction Object received from client event upon registering a slash command execution
+   * @param   {CommandInteraction}  interaction  Interaction Object received from client event upon registering a slash command execution
    */
-  private _execute: (interaction: Interaction) => CommandResponse;
+  private _execute: (interaction: CommandInteraction) => CommandResponse;
 
-  public execute(interaction: Interaction): CommandResponse {
+  public execute(interaction: CommandInteraction): CommandResponse {
     return this._execute(interaction);
   }
 
@@ -61,7 +61,7 @@ class Command implements CommandTemplate {
     description: string,
     enabled: boolean,
     bindings: Set<string>,
-    execute: (interaction: Interaction) => CommandResponse
+    execute: (interaction: CommandInteraction) => CommandResponse
   ) {
     this._name = name;
     this._description = description;
