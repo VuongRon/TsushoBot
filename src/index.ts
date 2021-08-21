@@ -36,7 +36,7 @@ client.on("interactionCreate", async (interaction: Interaction) => {
     // If something went wrong while fetching the command response, an error should be thrown internally
     // and reported here.
 
-    // TODO: Add some form of exception logging either further review, e.g. to the Database/File
+    // TODO: Add some form of exception logging for further review, e.g. to the Database/File
     console.error(error);
   } finally {
     // We have to do something with the response anyway, so we either have to reply to the
