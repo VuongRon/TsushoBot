@@ -1,38 +1,39 @@
 import { CommandInteraction } from "discord.js";
-import { CommandTemplate } from "../types/command.type";
-import { embed } from "../services/embedService";
+
 import { getRandomInt } from "../services/rngService";
+import { CommandTemplate } from "../types/command.type";
+import { EmbedBuilder } from "../services/EmbedBuilder";
+import { CommandResponse } from "../types/discord-types.type";
+
 import responses from "./config/eightBall.json";
-import { ApplicationCommandOptionTypes } from "discord.js/typings/enums";
-import { ApplicationCommandOptionType } from "discord-api-types";
-
-const embedMessage = async (msg, args) => {
-  const argsTitle = true;
-  return embed(msg, args, {
-    argsTitle,
-    description: responses[getRandomInt(0, responses.length, false)],
-  });
-};
-
-// const execute = async (msg: Message, args: string[]) => {
-//   await embedMessage(msg, args);
-// }
-
-const execute = async (interaction: CommandInteraction) => {
-  await interaction.reply(responses[getRandomInt(0, responses.length, false)]);
-};
 
 const commandTemplate: CommandTemplate = {
-  name: "8ball",
+  name: "eightball",
   description: "Answers questions.",
-  options: [
-    {
-      name: "input",
-      type: 3,
-      description: "The input to display as the heading",
-    },
-  ],
-  execute: execute,
+
+  execute: function (interaction: CommandInteraction): CommandResponse {
+    /**
+     * COMMAND LOGIC
+     */
+    const response: string = responses[getRandomInt(0, responses.length, false)];
+    //-
+
+    /**
+     * EMBED CONSTRUCTION
+     */
+    const embed: EmbedBuilder = new EmbedBuilder(interaction, true).setDescription(response);
+
+    // TODO: find a way to shorten this as much as possible
+    for (const option of interaction.options.data) {
+      if (option.name === "question") {
+        embed.setTitle(option.value!.toString());
+      }
+    }
+
+    return {
+      embeds: [embed.get()],
+    };
+  },
 };
 
 export { commandTemplate };
