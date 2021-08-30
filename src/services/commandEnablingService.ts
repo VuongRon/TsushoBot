@@ -8,13 +8,13 @@ const ENABLED_COMMANDS_KEY = "ENABLED_COMMANDS";
  * on the list, only the specified commands will be enabled
  */
 function getEnabledCommandsSet(): Set<string> | null {
-  let enabledCommands: string[];
-  let enabledCommandsStr: string | undefined = process.env[ENABLED_COMMANDS_KEY];
+  const enabledCommandsStr: string | undefined =
+    process.env[ENABLED_COMMANDS_KEY];
 
   // No commands variable was specified in the .env
   if (!enabledCommandsStr) return null;
 
-  enabledCommands = enabledCommandsStr.split(/\s+/gi);
+  const enabledCommands = enabledCommandsStr.split(/\s+/gi);
   enabledCommands.forEach((s, index, arr) => (arr[index] = s.toLowerCase()));
 
   /**
@@ -28,6 +28,4 @@ function getEnabledCommandsSet(): Set<string> | null {
   return new Set<string>(enabledCommands);
 }
 
-export {
-  getEnabledCommandsSet
-}
+export { getEnabledCommandsSet };

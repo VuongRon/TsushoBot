@@ -1,6 +1,6 @@
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
-import { ApplicationCommandOptionData } from "discord.js";
+// import { ApplicationCommandOptionData } from "discord.js";
 import { CommandCollection } from "../types/command.type";
 const token = process.env.TOKEN;
 const guildId = process.env.GUILD_ID;
@@ -13,17 +13,16 @@ if (token) {
 type CommandBody = {
   name: string;
   description: string;
-  options: ApplicationCommandOptionData[] | undefined;
+  // options: ApplicationCommandOptionData[] | undefined;
 };
 
-const registerCommands = async (commands: CommandCollection) => {
+const registerCommands = async (commands: CommandCollection): Promise<void> => {
   if (guildId && clientId) {
-    let bodyCommands: CommandBody[] = new Array();
-    commands.forEach(({ name, description, options }) => {
+    const bodyCommands: CommandBody[] = [];
+    commands.forEach(({ name, description }) => {
       bodyCommands.push({
         name,
         description,
-        options,
       });
     });
     try {
