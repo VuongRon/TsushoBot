@@ -1,77 +1,71 @@
+import * as rngService from "../../services/rngService";
 import MultivariateNormal from "multivariate-normal";
-import { normalDistribution, logNormalDistribution } from "../../services/rngService";
 
-class Stats {
-  private _iq: number = 0;
-  private _looks: number = 0;
-  private _mmr: number = 0;
-  private salary: number = 0;
-  private length: number = 0;
-  private height: number = 0;
-  private weight: number = 0;
+export class Stats {
+  public iq: string = "";
+  public looks: string = "";
+  public mmr: string = "";
+  public salary: string = "";
+  public length: string = "";
+  public height: string = "";
+  public weight: string = "";
 
-  // allows for construction of a new Stats object, with the option to initialize all values to random values
-  constructor(shouldRandomize: boolean = false) {
-    if (shouldRandomize) {
-      // randomizes all the values
-      this.randomize();
-    }
+  constructor() {
+    const sample: number[] = this.generateSample();
+
+    this.setIQ();
+    this.setLooks();
+    this.setMMR();
+    this.setSalary();
+    this.setLength();
+    this.setHeight(sample);
+    this.setWeight(sample);
   }
 
-  public get iq(): number {
-    return this._iq;
-  }
-  public get looks(): number {
-    return this._looks;
-  }
-  public get mmr(): number {
-    return this._mmr;
+  private setIQ(): void {
+    this.iq = rngService.normalDistribution(100, 100 / 3).toString();
   }
 
-  public randomize(): void {
-    const sample = this.generateSample();
-
-    this._iq = normalDistribution(100, 100 / 3);
-    this._looks = normalDistribution(5, 5 / 3);
-    this._mmr = normalDistribution(5000, 5000 / 3, 1, true);
-    this.salary = logNormalDistribution(1, 1, 50000);
-    this.length = normalDistribution(6, 6 / 3, 1, true);
-
-    this.height = Math.round(sample[0]);
-    this.weight = Math.round(sample[1]);
+  private setLooks(): void {
+    this.looks = `${rngService.normalDistribution(5, 5 / 3)}/10`;
   }
 
-  public generateSample(): number[] {
-    const meanVector: [number, number] = [170, 70];
+  private setMMR(): void {
+    this.mmr = rngService.normalDistribution(5000, 5000 / 3, 1, true).toString();
+  }
 
-    const covarianceMatrix: [number, number][] = [
+  private setSalary(): void {
+    this.salary = rngService
+      .logNormalDistribution(1, 1, 50000)
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  private setLength(): void {
+    const randomInches = rngService.normalDistribution(6, 6 / 3, 1, true);
+    this.length = `${randomInches} in (${Math.round(randomInches * 2.54)} cm)`;
+  }
+
+  private setHeight(sample: number[]): void {
+    const height = Math.round(sample[0]);
+    const inches = Math.round(height / 2.54);
+
+    this.height = `${Math.floor(inches / 12)}'${inches % 12}" (${height} cm)`;
+  }
+
+  private setWeight(sample): void {
+    const weight = Math.round(sample[1]);
+    this.weight = `${Math.round(weight * 2.205)} lb (${weight} kg)`;
+  }
+
+  private generateSample(): number[] {
+    const meanVector = [170, 70];
+
+    const covarianceMatrix = [
       [450, 370],
       [370, 350],
     ];
 
-    const distribution: number[] = MultivariateNormal(meanVector, covarianceMatrix).sample();
-
-    return distribution;
-  }
-
-  public lengthFormatted(): string {
-    return `${this.length} in (${Math.round(this.length * 2.54)} cm)`;
-  }
-
-  public heightFormatted(): string {
-    const inches: number = Math.round(this.height / 2.54);
-    const height: string = `${Math.floor(inches / 12)}'${inches % 12}" (${this.height} cm)`;
-
-    return height;
-  }
-
-  public weightFormatted(): string {
-    return `${Math.round(this.weight * 2.205)} lb (${this.weight} kg)`;
-  }
-
-  public salaryFormatted(): string {
-    return this.salary.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return MultivariateNormal(meanVector, covarianceMatrix).sample();
   }
 }
-
-export { Stats };
