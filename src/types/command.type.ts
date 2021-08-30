@@ -1,9 +1,10 @@
-import { Collection, Message } from "discord.js";
+import { Collection, Message, CommandInteraction } from "discord.js";
+import { CommandResponse } from "./discord-types.type";
 
 interface CommandTemplate {
-  name: string,
-  description: string,
-  execute: (msg: Message, args: string[], options: any) => void,
+  name: string;
+  description: string;
+  execute: (interaction: CommandInteraction) => CommandResponse;
 }
 
 class Command implements CommandTemplate {
@@ -45,21 +46,23 @@ class Command implements CommandTemplate {
   }
 
   /**
-   * Command execution entry point
+   * Returns an Embed Response for the Interaction Reply built by this command
+   *
+   * @param   {CommandInteraction}  interaction  Interaction Object received from client event upon registering a slash command execution
    */
-  private _execute: (msg: Message, args: string[], options: any) => void;
+  private _execute: (interaction: CommandInteraction) => CommandResponse;
 
-  public execute(msg: Message, args: string[], options: any): void {
-    if (this.canExecute(msg)) {
-      this._execute(msg, args, options);
-    }
+  public execute(interaction: CommandInteraction): CommandResponse {
+    return this._execute(interaction);
   }
 
-  constructor(name: string,
+  constructor(
+    name: string,
     description: string,
     enabled: boolean,
     bindings: Set<string>,
-    execute: (msg: Message, args: string[], options: any) => void) {
+    execute: (interaction: CommandInteraction) => CommandResponse
+  ) {
     this._name = name;
     this._description = description;
     this._enabled = enabled;
@@ -88,12 +91,8 @@ class Command implements CommandTemplate {
 
     return channelBindingValid;
   }
-};
+}
 
 type CommandCollection = Collection<string, Command>;
 
-export {
-  CommandTemplate,
-  Command,
-  CommandCollection
-}
+export { CommandTemplate, Command, CommandCollection };
