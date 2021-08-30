@@ -1,12 +1,13 @@
-const numbers = require("numbers");
+import numbers from "numbers";
 
-const getRandomValue = (mean, stdev, method) => {
+const getRandomValue = (mean: number, stdev: number, method): number => {
   return method(1, mean, stdev);
 };
 
-const getRandomInt = (min, max, maxInclusive = true) => {
-  const minimum = Math.ceil(min);
-  const maximum = Math.floor(max);
+const getRandomInt = (min: number, max: number, maxInclusive: boolean = true): number => {
+  const minimum: number = Math.ceil(min);
+  const maximum: number = Math.floor(max);
+
   return maxInclusive
     ? Math.floor(Math.random() * (maximum - minimum + 1) + minimum)
     : Math.floor(Math.random() * (maximum - minimum) + minimum);
@@ -49,31 +50,41 @@ const checkIfNegative = (value) => {
  *
  * @return  {integer}
  */
-const distribution = (isLogarithmic, mean, stdev, modifier = 1, checkNegative = false) => {
+const distribution = (
+  isLogarithmic: boolean,
+  mean: number,
+  stdev: number,
+  modifier: number = 1,
+  checkNegative: boolean = false
+) => {
   const distributionType =
     isLogarithmic === true ? numbers.random.distribution.logNormal : numbers.random.distribution.normal;
 
-  const value = Math.floor(parseInt(getRandomValue(mean, stdev, distributionType) * modifier, 10));
+  const value = Math.floor(parseInt((getRandomValue(mean, stdev, distributionType) * modifier).toString(), 10));
 
   return checkNegative ? checkIfNegative(value) : value;
 };
 
-const normalDistribution = (mean, stdev, modifier = 1, checkNegative = false) => {
+const normalDistribution = (
+  mean: number,
+  stdev: number,
+  modifier: number = 1,
+  checkNegative: boolean = false
+): number => {
   return distribution(false, mean, stdev, modifier, checkNegative);
 };
 
-const logNormalDistribution = (mean, stdev, modifier = 1, checkNegative = false) => {
+const logNormalDistribution = (
+  mean: number,
+  stdev: number,
+  modifier: number = 1,
+  checkNegative: boolean = false
+): number => {
   return distribution(true, mean, stdev, modifier, checkNegative);
 };
 
-const getRandomArrayIndex = (array) => {
+const getRandomArrayIndex = (array: unknown[]) => {
   return array[getRandomInt(0, array.length - 1)];
 };
 
-module.exports = {
-  normalDistribution,
-  logNormalDistribution,
-  getRandomInt,
-  getWeightedRandom,
-  getRandomArrayIndex,
-};
+export { normalDistribution, logNormalDistribution, getRandomInt, getWeightedRandom, getRandomArrayIndex };

@@ -1,19 +1,10 @@
-import {
-  ApplicationCommandOption,
-  ApplicationCommandOptionData,
-  Collection,
-  CommandInteraction,
-  Message,
-} from "discord.js";
+import { Collection, Message, CommandInteraction } from "discord.js";
+import { CommandResponse } from "./discord-types.type";
 
 interface CommandTemplate {
   name: string;
   description: string;
-  enabled?: boolean;
-  bindings?: Set<string> | undefined;
-  options?: ApplicationCommandOptionData[] | undefined;
-  // execute: (msg: Message, args: string[], options: any) => void;
-  execute: (interaction: CommandInteraction) => Promise<void>;
+  execute: (interaction: CommandInteraction) => CommandResponse;
 }
 
 class Command implements CommandTemplate {
@@ -61,28 +52,22 @@ class Command implements CommandTemplate {
   }
 
   /**
-   * Command execution entry point
+   * Returns an Embed Response for the Interaction Reply built by this command
+   *
+   * @param   {CommandInteraction}  interaction  Interaction Object received from client event upon registering a slash command execution
    */
-  // private _execute: (msg: Message, args: string[], options: any) => void;
+  private _execute: (interaction: CommandInteraction) => CommandResponse;
 
-  // public execute(msg: Message, args: string[], options: any): void {
-  //   if (this.canExecute(msg)) {
-  //     this._execute(msg, args, options);
-  //   }
-  // }
-  private _execute: (interaction: CommandInteraction) => Promise<void>;
-
-  public async execute(interaction: CommandInteraction): Promise<void> {
-    await this._execute(interaction);
+  public execute(interaction: CommandInteraction): CommandResponse {
+    return this._execute(interaction);
   }
 
   constructor(
     name: string,
     description: string,
-    enabled: boolean = true,
-    bindings: Set<string> | undefined,
-    options: ApplicationCommandOptionData[] | undefined,
-    execute: (interaction: CommandInteraction) => Promise<void>
+    enabled: boolean,
+    bindings: Set<string>,
+    execute: (interaction: CommandInteraction) => CommandResponse
   ) {
     this._name = name;
     this._description = description;
